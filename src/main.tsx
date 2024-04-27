@@ -11,6 +11,7 @@ import SystemUserDashboard from './pages/systemUserDashboard/systemUserDashboard
 import TicketDetails from './pages/ticketDetails/ticketDetails.tsx';
 import Login from './pages/login/login.tsx';
 import ManageOrganisations from './pages/manageOrganisations/manageOrganisations.tsx';
+import ManageUsers from './pages/manageUsers/manageUsers.tsx';
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="login" element={<Login />} />
               <Route path="manageOrganisations" element={<ManageOrganisations />} />
               <Route path="systemDashboard" element={<SystemUserDashboard />} />
+              <Route path="manageUsers" element={<ManageUsers />} />
 
               {/* <Route path="*" element={<NoPage />} /> */}
             </Route>
