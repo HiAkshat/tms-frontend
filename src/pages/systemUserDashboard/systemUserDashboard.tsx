@@ -1,15 +1,21 @@
 import styles from "./index.module.scss"
-import NewOrganisationForm from "../../organisms/newOrganisationForm"
+import Navbar from "../../organisms/navbar"
+import { useNavigate } from "react-router-dom"
 
 export default function SystemUserDashboard() {
+  let navigate = useNavigate();
+
   return (
-    <div>
-      <div className={styles.main}>System User Dashboard</div>
-      <div>
-        <button>Manage Organisations</button>
-        <button>Manage Users</button>
+    <div className={styles.page}>
+      <Navbar />
+      <div className={styles.main}>
+        <div className={styles.title}>System User Dashboard</div>
+        <div className={styles.buttons}>
+          <button onClick={() => {navigate("/manageOrganisations")}}>Manage Organisations</button>
+          <button>Manage Users</button>
+        </div>
       </div>
-      <NewOrganisationForm />
+      {/* <NewOrganisationForm /> */}
     </div>
   )
 }

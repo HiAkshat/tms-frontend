@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { Notification, toaster } from 'rsuite';
+import styles from "./index.module.scss"
 
 interface Organisation {
   organisation_name: string;
@@ -12,8 +14,8 @@ export default function NewOrganisationForm() {
   })
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(organisation)
+    e.preventDefault()
+
     const res = await fetch("http://127.0.0.1:8000/api/organisation", {
       method: "POST",
       headers: {
@@ -21,17 +23,23 @@ export default function NewOrganisationForm() {
       },
       body: JSON.stringify(organisation)
     })
-
+    console.log(res)
     if (!res.ok){
-      console.log(res)
+      console.log("NOO")
+      toaster.push(<Notification>Error adding organisation!</Notification>, {
+        placement: 'bottomEnd'
+      });
       return
     }
 
-    console.log(res)
     // Reset form fields after submission
     setOrganisation({
       organisation_name: '',
       display_name: '',
+    });
+
+    toaster.push(<Notification>Organisation added successfully!</Notification>, {
+      placement: 'bottomEnd',
     });
   };
 
@@ -44,11 +52,11 @@ export default function NewOrganisationForm() {
   };
 
   return (
-    <div>
-      <h2>Add New Organisation</h2>
+    <div className={styles.main}>
+      <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Organisation Name:</label>
+        <div className={styles.fieldInfo}>
+          <label className={styles.fieldTitle}>Organisation Name</label>
           <input
             type="text"
             name="organisation_name"
@@ -57,8 +65,8 @@ export default function NewOrganisationForm() {
             required
           />
         </div>
-        <div>
-          <label>Display Name:</label>
+        <div className={styles.fieldInfo}>
+          <label className={styles.fieldTitle}>Display Name</label>
           <input
             type="text"
             name="display_name"
@@ -67,7 +75,7 @@ export default function NewOrganisationForm() {
             required
           />
         </div>
-        <button type="submit">Add Organisation</button>
+        <button className={styles.addButton} type="submit">Add</button>
       </form>
     </div>
   );
