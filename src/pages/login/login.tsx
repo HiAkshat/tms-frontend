@@ -13,7 +13,9 @@ export default function Login() {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/systemUser/${email}`)
+      let response;
+      if (userType==0) response = await fetch(`http://127.0.0.1:8000/api/systemUser/${email}`)
+      else response = await fetch(`http://127.0.0.1:8000/api/organisationUser/${email}`)
       const userData = await response.json();
       return userData
     } catch (error) {
@@ -28,7 +30,7 @@ export default function Login() {
   const handleUserLogin = async (e: React.SyntheticEvent) => {
     const userData = await fetchUserData()
     console.log(userData[0])
-    const userDetails = { name: `${userData[0].first_name} ${userData[0].last_name}`, email: userData[0].email_id, userType: 'system' };
+    const userDetails = { name: `${userData[0].first_name} ${userData[0].last_name}`, email: userData[0].email_id, userType: userType==0 ? "System" : "Organisation" };
     dispatch(
       login(userDetails)
     )

@@ -1,8 +1,18 @@
 import styles from "./navbar.module.scss"
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux"
+import { useDispatch } from 'react-redux';
+import { logout } from "../redux/userSlice";
 
 export default function Navbar() {
   let navigate = useNavigate();
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate("/login")
+  }
 
   return (
     <div className={styles.navbar}>
@@ -11,8 +21,8 @@ export default function Navbar() {
         <span onClick={()=>{navigate("/manageOrganisations")}} className={styles.navbarButton}>Manage Organisations</span>
       </div>
       <div className={styles.navbarPart}>
-        <span className={styles.navbarButton}>Currently logged in as: Akshat Gupta (Systen user)</span>
-        <span className={styles.navbarButton}>Log out</span>
+        <span className={styles.navbarButton}>Currently logged in as: {user.name} ({user.userType} user)</span>
+        <span onClick={handleLogout} className={styles.navbarButton}>Log out</span>
       </div>
     </div>
   )

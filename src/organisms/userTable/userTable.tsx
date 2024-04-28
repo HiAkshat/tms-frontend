@@ -1,7 +1,27 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
+import { useState, useEffect } from 'react';
 
-const UserTable = ({ data, organisations }: any) => {
+const UserTable = ({ data }: any) => {
+  const [organisations, setOrganisations] = useState([]);
+
+  useEffect(() => {
+    fetchOrganisations();
+  }, []);
+
+  const fetchOrganisations = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/organisation'); // Replace '/api/organisations' with your actual API endpoint
+      if (!response.ok) {
+        throw new Error('Failed to fetch organisations');
+      }
+      const data = await response.json();
+      setOrganisations(data);
+    } catch (error) {
+      console.error('Error fetching organisations:', error);
+    }
+  };
+
   const columns = React.useMemo(
     () => [
       {
@@ -19,7 +39,7 @@ const UserTable = ({ data, organisations }: any) => {
       {
         Header: 'DOB',
         accessor: 'dob',
-        Cell: ({ value }) => {
+        Cell: ({ value }: any) => {
           // Format date to display only the date part
           const formattedDate = new Date(value).toLocaleDateString();
           return formattedDate;
@@ -29,6 +49,7 @@ const UserTable = ({ data, organisations }: any) => {
         Header: 'Organisation',
         accessor: 'organisation',
         // Cell: ({ value }) => {
+        //   console.log(org)
         //   const organisation = organisations.find(org => org._id === value);
         //   return organisation ? organisation.organisation_name : ""
         // },

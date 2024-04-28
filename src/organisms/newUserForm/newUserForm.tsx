@@ -79,7 +79,7 @@ export default function NewOrganisationForm() {
       joining_date: new Date('2022-10-31T09:00:00Z')
     });
 
-    toaster.push(<Notification>Organisation added successfully!</Notification>, {
+    toaster.push(<Notification>User added successfully!</Notification>, {
       placement: 'bottomEnd',
     });
   };
