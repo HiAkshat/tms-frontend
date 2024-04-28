@@ -1,0 +1,32 @@
+.mainTable{
+  table{
+    border-radius: 10px;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  th{
+    background-color: #1a1a1a;
+    padding: 14px;
+    text-align: center;
+  }
+  
+  td{
+    background-color: #2a2a2a;
+    text-align: center;
+    padding: 4px 10px;
+  }
+
+  .actions{
+    display: flex;
+    justify-content: space-around;
+
+    button{
+      background: none;
+      border: none;
+      color: white;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,27 +1,8 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
-import { useState, useEffect } from 'react';
+import styles from "./index.module.scss"
 
 const UserTable = ({ data }: any) => {
-  const [organisations, setOrganisations] = useState([]);
-
-  useEffect(() => {
-    fetchOrganisations();
-  }, []);
-
-  const fetchOrganisations = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/organisation'); // Replace '/api/organisations' with your actual API endpoint
-      if (!response.ok) {
-        throw new Error('Failed to fetch organisations');
-      }
-      const data = await response.json();
-      setOrganisations(data);
-    } catch (error) {
-      console.error('Error fetching organisations:', error);
-    }
-  };
-
   const columns = React.useMemo(
     () => [
       {
@@ -47,7 +28,7 @@ const UserTable = ({ data }: any) => {
       },
       {
         Header: 'Organisation',
-        accessor: 'organisation',
+        accessor: 'organisation.organisation_name',
         // Cell: ({ value }) => {
         //   console.log(org)
         //   const organisation = organisations.find(org => org._id === value);
@@ -66,10 +47,10 @@ const UserTable = ({ data }: any) => {
       {
         Header: 'Actions',
         Cell: ({ row }: any) => (
-          <>
+          <div className={styles.actions}>
             <button onClick={() => handleEdit(row.original)}>Edit</button>
             <button onClick={() => handleDelete(row.original)}>Delete</button>
-          </>
+          </div>
         ),
       },
     ],
@@ -93,7 +74,7 @@ const UserTable = ({ data }: any) => {
   };
 
   return (
-    <table {...getTableProps()}>
+    <table className={styles.mainTable} {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>

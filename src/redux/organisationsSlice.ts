@@ -26,20 +26,7 @@ const organisationsSlice = createSlice({
   name: 'organisations',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchOrganisations.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchOrganisations.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.organisations = action.payload;
-      })
-      .addCase(fetchOrganisations.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      });
-  },
+
 });
 
 // Export actions and reducer

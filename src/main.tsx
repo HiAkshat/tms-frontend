@@ -12,6 +12,7 @@ import TicketDetails from './pages/ticketDetails/ticketDetails.tsx';
 import Login from './pages/login/login.tsx';
 import ManageOrganisations from './pages/manageOrganisations/manageOrganisations.tsx';
 import ManageUsers from './pages/manageUsers/manageUsers.tsx';
+import NewTicketForm from './organisms/newTicketForm/newTicketForm.tsx';
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path="manageOrganisations" element={<ManageOrganisations />} />
               <Route path="systemDashboard" element={<SystemUserDashboard />} />
               <Route path="manageUsers" element={<ManageUsers />} />
+              <Route path="newTicket" element={<NewTicketForm />} />
 
               {/* <Route path="*" element={<NoPage />} /> */}
             </Route>

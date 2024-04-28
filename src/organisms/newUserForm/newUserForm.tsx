@@ -53,7 +53,7 @@ export default function NewOrganisationForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const res = await fetch("http://127.0.0.1:8000/api/addOrganisationUser", {
+    const res = await fetch("http://127.0.0.1:8000/api/organisationUser", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

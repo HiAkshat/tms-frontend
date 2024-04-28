@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
+import { Notification, toaster } from 'rsuite';
+import styles from "./index.module.scss"
 
 const OrganisationTable = ({ data }: any) => {
   const columns = React.useMemo(
@@ -15,10 +17,10 @@ const OrganisationTable = ({ data }: any) => {
       {
         Header: 'Actions',
         Cell: ({ row }: any) => (
-          <>
+          <div className={styles.actions}>
             <button onClick={() => handleEdit(row.original)}>Edit</button>
             <button onClick={() => handleDelete(row.original)}>Delete</button>
-          </>
+          </div>
         ),
       },
     ],
@@ -37,12 +39,22 @@ const OrganisationTable = ({ data }: any) => {
     console.log('Edit entry:', entry);
   };
 
-  const handleDelete = (entry: any) => {
+  const handleDelete = async (entry: any) => {
     console.log('Delete entry:', entry);
+    const res = await fetch(`http://127.0.0.1:8000/api/organisation/${entry._id}`, {
+      method: "DELETE",
+    })
+    console.log(res)
+    if (!res.ok){
+      toaster.push(<Notification>Error adding organisation user!</Notification>, {
+        placement: 'bottomEnd'
+      });
+      return
+    }
   };
 
   return (
-    <table {...getTableProps()}>
+    <table className={styles.mainTable} {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
