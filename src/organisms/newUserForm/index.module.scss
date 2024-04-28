@@ -10,6 +10,9 @@
 
   form{
     display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 200px;
     gap: 25px;
 
     .fieldInfo{
@@ -26,6 +29,17 @@
         padding: 4px 8px;
         font-size: 20px;
       }
+
+    }
+    select{
+      background-color: #2A2A2A;
+      color: white;
+      outline: none;
+      max-width: fit-content;
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: none;
+      margin-top: 8px;
     }
 
     .addButton{

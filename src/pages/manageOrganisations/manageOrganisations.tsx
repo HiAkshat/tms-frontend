@@ -5,7 +5,7 @@ import OrganisationTable from "../../organisms/organisationTable/organisationTab
 import { useState, useEffect } from "react"
 
 export default function ManageOrganisations(){
-const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +30,10 @@ const [data, setData] = useState([]);
       <Navbar />
       <div className={styles.main}>
         <NewOrganisationForm />
-        <OrganisationTable data={data} />
+        <div className={styles.tableDiv}>
+          <span>Organisations Table</span>
+          <OrganisationTable data={data} />
+        </div>
       </div>
     </div>
   )

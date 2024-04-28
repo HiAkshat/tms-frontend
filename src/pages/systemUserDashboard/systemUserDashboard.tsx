@@ -12,7 +12,7 @@ export default function SystemUserDashboard() {
         <div className={styles.title}>System User Dashboard</div>
         <div className={styles.buttons}>
           <button onClick={() => {navigate("/manageOrganisations")}}>Manage Organisations</button>
-          <button>Manage Users</button>
+          <button onClick={() => {navigate("/manageUsers")}}>Manage Users</button>
         </div>
       </div>
       {/* <NewOrganisationForm /> */}

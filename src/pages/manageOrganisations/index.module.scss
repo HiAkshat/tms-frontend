@@ -8,6 +8,18 @@
     flex-direction: column;
     padding: 50px 50px;
     gap: 50px;
+
+    .tableDiv{
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+
+      span{
+        font-size: 48px;
+        font-weight: 600;
+      }
+    }
   }
+
 
 }

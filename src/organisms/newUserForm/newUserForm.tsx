@@ -25,7 +25,6 @@ export default function NewOrganisationForm() {
   const [selectedOrganisation, setSelectedOrganisation] = useState('');
 
   useEffect(() => {
-    // Fetch organisations from API
     fetchOrganisations();
   }, []);
 
@@ -95,7 +94,7 @@ export default function NewOrganisationForm() {
 
   return (
     <div className={styles.main}>
-      <span className={styles.title}>Add New Organisation</span>
+      <span className={styles.title}>Add New User</span>
       <form onSubmit={handleSubmit}>
         <div className={styles.fieldInfo}>
           <label className={styles.fieldTitle}>Email ID</label>
@@ -148,11 +147,11 @@ export default function NewOrganisationForm() {
           />
         </div>
         <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
-        <option value="">Select an organisation</option>
-        {organisations.map((org) => (
-          <option key={org._id} value={org._id}>{org.organisation_name}</option>
-        ))}
-      </select>
+          <option value="">Select an organisation</option>
+          {organisations.map((org) => (
+            <option key={org._id} value={org._id}>{org.organisation_name}</option>
+          ))}
+        </select>
         <button className={styles.addButton} type="submit">Add</button>
       </form>
     </div>
