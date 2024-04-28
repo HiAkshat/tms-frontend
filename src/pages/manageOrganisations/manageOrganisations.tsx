@@ -1,6 +1,6 @@
 import styles from "./index.module.scss"
 import NewOrganisationForm from "../../organisms/newOrganisationForm/newOrganisationForm"
-import Navbar from "../../organisms/navbar"
+import Navbar from "../../organisms/navbar/navbar"
 import OrganisationTable from "../../organisms/organisationTable/organisationTable"
 import { useState, useEffect } from "react"
 

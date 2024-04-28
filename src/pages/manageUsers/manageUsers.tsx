@@ -1,4 +1,4 @@
-import Navbar from "../../organisms/navbar"
+import Navbar from "../../organisms/navbar/navbar"
 import NewUserForm from "../../organisms/newUserForm/newUserForm"
 import UserTable from "../../organisms/userTable/userTable"
 import { useState, useEffect } from "react";

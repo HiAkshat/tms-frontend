@@ -1,0 +1,44 @@
+.main{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  .title{
+    font-size: 32px;
+    font-weight: 400;
+  }
+
+  form{
+    display: flex;
+    gap: 25px;
+
+    .fieldInfo{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      input{
+        background: none;
+        border: none;
+        background-color: #2A2A2A;
+        color: white;
+        outline: none;
+        padding: 4px 8px;
+        font-size: 20px;
+      }
+    }
+
+    .addButton{
+      cursor: pointer;
+      background-color: #2A2A2A;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 2px;
+
+      color: white;
+      height: fit-content;
+      place-self: flex-end;
+      font-size: 20px;
+    }
+  }
+}

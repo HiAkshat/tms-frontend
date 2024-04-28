@@ -1,5 +1,5 @@
 import styles from "./index.module.scss"
-import Navbar from "../../organisms/navbar"
+import Navbar from "../../organisms/navbar/navbar"
 import { useNavigate } from "react-router-dom"
 
 export default function SystemUserDashboard() {

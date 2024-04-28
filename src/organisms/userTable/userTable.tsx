@@ -1,8 +1,12 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
+import { Notification, toaster } from 'rsuite';
 import styles from "./index.module.scss"
+import { useNavigate } from 'react-router-dom';
 
 const UserTable = ({ data }: any) => {
+  const navigate = useNavigate()
+
   const columns = React.useMemo(
     () => [
       {
@@ -67,10 +71,26 @@ const UserTable = ({ data }: any) => {
 
   const handleEdit = (entry: any) => {
     console.log('Edit entry:', entry);
+    navigate(`edit/${entry._id}`);
   };
 
-  const handleDelete = (entry: any) => {
+  const handleDelete = async (entry: any) => {
     console.log('Delete entry:', entry);
+    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${entry._id}`, {
+      method: "DELETE",
+    })
+
+
+    if (!res.ok){
+      toaster.push(<Notification>Error deleting organisation user!</Notification>, {
+        placement: 'bottomEnd'
+      });
+      return
+    }
+
+    toaster.push(<Notification>Organisation user deleted successfully</Notification>, {
+      placement: 'bottomEnd'
+    });
   };
 
   return (

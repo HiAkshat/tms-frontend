@@ -2,7 +2,7 @@ import styles from "./navbar.module.scss"
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux"
 import { useDispatch } from 'react-redux';
-import { logout } from "../redux/userSlice";
+import { logout } from "../../redux/userSlice";
 
 export default function Navbar() {
   let navigate = useNavigate();

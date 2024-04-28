@@ -2,8 +2,11 @@ import React from 'react';
 import { useTable, useSortBy } from 'react-table';
 import { Notification, toaster } from 'rsuite';
 import styles from "./index.module.scss"
+import { useNavigate } from 'react-router-dom';
 
 const OrganisationTable = ({ data }: any) => {
+  const navigate = useNavigate();
+
   const columns = React.useMemo(
     () => [
       {
@@ -36,7 +39,7 @@ const OrganisationTable = ({ data }: any) => {
   } = useTable({ columns, data }, useSortBy);
 
   const handleEdit = (entry: any) => {
-    console.log('Edit entry:', entry);
+    navigate(`edit/${entry._id}`);
   };
 
   const handleDelete = async (entry: any) => {
@@ -44,13 +47,20 @@ const OrganisationTable = ({ data }: any) => {
     const res = await fetch(`http://127.0.0.1:8000/api/organisation/${entry._id}`, {
       method: "DELETE",
     })
-    console.log(res)
+
+
     if (!res.ok){
       toaster.push(<Notification>Error adding organisation user!</Notification>, {
         placement: 'bottomEnd'
       });
       return
     }
+
+    toaster.push(<Notification>Organisation deleted successfully</Notification>, {
+      placement: 'bottomEnd'
+    });
+
+    navigate("")
   };
 
   return (
