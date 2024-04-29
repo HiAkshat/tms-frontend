@@ -19,9 +19,9 @@ export default function Login() {
       const sendOTP = await fetch(`http://127.0.0.1:8000/api/systemUser/sendOTP/${email}`, {
         method: "POST",
       })
-      console.log(sendOTP)
+      showToast(`OTP sent to ${email}`)
     } catch (error){
-      console.log(error)
+      showToast("Error sending OTP!")
       return
     }
   }
@@ -45,15 +45,35 @@ export default function Login() {
   };
 
   const handleUserLogin = async (e: React.SyntheticEvent) => {
-    const userData = await fetchUserData()
-    console.log(userData[0])
-    const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, userType: userType==0 ? "System" : "Organisation" };
-    dispatch(
-      login(userDetails)
-    )
+    const body = JSON.stringify({
+      email_id: email,
+      otp
+    })
+
+    const response = await fetch(`http://127.0.0.1:8000/api/systemUser/verifyOTP`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body
+    })
     
-    showToast("Logged in successfully!")
-    navigate("/systemDashboard");
+    const otpData = await response.json()
+
+    if (otpData.valid){
+      const userData = await fetchUserData()
+      const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, userType: userType==0 ? "System" : "Organisation" };
+      dispatch(
+        login(userDetails)
+      )
+      
+      showToast("Logged in successfully!")
+      navigate("/systemDashboard");
+    }
+
+    else {
+      showToast("Invalid OTP/credentials!")
+    }
   }
 
   return (
