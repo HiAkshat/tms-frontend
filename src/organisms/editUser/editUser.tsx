@@ -171,7 +171,7 @@ export default function EditUser() {
           <option key={org._id} value={org._id}>{org.organisation_name}</option>
         ))}
       </select>
-      <button className={styles.addButton} type="submit">Add</button>
+      <button className={styles.addButton} type="submit">Edit</button>
     </form>
   </div>
 

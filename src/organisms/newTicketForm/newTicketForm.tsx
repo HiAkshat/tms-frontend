@@ -1,36 +1,15 @@
 import { FormEvent, useState, useEffect } from 'react';
 import { Notification, toaster } from 'rsuite';
-
-
-interface User {
-  _id: string;
-  email: string;
-}
+import { getData } from '../../services/getData';
 
 function NewTicketForm() {
   const [assignee, setAssignee] = useState<string>('');
   const [reporter, setReporter] = useState<string>('');
-  const [users, setUsers] = useState([])
+  const users = getData('http://localhost:8000/api/organisationUser/organisation/662b08fd1a3985b535157a5f')
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/organisationUser');
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        setUsers(jsonData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData(); 
-    console.log(users)
-  }, []);
 
   const [ticketData, setTicketData] = useState({
+    organisation: '',
     type: '',
     key: '',
     summary: '',
@@ -98,23 +77,31 @@ function NewTicketForm() {
           <textarea id="description" name="description" value={ticketData.description} onChange={handleChange}></textarea>
         </div>
         <div>
-          <label htmlFor="assignee">Assignee:</label>
-          <input type="text" id="assignee" name="assignee" value={ticketData.assignee} onChange={handleChange} required />
-        </div>
-        <div>
-          <label htmlFor="reporter">Reporter:</label>
-          <input type="text" id="reporter" name="reporter" value={ticketData.reporter} onChange={handleChange} required />
-        </div>
-        <div>
           <label htmlFor="due_date">Due Date:</label>
           <input type="date" id="due_date" name="due_date" value={ticketData.due_date} onChange={handleChange} />
         </div>
-        {/* <select name="assignee" id="assignee" value={assignee} onChange={handleSelectChange}>
-          <option value="">Select an organisation</option>
-          {organisations.map((org) => (
-            <option key={org._id} value={org._id}>{org.organisation_name}</option>
-          ))}
-        </select> */}
+        {!users.isLoading && 
+          <div>
+            <label htmlFor="assignee">Assignee:</label>
+            <select name="assignee" id="assignee" value={assignee} onChange={(e)=>{setAssignee(e.target.value)}}>
+              <option value="">Select Assignee</option>
+              {users.data.map((user: any) => (
+                <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
+              ))}
+            </select>
+          </div>
+        }
+        {!users.isLoading && 
+          <div>
+            <label htmlFor="assignee">Reporter:</label>
+            <select name="reporter" id="reporter" value={reporter} onChange={(e)=>{setReporter(e.target.value)}}>
+              <option value="">Select Reporter</option>
+              {users.data.map((user: any) => (
+                <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
+              ))}
+            </select>
+          </div>
+        }
         <button type="submit">Submit</button>
       </form>
     </div>

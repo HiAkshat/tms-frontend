@@ -1,29 +1,11 @@
 import Navbar from "../../organisms/navbar/navbar"
 import NewUserForm from "../../organisms/newUserForm/newUserForm"
 import UserTable from "../../organisms/userTable/userTable"
-import { useState, useEffect } from "react";
 import styles from "./index.module.scss"
+import { getData } from "../../services/getData";
 
 export default function ManageUsers() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/organisationUser');
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData(); 
-    console.log(data)
-  }, []);
+  const users = getData('http://127.0.0.1:8000/api/organisationUser')
 
   return (
     <div className={styles.page}>
@@ -32,7 +14,7 @@ export default function ManageUsers() {
         <NewUserForm />
         <div className={styles.tableDiv}>
           <span>Users Table</span>
-          <UserTable data={data}/>
+          {!users.isLoading && <UserTable data={users.data}/>}
         </div>
       </div>
     </div>

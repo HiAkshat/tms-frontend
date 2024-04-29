@@ -14,16 +14,12 @@
 import useSWR from "swr"
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-interface GetDataOptions {
-  apiEndpoint: string;
-}
-
-export const getData = ({apiEndpoint}: GetDataOptions) => {
+export const getData = (apiEndpoint: string) => {
+  // console.log("HEY")
   const { data, error, isLoading } = useSWR(apiEndpoint, fetcher, {
     revalidateOnFocus: true, // Revalidate when the tab/window is focused
     revalidateOnReconnect: true, // Revalidate when the network reconnects
     refreshInterval: 3000, // Set your desired interval in milliseconds
   });
-
   return {data, error, isLoading}
 }
