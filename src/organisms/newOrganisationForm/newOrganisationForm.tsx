@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { Notification, toaster } from 'rsuite';
 import styles from "./index.module.scss"
+import showToast from "../../atoms/toast";
 
 interface Organisation {
   organisation_name: string;
@@ -25,22 +25,16 @@ export default function NewOrganisationForm() {
     })
     console.log(res)
     if (!res.ok){
-      console.log("NOO")
-      toaster.push(<Notification>Error adding organisation!</Notification>, {
-        placement: 'bottomEnd'
-      });
+      showToast("Error adding organisation!")
       return
     }
 
-    // Reset form fields after submission
     setOrganisation({
       organisation_name: '',
       display_name: '',
     });
 
-    toaster.push(<Notification>Organisation added successfully!</Notification>, {
-      placement: 'bottomEnd',
-    });
+    showToast("Organisation added successfully!")
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

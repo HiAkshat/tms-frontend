@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
-import { Notification, toaster } from 'rsuite';
 import styles from "./index.module.scss"
 import { useNavigate } from 'react-router-dom';
+import showToast from '../../atoms/toast';
 
 const OrganisationTable = ({ data }: any) => {
   const navigate = useNavigate();
@@ -50,16 +50,11 @@ const OrganisationTable = ({ data }: any) => {
 
 
     if (!res.ok){
-      toaster.push(<Notification>Error adding organisation user!</Notification>, {
-        placement: 'bottomEnd'
-      });
+      showToast("Error deleting organisation!")
       return
     }
 
-    toaster.push(<Notification>Organisation deleted successfully</Notification>, {
-      placement: 'bottomEnd'
-    });
-
+    showToast("Organisation deleted successfully!")
     navigate("")
   };
 

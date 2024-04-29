@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react"
-import { Notification, toaster } from 'rsuite';
 import styles from "./index.module.scss"
 import { useParams } from 'react-router-dom'
+import showToast from "../../atoms/toast";
 
 interface OrganisationUser {
   email_id: string;
   first_name: string;
   last_name: string;
   dob: Date;
-  organisation: string; // Assuming you will pass the ObjectId as a string
+  organisation: string;
   joining_date: Date;
 }
 
@@ -79,16 +79,12 @@ export default function EditUser() {
       },
       body: JSON.stringify(organisationUser)
     })
-    console.log("HEY")
-    console.log(res)
+
     if (!res.ok){
-      toaster.push(<Notification>Error editing organisation user!</Notification>, {
-        placement: 'bottomEnd'
-      });
+      showToast("Error editing user!")
       return
     }
 
-    // Reset form fields after submission
     setOrganisationUser({
       email_id: '',
       first_name: '',
@@ -98,9 +94,7 @@ export default function EditUser() {
       joining_date: new Date('2022-10-31T09:00:00Z')
     });
 
-    toaster.push(<Notification>User added successfully!</Notification>, {
-      placement: 'bottomEnd',
-    });
+    showToast("User edited successfully!")
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

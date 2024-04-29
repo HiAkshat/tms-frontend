@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import { Notification, toaster } from 'rsuite';
 import styles from "./index.module.scss"
 import { getData } from "../../services/getData";
+import showToast from "../../atoms/toast";
 
 interface OrganisationUser {
   email_id: string;
@@ -44,12 +44,9 @@ export default function NewOrganisationForm() {
       },
       body: JSON.stringify(organisationUser)
     })
-    console.log("HEY")
-    console.log(res)
+
     if (!res.ok){
-      toaster.push(<Notification>Error adding organisation user!</Notification>, {
-        placement: 'bottomEnd'
-      });
+      showToast("Error adding organisation user!")
       return
     }
 
@@ -63,9 +60,7 @@ export default function NewOrganisationForm() {
       joining_date: new Date('2022-10-31T09:00:00Z')
     });
 
-    toaster.push(<Notification>User added successfully!</Notification>, {
-      placement: 'bottomEnd',
-    });
+    showToast("User added successfully!")
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

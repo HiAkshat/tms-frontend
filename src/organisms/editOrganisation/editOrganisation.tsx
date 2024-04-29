@@ -1,8 +1,8 @@
-import { Notification, toaster } from 'rsuite';
 import styles from "./index.module.scss"
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import showToast from "../../atoms/toast";
 
 interface Organisation {
   organisation_name: string;
@@ -50,9 +50,7 @@ export default function EditOrganisation() {
 
     if (!res.ok){
       console.log("NOO")
-      toaster.push(<Notification>Error editing organisation!</Notification>, {
-        placement: 'bottomEnd'
-      });
+      showToast("Error editing organisation!")
       return
     }
 
@@ -64,9 +62,7 @@ export default function EditOrganisation() {
       display_name: '',
     });
 
-    toaster.push(<Notification>Organisation edited successfully!</Notification>, {
-      placement: 'bottomEnd',
-    });
+    showToast("Organisation edited successfully!")
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

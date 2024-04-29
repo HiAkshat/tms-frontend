@@ -1,6 +1,6 @@
 import { FormEvent, useState, useEffect } from 'react';
-import { Notification, toaster } from 'rsuite';
 import { getData } from '../../services/getData';
+import showToast from '../../atoms/toast';
 
 function NewTicketForm() {
   const [assignee, setAssignee] = useState<string>('');
@@ -42,10 +42,7 @@ function NewTicketForm() {
     console.log(res)
 
     if (!res.ok){
-      console.log("NOO")
-      toaster.push(<Notification>Error adding organisation!</Notification>, {
-        placement: 'bottomEnd'
-      });
+      showToast("Error adding new ticket!")
       return
     }
     console.log('Submitted data:', ticketData);

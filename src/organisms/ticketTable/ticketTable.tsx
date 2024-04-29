@@ -4,48 +4,38 @@ import styles from "./index.module.scss"
 import { useNavigate } from 'react-router-dom';
 import showToast from '../../atoms/toast';
 
-const UserTable = ({ data }: any) => {
+const TicketTable = ({ data }: any) => {
   const navigate = useNavigate()
 
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Email ID',
-        accessor: 'email_id',
+        Header: 'Type',
+        accessor: 'type',
       },
       {
-        Header: 'First Name',
-        accessor: 'first_name',
+        Header: 'Key',
+        accessor: 'key',
       },
       {
-        Header: 'Last Name',
-        accessor: 'last_name',
+        Header: 'Assignee',
+        accessor: 'assignee.first_name',
       },
       {
-        Header: 'DOB',
-        accessor: 'dob',
+        Header: 'Reporter',
+        accessor: 'reporter.first_name',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+      },
+      {
+        Header: 'Due Date',
+        accessor: 'due_date',
         Cell: ({ value }: any) => {
           // Format date to display only the date part
           const formattedDate = new Date(value).toLocaleDateString();
           return formattedDate;
-        },
-      },
-      {
-        Header: 'Organisation',
-        accessor: 'organisation.organisation_name',
-        // Cell: ({ value }) => {
-        //   console.log(org)
-        //   const organisation = organisations.find(org => org._id === value);
-        //   return organisation ? organisation.organisation_name : ""
-        // },
-      },
-      {
-        Header: 'Joining Date',
-        accessor: 'joining_date',
-        Cell: ({ value }) => {
-          // Format date to display only the date part
-          const formattedDate = new Date(value).toLocaleDateString();
-          return formattedDate
         },
       },
       {
@@ -81,8 +71,12 @@ const UserTable = ({ data }: any) => {
     })
 
 
-    if (!res.ok) showToast("Error deleting organiation!")
-    else showToast("Organisation user deleted successfully!")
+    if (!res.ok){
+      showToast("Error deleting user!")
+      return
+    }
+
+    showToast("User added successfully!")
   };
 
   return (
@@ -112,4 +106,4 @@ const UserTable = ({ data }: any) => {
   );
 };
 
-export default UserTable;
+export default TicketTable;
