@@ -3,6 +3,7 @@ import NewTicketForm from "../../organisms/newTicketForm/newTicketForm"
 import TicketTable from "../../organisms/ticketTable/ticketTable"
 import { getData } from "../../services/getData"
 import styles from "./index.module.scss"
+import { useSelector } from "react-redux"
 
 // <div className={styles.page}>
 // <Navbar />
@@ -15,7 +16,8 @@ import styles from "./index.module.scss"
 // </div>
 // </div>
 export default function ViewTickets() {
-  const tickets = getData("http://localhost:8000/api/ticket")
+  const user = useSelector((state: any) => state.user)
+  const tickets = getData(`http://localhost:8000/api/ticket/organisation/${user.organisation_id}`)
 
   return (
     <div className={styles.page}>

@@ -83,11 +83,12 @@ export default function Login() {
     // console.log(otpData)
     if (otpData.valid){
       const userData = await fetchUserData()
-      const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, userType: userType==0 ? "System" : "Organisation" };
+      const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userType==0 ? '' : userData.organisation, userType: userType==0 ? "System" : "Organisation" };
       dispatch(
         login(userDetails)
       )
-      
+
+      // console.log(userDetails)
       showToast("Logged in successfully!")
       if (userType==0) navigate("/systemDashboard");
       else navigate("/viewTickets")

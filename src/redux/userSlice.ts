@@ -4,6 +4,7 @@ const initialState = {
   name: '',
   email: '',
   userType: '', // 'system' or 'organization'
+  organisation_id: '',
   isAuthenticated: false,
 };
 
@@ -12,16 +13,18 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      const { name, email, userType } = action.payload;
+      const { name, email, userType, organisation_id } = action.payload;
       state.name = name;
       state.email = email;
       state.userType = userType;
+      state.organisation_id = organisation_id
       state.isAuthenticated = true;
     },
     logout: (state) => {
       state.name = '';
       state.email = '';
       state.userType = '';
+      state.organisation_id = '',
       state.isAuthenticated = false;
     },
   },
