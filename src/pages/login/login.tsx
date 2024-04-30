@@ -89,7 +89,8 @@ export default function Login() {
       )
       
       showToast("Logged in successfully!")
-      navigate("/systemDashboard");
+      if (userType==0) navigate("/systemDashboard");
+      else navigate("/viewTickets")
     }
 
     else {

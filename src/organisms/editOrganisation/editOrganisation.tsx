@@ -56,7 +56,6 @@ export default function EditOrganisation() {
 
     navigate("..")
 
-    // Reset form fields after submission
     setOrganisation({
       organisation_name: '',
       display_name: '',

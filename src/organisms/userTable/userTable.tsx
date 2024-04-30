@@ -25,7 +25,6 @@ const UserTable = ({ data }: any) => {
         Header: 'DOB',
         accessor: 'dob',
         Cell: ({ value }: any) => {
-          // Format date to display only the date part
           const formattedDate = new Date(value).toLocaleDateString();
           return formattedDate;
         },
@@ -43,7 +42,6 @@ const UserTable = ({ data }: any) => {
         Header: 'Joining Date',
         accessor: 'joining_date',
         Cell: ({ value }) => {
-          // Format date to display only the date part
           const formattedDate = new Date(value).toLocaleDateString();
           return formattedDate
         },

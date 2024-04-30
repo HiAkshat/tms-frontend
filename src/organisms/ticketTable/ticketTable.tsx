@@ -33,7 +33,6 @@ const TicketTable = ({ data }: any) => {
         Header: 'Due Date',
         accessor: 'due_date',
         Cell: ({ value }: any) => {
-          // Format date to display only the date part
           const formattedDate = new Date(value).toLocaleDateString();
           return formattedDate;
         },

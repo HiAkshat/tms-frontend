@@ -8,7 +8,7 @@ interface OrganisationUser {
   first_name: string;
   last_name: string;
   dob: Date;
-  organisation: string; // Assuming you will pass the ObjectId as a string
+  organisation: string;
   joining_date: Date;
 }
 
@@ -25,7 +25,7 @@ export default function NewOrganisationForm() {
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
   const [selectedOrganisation, setSelectedOrganisation] = useState('');
 
-  const handleSelectChange = (e) => {
+  const handleSelectChange = (e: any) => {
     setSelectedOrganisation(e.target.value);
     const { name, value } = e.target;
     setOrganisationUser((prevState) => ({
@@ -50,7 +50,6 @@ export default function NewOrganisationForm() {
       return
     }
 
-    // Reset form fields after submission
     setOrganisationUser({
       email_id: '',
       first_name: '',

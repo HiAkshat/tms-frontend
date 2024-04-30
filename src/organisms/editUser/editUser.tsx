@@ -34,7 +34,7 @@ export default function EditUser() {
 
   const fetchOrganisations = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/organisation`); // Replace '/api/organisations' with your actual API endpoint
+      const response = await fetch(`http://127.0.0.1:8000/api/organisation`);
       if (!response.ok) {
         throw new Error('Failed to fetch organisations');
       }
@@ -47,7 +47,7 @@ export default function EditUser() {
 
   const fetchUser = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`); // Replace '/api/organisations' with your actual API endpoint
+      const response = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch organisations');
       }

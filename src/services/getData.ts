@@ -1,6 +1,6 @@
 // export default function getData = async () : Promise<any> => {
 //   try {
-//     const response = await fetch(`http://127.0.0.1:8000/api/organisationUser`); // Replace '/api/organisations' with your actual API endpoint
+//     const response = await fetch(`http://127.0.0.1:8000/api/organisationUser`);
 //     if (!response.ok) {
 //       throw new Error('Failed to fetch organisations');
 //     }
@@ -15,7 +15,6 @@ import useSWR from "swr"
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const getData = (apiEndpoint: string) => {
-  // console.log("HEY")
   const { data, error, isLoading } = useSWR(apiEndpoint, fetcher, {
     revalidateOnFocus: true, // Revalidate when the tab/window is focused
     revalidateOnReconnect: true, // Revalidate when the network reconnects
