@@ -12,7 +12,7 @@ export default function ManageOrganisations(){
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
   const user = useSelector((state: any) => state.user)
 
-  if (user.isAuthenitcated && user.userType=='system'){
+  if (user.isAuthenticated && user.userType=='system'){
     return (
       <div className={styles.page}>
         <Navbar />

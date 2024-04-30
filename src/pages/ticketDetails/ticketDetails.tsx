@@ -1,21 +1,54 @@
 import { useParams } from "react-router-dom"
+import { getData } from "../../services/getData"
+import Navbar from "../../organisms/navbar/navbar"
+import styles from "./index.module.scss"
 
 export default function TicketDetails() {
   const {id} = useParams()
+  const ticket_details = getData(`http://localhost:8000/api/ticket/${id}`)
+  console.log(ticket_details)
+
+  function formattedDate(dateString: string) {
+    const date = new Date(dateString);
+  
+    // Extract date parts
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add leading zero if needed
+    const day = String(date.getDate()).padStart(2, '0'); // Add leading zero if needed
+  
+    // Format as YYYY-MM-DD
+    const formattedDate = `${year}-${month}-${day}`;
+  
+    return formattedDate;
+  }
 
   return (
-    <div>
-      <div>Ticket ORG001</div>
-      <span>Type: Story</span>
-      <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, voluptatum perspiciatis deleniti ea accusantium corrupti hic nulla corporis tenetur eveniet impedit nobis dicta autem, non molestias ut odit aliquam mollitia.</span>
-      <span>Assigned to: Akshat Gupta</span>
-      <span>Reporter: Hataks Tagup</span>
-      <span>Created on: 24/03/24</span>
-      <span>Last updated: 26/04/24</span>
-      <span>Due date: 1/05/24</span>
-      <div>
-        <span>Comments</span>
-      </div>
+    <div className={styles.page}>
+      <Navbar />
+      {!ticket_details.isLoading &&
+        <div className={styles.main}>
+          <div className={styles.ticketDiv}>
+            <span className={styles.title}>Ticket {ticket_details.data.key}</span>
+            <div className={styles.rowDiv}>
+              <span>Created <span>{formattedDate(ticket_details.data.created_date)}</span></span>
+              <span>Last updated <span>{formattedDate(ticket_details.data.updated_date)}</span></span>
+              <span>Type <span>Story</span></span>
+            </div>
+            <div className={styles.colDiv}>
+              <span>Assignee <span>{`${ticket_details.data.assignee.first_name} ${ticket_details.data.assignee.last_name}`}</span></span>
+              <span>Reporter <span>{`${ticket_details.data.reporter.first_name} ${ticket_details.data.reporter.last_name}`}</span></span>
+            </div>
+            <div className={styles.colDiv}>
+              <span>Current Status <span>{ticket_details.data.status}</span></span>
+              <span>Due Date <span>{formattedDate(ticket_details.data.due_date)}</span></span>
+            </div>
+            <div className={styles.colDiv}>
+              <span>Description</span>
+              <p className={styles.desc}>{ticket_details.data.description}</p>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   )
 }

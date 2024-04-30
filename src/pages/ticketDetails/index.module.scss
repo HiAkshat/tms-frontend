@@ -1,0 +1,48 @@
+.page{
+  display: flex;
+  flex-direction: column;
+  background: none;  
+
+  .main{
+    display: flex;
+    flex-direction: column;
+    padding: 50px 50px;
+    gap: 50px;
+
+    .ticketDiv{
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      .title{
+        font-size: 48px;
+        font-weight: 600;
+      }
+
+      .rowDiv{
+        display: flex;
+        gap: 20px;
+
+        span{
+          span{
+            font-weight: 600;
+          }
+        }
+      }
+
+      .colDiv{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        span{
+          span{
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+
+}

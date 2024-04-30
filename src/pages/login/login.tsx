@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import styles from "./index.module.scss"
 import showToast from '../../atoms/toast';
+import SubmitButton from '../../atoms/submitButton/submitButton';
 
 export default function Login() {
   const [userType, setUserType] = useState(0)
@@ -54,6 +55,7 @@ export default function Login() {
       otp
     })
 
+    console.log(body)
     let fetch_link
     if (userType==0) fetch_link=`http://127.0.0.1:8000/api/systemUser/verifyOTP`
     else fetch_link=`http://127.0.0.1:8000/api/organisationUser/verifyOTP`
@@ -80,15 +82,13 @@ export default function Login() {
     }
     
     const otpData = await response.json()
-    // console.log(otpData)
     if (otpData.valid){
       const userData = await fetchUserData()
-      const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userType==0 ? '' : userData.organisation, userType: userType==0 ? "System" : "Organisation" };
+      const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userType==0 ? '' : userData.organisation, userType: userType==0 ? "system" : "organisation" };
       dispatch(
         login(userDetails)
       )
 
-      // console.log(userDetails)
       showToast("Logged in successfully!")
       if (userType==0) navigate("/systemDashboard");
       else navigate("/viewTickets")
@@ -104,14 +104,14 @@ export default function Login() {
       <div className={styles.formInfo}>
         <span className={styles.loginTitle}>Login as</span>
         <input onChange={(e)=>{setEmail(e.target.value)}} type="text" placeholder='Enter your email' />
-        <button className={styles.submitButton} onClick={handleSendOtp}>Send OTP</button>
-        <input onChange={(e)=>{setOtp(e.target.value)}} type="text" placeholder='Enter received OTP on mail' />
         <select id="userType" value={userType} onChange={handleSelectChange}>
           <option value={0}>System User</option>
           <option value={1}>Organization User</option>
         </select>
+        <button className={styles.submitButton} onClick={handleSendOtp}>Send OTP</button>
+        <input onChange={(e)=>{setOtp(e.target.value)}} type="text" placeholder='Enter received OTP on mail' />
       </div>
-      <button className={styles.submitButton} onClick={handleUserLogin} type='submit'>Submit</button>
+      <SubmitButton type={"submit"} onClick={handleUserLogin} title={"Submit"} />
     </div>
   )
 }

@@ -28,6 +28,7 @@ export default function AppRoutes() {
         </Route>
         <Route path="viewTickets" element={<ViewTickets />} />
         <Route path="newTicket" element={<NewTicketForm />} />
+        <Route path="ticket/:id" element={<TicketDetails />} />
         {/* <Route path="*" element={<NoPage />} /> */}
       </Route>
     </Routes>

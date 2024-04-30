@@ -41,6 +41,7 @@ const TicketTable = ({ data }: any) => {
         Header: 'Actions',
         Cell: ({ row }: any) => (
           <div className={styles.actions}>
+            <button onClick={() => handleView(row.original)}>View details</button>
             <button onClick={() => handleEdit(row.original)}>Edit</button>
             <button onClick={() => handleDelete(row.original)}>Delete</button>
           </div>
@@ -63,19 +64,24 @@ const TicketTable = ({ data }: any) => {
     navigate(`edit/${entry._id}`);
   };
 
+  const handleView = async (entry: any) => {
+    navigate(`../ticket/${entry._id}`)
+  }
+
+
   const handleDelete = async (entry: any) => {
     console.log('Delete entry:', entry);
-    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${entry._id}`, {
+    const res = await fetch(`http://127.0.0.1:8000/api/ticket/${entry._id}`, {
       method: "DELETE",
     })
 
 
     if (!res.ok){
-      showToast("Error deleting user!")
+      showToast("Error deleting ticket!")
       return
     }
 
-    showToast("User added successfully!")
+    showToast("Ticket deleted successfully!")
   };
 
   return (

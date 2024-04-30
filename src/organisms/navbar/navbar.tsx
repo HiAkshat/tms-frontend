@@ -16,10 +16,16 @@ export default function Navbar() {
 
   return (
     <div className={styles.navbar}>
-      <div className={styles.navbarPart}>
-        <span onClick={()=>{navigate("/manageUsers")}} className={styles.navbarButton}>Manage Users</span>
-        <span onClick={()=>{navigate("/manageOrganisations")}} className={styles.navbarButton}>Manage Organisations</span>
-      </div>
+      {user.userType=="system" ? 
+        <div className={styles.navbarPart}>
+          <span onClick={()=>{navigate("/manageUsers")}} className={styles.navbarButton}>Manage Users</span>
+          <span onClick={()=>{navigate("/manageOrganisations")}} className={styles.navbarButton}>Manage Organisations</span>
+        </div>
+        :
+        <div className={styles.navbarPart}>
+          <span onClick={()=>{navigate("/viewTickets")}} className={styles.navbarButton}>View Tickets</span>
+        </div>
+      }
       <div className={styles.navbarPart}>
         <span className={styles.navbarButton}>Currently logged in as: {user.name} ({user.userType} user)</span>
         <span onClick={handleLogout} className={styles.navbarButton}>Log out</span>
