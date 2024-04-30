@@ -7,7 +7,7 @@ import { logout } from "../../redux/userSlice";
 export default function Navbar() {
   let navigate = useNavigate();
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const user = useSelector((state: any) => state.user)
 
   const handleLogout = () => {
     dispatch(logout())

@@ -15,8 +15,12 @@ export default function Login() {
   let navigate = useNavigate();
 
   const handleSendOtp = async () => {
+    let fetchLink
+    if (userType==0) fetchLink=`http://127.0.0.1:8000/api/systemUser/sendOTP/${email}`
+    else fetchLink=`http://127.0.0.1:8000/api/organisationUser/sendOTP/${email}`
+    
     try{
-      const sendOTP = await fetch(`http://127.0.0.1:8000/api/systemUser/sendOTP/${email}`, {
+      const sendOTP = await fetch(fetchLink, {
         method: "POST",
       })
       showToast(`OTP sent to ${email}`)
@@ -32,8 +36,8 @@ export default function Login() {
 
       if (userType==0) response = await fetch(`http://127.0.0.1:8000/api/systemUser/email/${email}`)
       else response = await fetch(`http://127.0.0.1:8000/api/organisationUser/email/${email}`)
+      
       const userData = await response.json();
-      console.log(userData)
       return userData
     } catch (error) {
       console.log(error)
@@ -50,16 +54,33 @@ export default function Login() {
       otp
     })
 
-    const response = await fetch(`http://127.0.0.1:8000/api/systemUser/verifyOTP`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body
-    })
+    let fetch_link
+    if (userType==0) fetch_link=`http://127.0.0.1:8000/api/systemUser/verifyOTP`
+    else fetch_link=`http://127.0.0.1:8000/api/organisationUser/verifyOTP`
+
+    let response
+    if (userType==0){
+      response = await fetch(fetch_link, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body
+      })
+    }
+
+    else {
+      response = await fetch(fetch_link, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body
+      })
+    }
     
     const otpData = await response.json()
-
+    // console.log(otpData)
     if (otpData.valid){
       const userData = await fetchUserData()
       const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, userType: userType==0 ? "System" : "Organisation" };
