@@ -1,48 +1,96 @@
-.main{
+.page{
+  font-size: 16px;
+  width: 100%;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  gap: 25px;
-  padding: 50px 50px;
-
-  .formInfo{
+  align-items: center;
+  justify-content: center;
+  
+  .loginBox{
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 40px;
+    width: fit-content;
 
-    input{
-      background: none;
-      border: none;
-      background-color: #2A2A2A;
-      color: white;
-      outline: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      max-width: 40%;
-      font-size: 20px;
+    .heading{
+      display: flex;
+      gap: 10px;
+
+      font-size: 32px;
+
+      .selected{
+        font-weight: 600;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .unselected{
+        color: #919191;
+        cursor: pointer;
+      }
     }
 
-    select{
-      background-color: #2A2A2A;
-      color: white;
-      outline: none;
-      max-width: fit-content;
-      padding: 8px 12px;
-      border-radius: 4px;
-      border: none;
-      margin-top: 8px;
+    .inputsBox{
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      width: 100%;
+
+      .inputWithB{
+        display: flex;
+        gap: 50px;
+
+        .inputs{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          input{
+            width: 100%;
+            height: 35px;
+            background-color: #2A2A2A;
+            padding: 4px 16px;
+            outline: none;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            color: white;
+          }
+        }
+
+        button{
+          height: 43px;
+          width: 100px;
+          background: none;
+          border: none;
+          color: rgb(201, 201, 201);
+          border: 2px solid rgb(128, 128, 128);
+          border-radius: 10px;
+          padding: 2px 8px;
+          font-weight: 200;
+
+          &:hover{
+            cursor: pointer;
+            background-color: #ffffff1c;
+          }
+        }
+      }
+
+      .submitButton{
+        background-color: #04BDBC;
+        padding: 8px 12px;
+        border: none;
+        color: white;
+        border-radius: 10px;
+        width: fit-content;
+        font-size: 20px;
+
+        &:hover{
+          cursor: pointer;
+          background-color: rgb(73, 196, 200);
+        }
+      }
+      }
+
     }
-
   }
-  .submitButton{
-    cursor: pointer;
-    background-color: #2A2A2A;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 2px;
-
-    color: white;
-    height: fit-content;
-    place-self: flex-start;
-    font-size: 20px;
-  }
-}

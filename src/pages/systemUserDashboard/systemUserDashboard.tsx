@@ -7,15 +7,17 @@ export default function SystemUserDashboard() {
 
   return (
     <div className={styles.page}>
-      <Navbar />
-      <div className={styles.main}>
-        <div className={styles.title}>System User Dashboard</div>
-        <div className={styles.buttons}>
-          <button onClick={() => {navigate("/manageOrganisations")}}>Manage Organisations</button>
-          <button onClick={() => {navigate("/manageUsers")}}>Manage Users</button>
+      <div className={styles.navDiv}>
+        <Navbar />
+      </div>
+      <div onClick={() => {navigate("/manageUsers")}} className={styles.choices}>
+        <div className={styles.choice}>
+          <span>Manage Users</span>
+        </div>
+        <div onClick={() => {navigate("/manageUsers")}} className={styles.choice}>
+          <span>Manage Organisations</span>
         </div>
       </div>
-      {/* <NewOrganisationForm /> */}
     </div>
   )
 }

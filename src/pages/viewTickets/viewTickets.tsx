@@ -6,7 +6,6 @@ import { getData } from "../../services/getData"
 import styles from "./index.module.scss"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
 
 export default function ViewTickets() {
   const navigate = useNavigate()

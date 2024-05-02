@@ -1,35 +1,76 @@
+// .page{
+//   display: flex;
+//   flex-direction: column;
+//   background: none;  
+
+//   .main{
+//     display: flex;
+//     flex-direction: column;
+//     padding: 50px 50px;
+//     gap: 50px;
+
+//     .buttons{
+//       display: flex;
+//       flex-direction: column;
+//       font-size: 32px;
+//       gap: 20px;
+
+//       button{
+//         cursor: pointer;
+//         width: fit-content;
+//         background: none;
+//         outline: none;
+//         color: white;
+//         border: none;
+//         font-size: 32px;
+//       }
+//     }
+//   }
+
+//   .title{
+//     font-weight: 600;
+//     font-size: 48px;
+//   }
+
+// }
+
 .page{
-  display: flex;
-  flex-direction: column;
-  background: none;  
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #191919;
 
-  .main{
+  .navDiv{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .choices{
     display: flex;
-    flex-direction: column;
-    padding: 50px 50px;
-    gap: 50px;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
 
-    .buttons{
+    .choice{
+      flex: 1;
       display: flex;
-      flex-direction: column;
-      font-size: 32px;
-      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
 
-      button{
+      span{
+        text-align: center;
+        width: min-content;
+        font-size: 64px;
+      }
+
+      &:hover{
         cursor: pointer;
-        width: fit-content;
-        background: none;
-        outline: none;
-        color: white;
-        border: none;
-        font-size: 32px;
+        background-color: #111111;
+        font-weight: 600;
       }
     }
   }
-
-  .title{
-    font-weight: 600;
-    font-size: 48px;
-  }
-
 }

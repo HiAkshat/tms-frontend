@@ -30,13 +30,13 @@ export default function TicketDetails() {
           <div className={styles.ticketDiv}>
             <span className={styles.title}>Ticket {ticket_details.data.key}</span>
             <div className={styles.rowDiv}>
-              <span>Created <span>{formattedDate(ticket_details.data.created_date)}</span></span>
-              <span>Last updated <span>{formattedDate(ticket_details.data.updated_date)}</span></span>
+              <span>Created <span>{formattedDate(ticket_details.data.createdAt)}</span></span>
+              <span>Last updated <span>{formattedDate(ticket_details.data.updatedAt)}</span></span>
               <span>Type <span>Story</span></span>
             </div>
             <div className={styles.colDiv}>
-              <span>Assignee <span>{`${ticket_details.data.assignee.first_name} ${ticket_details.data.assignee.last_name}`}</span></span>
-              <span>Reporter <span>{`${ticket_details.data.reporter.first_name} ${ticket_details.data.reporter.last_name}`}</span></span>
+              {ticket_details.data.assignee && <span>Assignee <span>{`${ticket_details.data.assignee.first_name} ${ticket_details.data.assignee.last_name}`}</span></span>}
+              {ticket_details.data.reporter && <span>Reporter <span>{`${ticket_details.data.reporter.first_name} ${ticket_details.data.reporter.last_name}`}</span></span>}
             </div>
             <div className={styles.colDiv}>
               <span>Current Status <span>{ticket_details.data.status}</span></span>

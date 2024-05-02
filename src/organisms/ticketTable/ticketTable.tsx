@@ -61,7 +61,7 @@ const TicketTable = ({ data }: any) => {
 
   const handleEdit = (entry: any) => {
     console.log('Edit entry:', entry);
-    navigate(`edit/${entry._id}`);
+    navigate(`../ticket/edit/${entry._id}`);
   };
 
   const handleView = async (entry: any) => {

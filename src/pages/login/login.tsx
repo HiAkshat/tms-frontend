@@ -21,10 +21,14 @@ export default function Login() {
     else fetchLink=`http://127.0.0.1:8000/api/organisationUser/sendOTP/${email}`
     
     try{
-      const sendOTP = await fetch(fetchLink, {
+      // setIsSendingOtp(true)
+      showToast("Sending OTP...")
+      const request = await fetch(fetchLink, {
         method: "POST",
       })
-      showToast(`OTP sent to ${email}`)
+
+      if (request.status!=200) showToast("Error sending OTP!")
+      else showToast(`OTP sent to ${email}`)
     } catch (error){
       showToast("Error sending OTP!")
       return
@@ -100,18 +104,24 @@ export default function Login() {
   }
 
   return (
-    <div className={styles.main}>
-      <div className={styles.formInfo}>
-        <span className={styles.loginTitle}>Login as</span>
-        <input onChange={(e)=>{setEmail(e.target.value)}} type="text" placeholder='Enter your email' />
-        <select id="userType" value={userType} onChange={handleSelectChange}>
-          <option value={0}>System User</option>
-          <option value={1}>Organization User</option>
-        </select>
-        <button className={styles.submitButton} onClick={handleSendOtp}>Send OTP</button>
-        <input onChange={(e)=>{setOtp(e.target.value)}} type="text" placeholder='Enter received OTP on mail' />
+    <div className={styles.page}>
+      <div className={styles.loginBox}>
+        <div className={styles.heading}>
+          <span>Login as</span>
+          <span onClick={()=>{setUserType(0)}} className={userType==0 ? styles.selected : styles.unselected}>System User</span>
+          <span onClick={()=>{setUserType(1)}} className={userType==1 ? styles.selected : styles.unselected}>Organisation User</span>
+        </div>
+        <div className={styles.inputsBox}>
+            <div className={styles.inputWithB}>
+              <div className={styles.inputs}>
+                <input type="text" onChange={(e)=>{setEmail(e.target.value)}} placeholder='Enter your email' />
+                <input onChange={(e)=>{setOtp(e.target.value)}} type="text" placeholder='Enter your 6-digit OTP' />
+              </div>
+              <button onClick={handleSendOtp}>Send OTP</button>
+            </div>
+          <button type={"submit"} onClick={handleUserLogin} title={"Submit"} className={styles.submitButton}>Submit</button>
+        </div>
       </div>
-      <SubmitButton type={"submit"} onClick={handleUserLogin} title={"Submit"} />
     </div>
   )
 }

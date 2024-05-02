@@ -50,6 +50,7 @@ export default function NewOrganisationForm() {
       return
     }
 
+    setSelectedOrganisation("")
     setOrganisationUser({
       email_id: '',
       first_name: '',
