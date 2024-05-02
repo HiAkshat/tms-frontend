@@ -10,11 +10,11 @@ export default function SystemUserDashboard() {
       <div className={styles.navDiv}>
         <Navbar />
       </div>
-      <div onClick={() => {navigate("/manageUsers")}} className={styles.choices}>
-        <div className={styles.choice}>
+      <div className={styles.choices}>
+        <div onClick={() => {navigate("/manageUsers")}} className={styles.choice}>
           <span>Manage Users</span>
         </div>
-        <div onClick={() => {navigate("/manageUsers")}} className={styles.choice}>
+        <div onClick={() => {navigate("/manageOrganisations")}} className={styles.choice}>
           <span>Manage Organisations</span>
         </div>
       </div>

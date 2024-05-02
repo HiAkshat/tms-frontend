@@ -7,9 +7,34 @@
 
 .navbarPart{
   display: flex;
-  gap: 25px;
+  align-items: center;
+  gap: 15px;
+
+  .user{
+    display: flex;
+    flex-direction: column;
+    line-height: 16px;
+  }
+
+  .type{
+    font-size: 12px;
+    font-weight: 200;
+    font-variation-settings: "slnt" 10;
+    font-variation-settings: "ital" -10, "opsz" 20;
+
+  }
 }
 
 .navbarButton{
   cursor: pointer;
+}
+
+.logout{
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+  
+  &:hover{
+    cursor: pointer;
+  }
 }

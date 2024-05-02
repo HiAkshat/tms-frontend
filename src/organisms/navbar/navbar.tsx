@@ -14,6 +14,10 @@ export default function Navbar() {
     navigate("/login")
   }
 
+  function titleCase(word: string) {
+    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+ }
+
   return (
     <div className={styles.navbar}>
       {user.userType=="system" ? 
@@ -27,8 +31,11 @@ export default function Navbar() {
         </div>
       }
       <div className={styles.navbarPart}>
-        <span className={styles.navbarButton}>Currently logged in as: {user.name} ({user.userType} user)</span>
-        <span onClick={handleLogout} className={styles.navbarButton}>Log out</span>
+        <div className={styles.user}>
+          <span className={styles.name}>{user.name}</span>
+          <span className={styles.type}>{titleCase(user.userType)} User</span>
+        </div>
+        <img title="logout" onClick={handleLogout} className={styles.logout} src="./logout-128.png" alt="" />
       </div>
     </div>
   )
