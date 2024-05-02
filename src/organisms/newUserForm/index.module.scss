@@ -1,66 +1,188 @@
+// .main{
+//   display: flex;
+//   flex-direction: column;
+//   gap: 25px;
+
+//   .title{
+//     font-size: 32px;
+//     font-weight: 400;
+//   }
+
+//   form{
+//     .fieldsDiv{
+//       display: flex;
+//       flex-direction: column;
+//       flex-wrap: wrap;
+//       height: 200px;
+//       gap: 25px;
+      
+//       .fieldInfo{
+//         display: flex;
+//         flex-direction: column;
+//         gap: 8px;
+
+//         input{
+//           background: none;
+//           border: none;
+//           background-color: #2A2A2A;
+//           color: white;
+//           outline: none;
+//           padding: 4px 8px;
+//           font-size: 20px;
+//           height: 30px;
+//           border-radius: 8px;
+//         }
+//       }
+
+//       select{
+//         background-color: #2A2A2A;
+//         color: white;
+//         outline: none;
+//         max-width: fit-content;
+//         padding: 4px 8px;
+//         border-radius: 4px;
+//         border: none;
+//         margin-top: 8px;
+//         height: 100%;
+//         font-size: 20px;
+
+//       }
+
+//     }
+
+//     .addButton{
+//       cursor: pointer;
+//       background-color: #2A2A2A;
+//       padding: 8px 12px;
+//       border: none;
+//       border-radius: 2px;
+
+//       color: white;
+//       height: fit-content;
+//       place-self: flex-end;
+//       font-size: 20px;
+//     }
+//   }
+// }
+// .main{
+//   display: flex;
+//   flex-direction: column;
+//   gap: 25px;
+
+//   .title{
+//     font-size: 32px;
+//     font-weight: 400;
+//   }
+
+//   form{
+//     display: flex;
+//     gap: 25px;
+
+//     .fieldInfo{
+//       display: flex;
+//       flex-direction: column;
+//       gap: 8px;
+
+//       input{
+//         background: none;
+//         border: none;
+//         background-color: #2A2A2A;
+//         color: white;
+//         outline: none;
+//         padding: 4px 8px;
+//         font-size: 20px;
+//       }
+//     }
+
+//     .addButton{
+//       cursor: pointer;
+//       background-color: #2A2A2A;
+//       padding: 8px 12px;
+//       border: none;
+//       border-radius: 2px;
+
+//       color: white;
+//       height: fit-content;
+//       place-self: flex-end;
+//       font-size: 20px;
+//     }
+//   }
+// }
+
 .main{
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 
-  .title{
-    font-size: 32px;
-    font-weight: 400;
-  }
-
-  form{
-    .fieldsDiv{
+  .theForm{
+    
+    display: flex;
+    background-color: #1C1C1C;
+    gap: 16px;
+    width: fit-content;
+    padding: 16px;
+    border-radius: 10px;
+    
+    .inputs{
       display: flex;
       flex-direction: column;
-      flex-wrap: wrap;
-      height: 200px;
-      gap: 25px;
+      gap: 8px;
+      justify-content: space-between;
       
-      .fieldInfo{
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-
-        input{
-          background: none;
-          border: none;
-          background-color: #2A2A2A;
-          color: white;
-          outline: none;
-          padding: 4px 8px;
-          font-size: 20px;
-          height: 30px;
-          border-radius: 8px;
-        }
+      input{
+        width: 300px;
+        color: white;
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background-color: #2A2A2A;
       }
 
       select{
-        background-color: #2A2A2A;
+        width: 300px;
+        height: 46.5%;
         color: white;
-        outline: none;
-        max-width: fit-content;
-        padding: 4px 8px;
-        border-radius: 4px;
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 10px;
         border: none;
-        margin-top: 8px;
-        height: 100%;
-        font-size: 20px;
-
+        outline: none;
+        background-color: #2A2A2A;
       }
 
+      .date[type="date"]:before{
+        color:lightgray;
+        content:attr(placeholder);
+    }
+    
+      .date[type="date"].full:before {
+          color:black;
+          content:""!important;
+      }
+
+      .date{
+        color: #757575;
+        color-scheme: dark;
+
+      }
     }
 
-    .addButton{
-      cursor: pointer;
-      background-color: #2A2A2A;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 2px;
-
-      color: white;
+    button{
+      font-size: 16px;
+      border-radius: 10px;
       height: fit-content;
-      place-self: flex-end;
-      font-size: 20px;
+      align-self: flex-end;
+      padding: 8px 12px;
+      background-color: #2A2A2A;
+      border: none;
+      color: white;
+
+      &:hover{
+        background-color: #383838;
+        cursor: pointer;
+      }
     }
   }
 }

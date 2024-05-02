@@ -1,44 +1,48 @@
 .main{
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 
-  .title{
-    font-size: 32px;
-    font-weight: 400;
-  }
-
-  form{
+  .theForm{
+    
     display: flex;
-    gap: 25px;
-
-    .fieldInfo{
+    background-color: #1C1C1C;
+    gap: 10px;
+    width: fit-content;
+    padding: 16px;
+    border-radius: 10px;
+    
+    .inputs{
       display: flex;
       flex-direction: column;
       gap: 8px;
-
+      
       input{
-        background: none;
-        border: none;
-        background-color: #2A2A2A;
         color: white;
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: none;
         outline: none;
-        padding: 4px 8px;
-        font-size: 20px;
+        background-color: #2A2A2A;
       }
     }
 
-    .addButton{
-      cursor: pointer;
-      background-color: #2A2A2A;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 2px;
+    button{
+      font-size: 16px;
 
-      color: white;
+      border-radius: 10px;
       height: fit-content;
-      place-self: flex-end;
-      font-size: 20px;
+      align-self: flex-end;
+      padding: 8px 12px;
+      background-color: #2A2A2A;
+      border: none;
+      color: white;
+      
+        &:hover{
+          background-color: #383838;
+          cursor: pointer;
+        }
     }
   }
 }

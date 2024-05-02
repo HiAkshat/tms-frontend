@@ -8,7 +8,7 @@
 .navbarPart{
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 
   .user{
     display: flex;
@@ -26,7 +26,13 @@
 }
 
 .navbarButton{
-  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 10px;
+  
+  &:hover{
+    background-color: rgb(217,217,217,0.1);
+    cursor: pointer;
+  }
 }
 
 .logout{
