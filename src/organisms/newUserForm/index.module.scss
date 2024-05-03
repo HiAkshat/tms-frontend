@@ -138,6 +138,10 @@
         border: none;
         outline: none;
         background-color: #2A2A2A;
+
+        &:focus{
+          background-color: #383838;
+        }
       }
 
       select{
@@ -150,6 +154,10 @@
         border: none;
         outline: none;
         background-color: #2A2A2A;
+
+        &:focus{
+          background-color: #383838;
+        }
       }
 
       .date[type="date"]:before{

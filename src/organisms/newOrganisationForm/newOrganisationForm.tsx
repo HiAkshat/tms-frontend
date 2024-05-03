@@ -46,33 +46,6 @@ export default function NewOrganisationForm() {
   };
 
   return (
-    // <div className={styles.main}>
-    //   <span className={styles.title}>Add New Organisation</span>
-    //   <form onSubmit={handleSubmit}>
-    //     <div className={styles.fieldInfo}>
-    //       <label className={styles.fieldTitle}>Organisation Name</label>
-    //       <input
-    //         type="text"
-    //         name="organisation_name"
-    //         value={organisation.organisation_name}
-    //         onChange={handleChange}
-    //         required
-    //       />
-    //     </div>
-    //     <div className={styles.fieldInfo}>
-    //       <label className={styles.fieldTitle}>Display Name</label>
-    //       <input
-    //         type="text"
-    //         name="display_name"
-    //         value={organisation.display_name}
-    //         onChange={handleChange}
-    //         required
-    //       />
-    //     </div>
-    //     <button className={styles.addButton} type="submit">Add</button>
-    //   </form>
-    // </div>
-
     <div className={styles.main}>
       <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>

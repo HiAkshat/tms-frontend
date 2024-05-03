@@ -44,7 +44,6 @@ export default function NewOrganisationForm() {
       },
       body: JSON.stringify(organisationUser)
     })
-    console.log('hhh')
 
     if (!res.ok){
       showToast("Error adding organisation user!")
