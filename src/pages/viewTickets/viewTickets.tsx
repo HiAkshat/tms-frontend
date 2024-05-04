@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import showToast from "../../atoms/toast"
 import Navbar from "../../organisms/navbar/navbar"
 import NewTicketForm from "../../organisms/newTicketForm/newTicketForm"
@@ -13,22 +14,24 @@ export default function ViewTickets() {
 
   const tickets = getData(`http://localhost:8000/api/ticket/organisation/${user.organisation_id}`)
 
-  if (user.isAuthenticated && user.userType=='organisation'){
-    return (
-      <div className={styles.page}>
-        <Navbar />
-        <div className={styles.main}>
-          <NewTicketForm />
-          <div className={styles.tableDiv}>
-            <span>Tickets</span>
-            {!tickets.isLoading && <TicketTable data={tickets.data}/>}
-          </div>
+  useEffect(()=>{
+    if (!(user.isAuthenticated && user.userType=='organisation')){
+      showToast("Login as organisation user to access!")
+      console.log("HEY")
+      navigate("../login")
+    }
+  })
+
+  return (
+    <div className={styles.page}>
+      <Navbar />
+      <div className={styles.main}>
+        <NewTicketForm />
+        <div className={styles.tableDiv}>
+          <span>Tickets</span>
+          {!tickets.isLoading && <TicketTable data={tickets.data}/>}
         </div>
       </div>
-    )
-  }
-  else{
-    showToast("Login as organisation user to access!")
-    navigate("../login")
-  }
+    </div>
+  )
 }
