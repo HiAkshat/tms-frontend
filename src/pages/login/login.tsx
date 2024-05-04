@@ -20,7 +20,7 @@ export default function Login() {
   useEffect(()=>{
     const verifyToken = async (accessToken: string) => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/verifyToken/`, {
+        const res = await fetch(`http://127.0.0.1:8000/api/verifyToken/`, {
           method: "POST",
           headers: {
             "authorization": `BEARER ${accessToken}`
@@ -29,13 +29,15 @@ export default function Login() {
         
         let userData = await res.json()
         userData=userData.user
-        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation, userType: "organisation", isAuthenticated: true };
+        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
+        console.log(userDetails)
         dispatch(
           login(userDetails)
         )
 
-        console.log("HEY")
-        navigate("../viewTickets")
+        if (userDetails.userType=="system") navigate("../systemDashboard")
+        else navigate("../viewTickets")
+
       } catch (error) {
         console.log("Session expired!")
       }
