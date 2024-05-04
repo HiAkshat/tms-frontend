@@ -3,6 +3,10 @@
   flex-direction: column;
   gap: 20px;
 
+  .title{
+    font-family: "Ubuntu Sans Mono", monospace;
+  }
+
   .theForm{
     
     display: flex;

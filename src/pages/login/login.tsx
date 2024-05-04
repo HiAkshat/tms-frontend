@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/userSlice';
 import { useNavigate } from "react-router-dom";
 
 import styles from "./index.module.scss"
 import showToast from '../../atoms/toast';
-import SubmitButton from '../../atoms/submitButton/submitButton';
+// import SubmitButton from '../../atoms/submitButton/submitButton';
+
+import Cookie from 'js-cookie';
 
 export default function Login() {
   const [userType, setUserType] = useState(0)
@@ -15,13 +17,42 @@ export default function Login() {
   const dispatch = useDispatch()
   let navigate = useNavigate();
 
+  useEffect(()=>{
+    const verifyToken = async (accessToken: string) => {
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/api/verifyToken/`, {
+          method: "POST",
+          headers: {
+            "authorization": `BEARER ${accessToken}`
+          }
+        })
+        
+        let userData = await res.json()
+        userData=userData.user
+        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
+        console.log(userDetails)
+        dispatch(
+          login(userDetails)
+        )
+
+        if (userDetails.userType=="system") navigate("../systemDashboard")
+        else navigate("../viewTickets")
+
+      } catch (error) {
+        console.log("Session expired!")
+      }
+    }
+  
+    const accessToken = Cookie.get("accessToken") ?? ""
+    verifyToken(accessToken)
+  }, [])
+
   const handleSendOtp = async () => {
     let fetchLink
     if (userType==0) fetchLink=`http://127.0.0.1:8000/api/systemUser/sendOTP/${email}`
     else fetchLink=`http://127.0.0.1:8000/api/organisationUser/sendOTP/${email}`
     
     try{
-      // setIsSendingOtp(true)
       showToast("Sending OTP...")
       const request = await fetch(fetchLink, {
         method: "POST",
@@ -48,10 +79,6 @@ export default function Login() {
       console.log(error)
     }
   }
-
-  const handleSelectChange = async (e: { target: { value: string; }; }) => {
-    setUserType(parseInt(e.target.value));
-  };
 
   const handleUserLogin = async (e: React.SyntheticEvent) => {
     const body = JSON.stringify({
@@ -86,9 +113,11 @@ export default function Login() {
     }
     
     const otpData = await response.json()
+    Cookie.set("accessToken", otpData.accessToken)
+
     if (otpData.valid){
-      const userData = await fetchUserData()
-      const userDetails = { name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userType==0 ? '' : userData.organisation, userType: userType==0 ? "system" : "organisation" };
+      const userData = await fetchUserData()      
+      const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userType==0 ? '' : userData.organisation, userType: userType==0 ? "system" : "organisation" };
       dispatch(
         login(userDetails)
       )

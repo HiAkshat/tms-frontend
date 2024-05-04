@@ -72,50 +72,6 @@ export default function NewOrganisationForm() {
   };
 
   return (
-    // <div className={styles.main}>
-    //   <span className={styles.title}>Add New User</span>
-    //   <form onSubmit={handleSubmit}>
-    //     <div className={styles.fieldsDiv}>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle}>Email ID</label>
-    //         <input type="text" name="email_id" value={organisationUser.email_id} onChange={handleChange} required
-    //         />
-    //       </div>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle}>First Name</label>
-    //         <input type="text" name="first_name" value={organisationUser.first_name} onChange={handleChange} required
-    //         />
-    //       </div>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle}>Last Name</label>
-    //         <input type="text" name="last_name" value={organisationUser.last_name} onChange={handleChange} required
-    //         />
-    //       </div>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle}>DOB</label>
-    //         <input type="date" name="dob" value={organisationUser.dob} onChange={handleChange} required
-    //         />
-    //       </div>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle}>Joining Date</label>
-    //         <input type="date" name="joining_date" value={organisationUser.joining_date} onChange={handleChange} required
-    //         />
-    //       </div>
-    //       {!organisations.isLoading &&
-    //         <div className={styles.fieldInfo}>
-    //           <label className={styles.fieldTitle}>Select Organisation</label>
-    //           <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
-    //             <option value="">Select an organisation</option>
-                // {organisations.data.map((org) => (
-                //   <option key={org._id} value={org._id}>{org.organisation_name}</option>
-                // ))}
-    //           </select>
-    //         </div>
-    //       }
-    //     </div>
-    //     <button className={styles.addButton} type="submit">Add</button>
-    //   </form>
-    // </div>
     <div className={styles.main}>
       <span className={styles.title}>Add New User</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>

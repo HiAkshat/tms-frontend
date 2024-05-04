@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux"
 import { useDispatch } from 'react-redux';
 import { logout } from "../../redux/userSlice";
+import Cookie from "js-cookie"
 
 export default function Navbar() {
   let navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function Navbar() {
   const user = useSelector((state: any) => state.user)
 
   const handleLogout = () => {
+    Cookie.remove("accessToken")
     dispatch(logout())
     navigate("/login")
   }
@@ -35,7 +37,7 @@ export default function Navbar() {
           <span className={styles.name}>{user.name}</span>
           <span className={styles.type}>{titleCase(user.userType)} User</span>
         </div>
-        <img title="logout" onClick={handleLogout} className={styles.logout} src="./logout-128.png" alt="" />
+        <img title="logout" onClick={handleLogout} className={styles.logout} src="/logout-128.png" alt="" />
       </div>
     </div>
   )
