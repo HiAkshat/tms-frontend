@@ -1,9 +1,20 @@
 import styles from "./index.module.scss"
 import Navbar from "../../organisms/navbar/navbar"
 import { useNavigate } from "react-router-dom"
+import { useEffect } from "react";
+import showToast from "../../atoms/toast/toast";
+import { useSelector } from "react-redux"
 
 export default function SystemUserDashboard() {
   let navigate = useNavigate();
+  const user = useSelector((state: any) => state.user)
+
+  useEffect(()=>{
+    if (!(user.isAuthenticated && user.userType=='system')){
+      showToast("Login as system user to access!")
+      navigate("../login")
+    }
+  })
 
   return (
     <div className={styles.page}>

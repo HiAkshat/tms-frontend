@@ -17,7 +17,6 @@ export default function ViewTickets() {
   useEffect(()=>{
     if (!(user.isAuthenticated && user.userType=='organisation')){
       showToast("Login as organisation user to access!")
-      console.log("HEY")
       navigate("../login")
     }
   })
