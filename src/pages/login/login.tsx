@@ -4,7 +4,7 @@ import { login } from '../../redux/userSlice';
 import { useNavigate } from "react-router-dom";
 
 import styles from "./index.module.scss"
-import showToast from '../../atoms/toast';
+import showToast from '../../atoms/toast/toast';
 // import SubmitButton from '../../atoms/submitButton/submitButton';
 
 import Cookie from 'js-cookie';
@@ -28,9 +28,8 @@ export default function Login() {
         })
         
         let userData = await res.json()
-        userData=userData.user
+        userData=userData.decoded.user
         const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
-        console.log(userDetails)
         dispatch(
           login(userDetails)
         )
@@ -40,6 +39,7 @@ export default function Login() {
 
       } catch (error) {
         console.log("Session expired!")
+        return error
       }
     }
   

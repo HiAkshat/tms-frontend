@@ -4,7 +4,7 @@ import { getData } from "../../services/getData"
 import { useSelector } from "react-redux"
 import styles from "./index.module.scss"
 import TicketDetails from "../../pages/ticketDetails/ticketDetails"
-import showToast from "../../atoms/toast"
+import showToast from "../../atoms/toast/toast"
 import { useNavigate } from "react-router-dom"
 
 interface Ticket {

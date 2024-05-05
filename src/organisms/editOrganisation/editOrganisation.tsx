@@ -2,7 +2,7 @@ import styles from "./index.module.scss"
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import showToast from "../../atoms/toast";
+import showToast from "../../atoms/toast/toast";
 
 interface Organisation {
   organisation_name: string;

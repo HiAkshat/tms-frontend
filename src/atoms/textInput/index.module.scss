@@ -1,0 +1,18 @@
+.textInput{
+  width: 300px;
+  color: white;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #2A2A2A;
+
+  &:focus{
+    background-color: #383838;
+  }
+}
+
+// .textInput[fullWidth=true]{
+//   width: inherit;
+// }

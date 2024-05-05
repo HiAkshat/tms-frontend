@@ -1,0 +1,26 @@
+.date[type="date"]:before{
+  color:#757575;
+  content:attr(placeholder);
+}
+
+.date[type="date"].full:before {
+    color:black;
+    content:""!important;
+}
+
+.date[type="date"]{
+  width: 300px;
+  color: white;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #2A2A2A;
+
+  color-scheme: dark;
+
+  &:focus{
+    background-color: #383838;
+  }
+}

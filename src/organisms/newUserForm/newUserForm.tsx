@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
 import styles from "./index.module.scss"
 import { getData } from "../../services/getData";
-import showToast from "../../atoms/toast";
+import showToast from "../../atoms/toast/toast";
+import TextInput from "../../atoms/textInput/textInput";
+import DateInput from "../../atoms/dateInput/dateInput";
 
 interface OrganisationUser {
   email_id: string;
@@ -76,13 +78,13 @@ export default function NewOrganisationForm() {
       <span className={styles.title}>Add New User</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <input placeholder="E-mail ID" type="text" name="email_id" value={organisationUser.email_id} onChange={handleChange} required/>
-          <input placeholder="First Name" type="text" name="first_name" value={organisationUser.first_name} onChange={handleChange} required/>
-          <input placeholder="Last Name" type="text" name="last_name" value={organisationUser.last_name} onChange={handleChange} required/>
+          <TextInput placeholder="E-mail ID" name="email_id" value={organisationUser.email_id} onChange={handleChange} required={true} />
+          <TextInput placeholder="First Name" name="first_name" value={organisationUser.first_name} onChange={handleChange} required={true} />
+          <TextInput placeholder="Last Name" name="last_name" value={organisationUser.last_name} onChange={handleChange} required={true} />
         </div>
         <div className={styles.inputs}>
-          <input className={styles.date} name="dob" value={organisationUser.dob} onChange={handleChange} placeholder="DOB" type="date" required/>
-          <input className={styles.date} name="joining_date" value={organisationUser.joining_date} onChange={handleChange} placeholder="Joining Date" type="date" required/>
+          <DateInput name="dob" value={organisationUser.dob} onChange={handleChange} placeholder="DOB" required={true} />
+          <DateInput name="joining_date" value={organisationUser.joining_date} onChange={handleChange} placeholder="Joining Date" required={true} />
         </div>
         <div className={styles.inputs}>
           {!organisations.isLoading &&

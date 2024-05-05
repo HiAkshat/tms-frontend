@@ -3,7 +3,7 @@ import NewOrganisationForm from "../../organisms/newOrganisationForm/newOrganisa
 import Navbar from "../../organisms/navbar/navbar"
 import OrganisationTable from "../../organisms/organisationTable/organisationTable"
 import { getData } from "../../services/getData"
-import showToast from "../../atoms/toast"
+import showToast from "../../atoms/toast/toast"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 

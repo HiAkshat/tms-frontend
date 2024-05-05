@@ -1,6 +1,7 @@
 import { useState } from "react"
 import styles from "./index.module.scss"
-import showToast from "../../atoms/toast";
+import showToast from "../../atoms/toast/toast";
+import TextInput from "../../atoms/textInput/textInput";
 
 interface Organisation {
   organisation_name: string;
@@ -23,7 +24,7 @@ export default function NewOrganisationForm() {
       },
       body: JSON.stringify(organisation)
     })
-    console.log(res)
+
     if (!res.ok){
       showToast("Error adding organisation!")
       return
@@ -50,8 +51,8 @@ export default function NewOrganisationForm() {
       <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <input type="text" name="organisation_name" value={organisation.organisation_name} onChange={handleChange} placeholder="Organisation Name" />
-          <input type="text" name="display_name" value={organisation.display_name} onChange={handleChange} placeholder="Display Name"/>
+          <TextInput name="organisation_name" value={organisation.organisation_name} onChange={handleChange} placeholder="Organisation Name" required={true} />
+          <TextInput name="display_name" value={organisation.display_name} onChange={handleChange} placeholder="Display Name" required={true} />
         </div>
         <button type="submit">Add</button>
       </form>

@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import showToast from "../../atoms/toast"
+import showToast from "../../atoms/toast/toast"
 import Navbar from "../../organisms/navbar/navbar"
 import NewTicketForm from "../../organisms/newTicketForm/newTicketForm"
 import TicketTable from "../../organisms/ticketTable/ticketTable"

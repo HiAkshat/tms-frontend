@@ -4,7 +4,7 @@ import UserTable from "../../organisms/userTable/userTable"
 import styles from "./index.module.scss"
 import { getData } from "../../services/getData";
 import { useSelector } from "react-redux"
-import showToast from "../../atoms/toast";
+import showToast from "../../atoms/toast/toast";
 import { useNavigate } from "react-router-dom";
 
 export default function ManageUsers() {

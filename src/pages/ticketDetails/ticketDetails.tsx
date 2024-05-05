@@ -4,7 +4,7 @@ import Navbar from "../../organisms/navbar/navbar"
 import styles from "./index.module.scss"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import showToast from "../../atoms/toast"
+import showToast from "../../atoms/toast/toast"
 
 export default function TicketDetails() {
   const {id} = useParams()

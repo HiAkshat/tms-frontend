@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import styles from "./index.module.scss"
 import { useParams } from 'react-router-dom'
-import showToast from "../../atoms/toast";
+import showToast from "../../atoms/toast/toast";
 
 interface OrganisationUser {
   email_id: string;
