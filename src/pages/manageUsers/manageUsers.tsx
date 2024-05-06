@@ -7,6 +7,7 @@ import { useSelector } from "react-redux"
 import showToast from "../../atoms/Toast/Toast";
 import { useNavigate } from "react-router-dom";
 import Popup from "../../atoms/popup/popup";
+import RsuiteTable from "../../organisms/RsuiteTableUser/RsuiteTableUser";
 
 export default function ManageUsers() {
   const navigate = useNavigate()
@@ -26,7 +27,8 @@ export default function ManageUsers() {
           <NewUserForm />
           <div className={styles.tableDiv}>
             <span>Users Table</span>
-            {!users.isLoading && <UserTable data={users.data}/>}
+            {!users.isLoading && <RsuiteTable data={users.data}/>}
+            {/* {!users.isLoading && <UserTable data={users.data}/>} */}
           </div>
         </div>
       </div>

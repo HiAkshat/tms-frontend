@@ -1,15 +1,9 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import styles from "./NewUserForm.module.scss"
 import { getData } from "../../services/getData";
 import showToast from "../../atoms/Toast/Toast";
-import TextInput from "../../atoms/TextInput/TextInput";
-import DateInput from "../../atoms/DateInput/DateInput";
 
-import { Form, ButtonToolbar, Button, Input } from 'rsuite';
-import React from "react";
-
-// const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
-
+import { DatePicker, Button, Input, SelectPicker } from 'rsuite';
 
 interface OrganisationUser {
   email_id: string;
@@ -31,20 +25,10 @@ export default function NewOrganisationForm() {
   })
 
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
-  const [selectedOrganisation, setSelectedOrganisation] = useState('');
 
-  const handleSelectChange = (e: any) => {
-    setSelectedOrganisation(e.target.value);
-    const { name, value } = e.target;
-    setOrganisationUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    console.log(organisationUser)
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
+
     const res = await fetch("http://127.0.0.1:8000/api/organisationUser", {
       method: "POST",
       headers: {
@@ -58,7 +42,6 @@ export default function NewOrganisationForm() {
       return
     }
 
-    setSelectedOrganisation("")
     setOrganisationUser({
       email_id: '',
       first_name: '',
@@ -71,38 +54,24 @@ export default function NewOrganisationForm() {
     showToast("User added successfully!")
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const sampleObj = {
-      ...organisationUser,
-      [name]: value,
-    }
-    setOrganisationUser(sampleObj);
-  };
-
   return (
     <div className={styles.main}>
       <span className={styles.title}>Add New User</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <TextInput placeholder="E-mail ID" name="email_id" value={organisationUser.email_id} onChange={handleChange} required={true} />
-          <TextInput placeholder="First Name" name="first_name" value={organisationUser.first_name} onChange={handleChange} required={true} />
-          <TextInput placeholder="Last Name" name="last_name" value={organisationUser.last_name} onChange={handleChange} required={true} />
+          <Input placeholder="E-mail ID" value={organisationUser.email_id} onChange={(val: string)=>setOrganisationUser({...organisationUser, email_id: val})} required={true}/>
+          <Input placeholder="First Name" value={organisationUser.first_name} onChange={(val: string)=>setOrganisationUser({...organisationUser, first_name: val})} required={true}/>
+          <Input placeholder="Last Name" value={organisationUser.last_name} onChange={(val: string)=>setOrganisationUser({...organisationUser, last_name: val})}required={true}/>
         </div>
         <div className={styles.inputs}>
-          <DateInput name="dob" value={organisationUser.dob} onChange={handleChange} placeholder="DOB" required={true} />
-          <DateInput name="joining_date" value={organisationUser.joining_date} onChange={handleChange} placeholder="Joining Date" required={true} />
-        </div>
-        <div className={styles.inputs}>
+          <DatePicker name="dob" value={organisationUser.dob} onChange={(val: string)=>{setOrganisationUser({...organisationUser, dob: val})}} placeholder="DOB" required={true}/>
+          <DatePicker name="joining_date" value={organisationUser.joining_date} onChange={(val: string)=>{setOrganisationUser({...organisationUser, joining_date: val})}} placeholder="Joining Date" required={true}/>
           {!organisations.isLoading &&
-            <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
-            <option value="">Select an organisation</option>
-            {organisations.data.map((org: any) => (
-              <option key={org._id} value={org._id}>{org.organisation_name}</option>
-            ))}
-            </select>
+            <SelectPicker data={organisations.data.map(org => ({label: org.organisation_name, value: org._id}))} onChange={(val: any)=>{setOrganisationUser({...organisationUser, organisation: val})}} value={organisationUser.organisation}/>
           }
-          <Button type="submit">Add</Button>
+        </div>
+        <div className={styles.inputs}>
+          <Button onClick={handleSubmit} type="submit">Add</Button>
         </div>
       </form>
     </div>

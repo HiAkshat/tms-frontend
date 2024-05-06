@@ -1,12 +1,24 @@
 import { useState } from "react"
 import styles from "./NewOrganisationForm.module.scss"
 import showToast from "../../atoms/Toast/Toast";
-import TextInput from "../../atoms/TextInput/TextInput";
+
+import { Input, Button, Schema } from 'rsuite';
+import { StringType } from 'schema-typed';
+
+const model = Schema.Model({
+  organisation_name: StringType().isRequired("This field is required!"),
+  display_name: StringType().isRequired("This field is required!")
+  // email: StringType().isEmail().isRequired(),
+  // age: NumberType().range(18, 30),
+  // password: StringType().isRequired().proxy(['confirmPassword']),
+  // confirmPassword: StringType().equalTo('password')
+});
 
 interface Organisation {
   organisation_name: string;
   display_name: string;
 }
+
 
 export default function NewOrganisationForm() {
   const [organisation, setOrganisation] = useState<Organisation>({
@@ -14,7 +26,7 @@ export default function NewOrganisationForm() {
     display_name: '',
   })
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     const res = await fetch("http://127.0.0.1:8000/api/organisation", {
@@ -38,23 +50,29 @@ export default function NewOrganisationForm() {
     showToast("Organisation added successfully!")
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleOrgNameChange = (e: string) => {
     setOrganisation((prevState) => ({
       ...prevState,
-      [name]: value,
+      organisation_name: e,
     }));
   };
+
+  const handleDisplayNameChange = (e: string) => {
+    setOrganisation((prevState) => ({
+      ...prevState,
+      display_name: e,
+    }));
+  }
 
   return (
     <div className={styles.main}>
       <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <TextInput name="organisation_name" value={organisation.organisation_name} onChange={handleChange} placeholder="Organisation Name" required={true} />
-          <TextInput name="display_name" value={organisation.display_name} onChange={handleChange} placeholder="Display Name" required={true} />
+          <Input placeholder="Organisation Name" value={organisation.organisation_name} onChange={handleOrgNameChange} required={true}/>
+          <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
         </div>
-        <button type="submit">Add</button>
+        <Button onClick={handleSubmit} type="submit">Add</Button>
       </form>
     </div>
   );

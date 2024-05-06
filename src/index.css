@@ -36,3 +36,7 @@ body{
 .rs-theme-dark{
   --rs-body: blue;
 }
+
+.rs-table-cell{
+  background-color: #1c1c1c;
+}

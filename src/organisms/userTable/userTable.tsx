@@ -25,7 +25,7 @@ const UserTable = ({ data }: any) => {
         Header: 'DOB',
         accessor: 'dob',
         Cell: ({ value }: any) => {
-          const formattedDate = new Date(value).toLocaleDateString();
+          const formattedDate = new Date(value).toDateString();
           return formattedDate;
         },
       },
