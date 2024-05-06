@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../redux/userSlice';
 import { useNavigate } from "react-router-dom";
 
-import styles from "./index.module.scss"
-import showToast from '../../atoms/toast/toast';
+import styles from "./Login.module.scss"
+import showToast from '../../atoms/Toast/Toast';
 // import SubmitButton from '../../atoms/submitButton/submitButton';
 
 import Cookie from 'js-cookie';

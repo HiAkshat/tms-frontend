@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
-import styles from "./index.module.scss"
+import styles from "./NewUserForm.module.scss"
 import { getData } from "../../services/getData";
-import showToast from "../../atoms/toast/toast";
-import TextInput from "../../atoms/textInput/textInput";
-import DateInput from "../../atoms/dateInput/dateInput";
+import showToast from "../../atoms/Toast/Toast";
+import TextInput from "../../atoms/TextInput/TextInput";
+import DateInput from "../../atoms/DateInput/DateInput";
 
 import { Form, ButtonToolbar, Button, Input } from 'rsuite';
 import React from "react";
@@ -73,10 +73,11 @@ export default function NewOrganisationForm() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setOrganisationUser((prevState) => ({
-      ...prevState,
+    const sampleObj = {
+      ...organisationUser,
       [name]: value,
-    }));
+    }
+    setOrganisationUser(sampleObj);
   };
 
   return (

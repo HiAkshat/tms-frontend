@@ -1,10 +1,10 @@
 import { FormEvent, useState, useEffect } from 'react';
 import { getData } from '../../services/getData';
-import showToast from '../../atoms/toast/toast';
+import showToast from '../../atoms/Toast/Toast';
 import { useSelector } from 'react-redux';
-import styles from "./index.module.scss"
-import TextInput from '../../atoms/textInput/textInput';
-import DateInput from '../../atoms/dateInput/dateInput';
+import styles from "./NewTicketForm.module.scss"
+
+import DateInput from '../../atoms/DateInput/DateInput';
 
 function NewTicketForm() {
   const [assignee, setAssignee] = useState<string>('');

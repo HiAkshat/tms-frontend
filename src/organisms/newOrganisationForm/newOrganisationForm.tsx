@@ -1,7 +1,7 @@
 import { useState } from "react"
-import styles from "./index.module.scss"
-import showToast from "../../atoms/toast/toast";
-import TextInput from "../../atoms/textInput/textInput";
+import styles from "./NewOrganisationForm.module.scss"
+import showToast from "../../atoms/Toast/Toast";
+import TextInput from "../../atoms/TextInput/TextInput";
 
 interface Organisation {
   organisation_name: string;

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
-import styles from "./index.module.scss"
+import styles from "./EditUser.module.scss"
 import { useParams } from 'react-router-dom'
-import showToast from "../../atoms/toast/toast";
+import showToast from "../../atoms/Toast/Toast";
 import { getData } from "../../services/getData";
-import TextInput from "../../atoms/textInput/textInput";
-import DateInput from "../../atoms/dateInput/dateInput";
+import TextInput from "../../atoms/TextInput/TextInput";
+import DateInput from "../../atoms/DateInput/DateInput";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../navbar/navbar";
+import Navbar from "../Navbar/navbar";
 
 interface OrganisationUser {
   email_id: string;

@@ -1,8 +1,8 @@
-import styles from "./index.module.scss"
-import Navbar from "../../organisms/navbar/navbar"
+import styles from "./SystemUserDashboard.module.scss"
+import Navbar from "../../organisms/Navbar/navbar"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react";
-import showToast from "../../atoms/toast/toast";
+import showToast from "../../atoms/Toast/Toast";
 import { useSelector } from "react-redux"
 
 export default function SystemUserDashboard() {

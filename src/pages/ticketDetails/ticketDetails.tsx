@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom"
 import { getData } from "../../services/getData"
-import Navbar from "../../organisms/navbar/navbar"
+import Navbar from "../../organisms/Navbar/navbar"
 import styles from "./index.module.scss"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import showToast from "../../atoms/toast/toast"
+import showToast from "../../atoms/Toast/Toast"
 
 export default function TicketDetails() {
   const {id} = useParams()

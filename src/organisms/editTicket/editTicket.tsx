@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getData } from "../../services/getData"
 import { useSelector } from "react-redux"
-import styles from "./index.module.scss"
-import TicketDetails from "../../pages/ticketDetails/ticketDetails"
-import showToast from "../../atoms/toast/toast"
+
+import styles from "./EditTicket.module.scss"
+
+import showToast from "../../atoms/Toast/Toast"
 import { useNavigate } from "react-router-dom"
 
 interface Ticket {

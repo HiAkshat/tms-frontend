@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import styles from "./index.module.scss"
+import styles from "./TextInput.module.scss"
 
 interface Props {
   placeholder: string,

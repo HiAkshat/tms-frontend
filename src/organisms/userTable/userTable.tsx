@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
-import styles from "./index.module.scss"
+import styles from "./UserTable.module.scss"
 import { useNavigate } from 'react-router-dom';
-import showToast from '../../atoms/toast/toast';
+import showToast from '../../atoms/Toast/Toast';
 
 const UserTable = ({ data }: any) => {
   const navigate = useNavigate()
