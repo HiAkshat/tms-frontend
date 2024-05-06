@@ -5,15 +5,19 @@ import showToast from "../../atoms/toast/toast";
 import TextInput from "../../atoms/textInput/textInput";
 import DateInput from "../../atoms/dateInput/dateInput";
 
-import { Button, ButtonGroup, ButtonToolbar } from 'rsuite';
+import { Form, ButtonToolbar, Button, Input } from 'rsuite';
+import React from "react";
+
+// const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
+
 
 interface OrganisationUser {
   email_id: string;
   first_name: string;
   last_name: string;
-  dob: Date;
+  dob: string;
   organisation: string;
-  joining_date: Date;
+  joining_date: string;
 }
 
 export default function NewOrganisationForm() {
@@ -21,9 +25,9 @@ export default function NewOrganisationForm() {
     email_id: '',
     first_name: '',
     last_name: '',
-    dob: new Date('2022-10-31T09:00:00Z'),
+    dob: '',
     organisation: '',
-    joining_date: new Date('2022-10-31T09:00:00Z')
+    joining_date: ''
   })
 
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
@@ -59,9 +63,9 @@ export default function NewOrganisationForm() {
       email_id: '',
       first_name: '',
       last_name: '',
-      dob: new Date('2022-10-31T09:00:00Z'),
+      dob: '',
       organisation: '',
-      joining_date: new Date('2022-10-31T09:00:00Z')
+      joining_date: ''
     });
 
     showToast("User added successfully!")
