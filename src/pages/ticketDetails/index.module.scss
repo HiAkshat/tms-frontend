@@ -127,12 +127,30 @@
     
               .comment{
                 display: flex;
-                gap: 8px;
-    
-                .user{
-                  font-family: "Ubuntu Sans Mono", monospace;
-                  font-weight:100;
-                  color: rgb(208, 208, 208);
+                justify-content: space-between;
+                align-items: center;
+                // background-color: blue;
+                min-height: 30px;
+
+                .commentContent{
+                  width: 80%;
+                  display: flex;
+                  gap: 8px;
+      
+                  .user{
+                    font-family: "Ubuntu Sans Mono", monospace;
+                    font-weight:100;
+                    color: rgb(208, 208, 208);
+                  }               
+                }
+
+                button{
+                  cursor: pointer;
+                  border: none;
+                  border-radius: 10px;
+                  padding: 4px 8px;
+                  background-color: #2a2a2a;
+                  color: white;
                 }
               }
             }

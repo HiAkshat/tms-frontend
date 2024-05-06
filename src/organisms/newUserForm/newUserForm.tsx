@@ -5,6 +5,8 @@ import showToast from "../../atoms/toast/toast";
 import TextInput from "../../atoms/textInput/textInput";
 import DateInput from "../../atoms/dateInput/dateInput";
 
+import { Button, ButtonGroup, ButtonToolbar } from 'rsuite';
+
 interface OrganisationUser {
   email_id: string;
   first_name: string;
@@ -95,7 +97,7 @@ export default function NewOrganisationForm() {
             ))}
             </select>
           }
-          <button type="submit">Add</button>
+          <Button type="submit">Add</Button>
         </div>
       </form>
     </div>

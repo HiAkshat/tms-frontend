@@ -11,6 +11,8 @@ export default function TicketDetails() {
   const ticket_details = getData(`http://localhost:8000/api/ticket/${id}`)
   const comments = getData(`http://localhost:8000/api/comment/${id}`)
   const [commentInput, setCommentInput] = useState("")
+
+  const [showActions, setShowActions] = useState(false)
   // const [commentActionsVisible, setComment]
 
 
@@ -58,6 +60,21 @@ export default function TicketDetails() {
     setCommentInput("")
   }
 
+  const handleCommentDelete = async () => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/comment/${showActions}`, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }) 
+  
+      showToast("Comment successfully deleted!")      
+    } catch (error) {
+      showToast("Error deleting comment!")
+    }
+  }
+
   return (
     <div className={styles.page}>
       <Navbar />
@@ -100,10 +117,14 @@ export default function TicketDetails() {
                       // !comments.isLoading && comments.data.length>0 ?
                       !comments.isLoading && comments.data.map((comment: any) => {
                         return (
-                          <div className={styles.comment} key={comment._id}>
-                            <span className={styles.user}>{comment.user.first_name}</span>
-                            <span className={styles.content}>{comment.content}</span>
-                            {comment.user._id === user.id && <button>Delete</button>}
+                          <div  onMouseEnter={()=>setShowActions(comment._id)} onMouseLeave={()=>setShowActions(false)} className={styles.comment} key={comment._id}>
+                            <div className={styles.commentContent}>
+                              <span className={styles.user}>{comment.user.first_name}</span>
+                              <span className={styles.content}>{comment.content}</span>
+                            </div>
+                            <div>
+                              {comment.user._id === user.id && comment._id==showActions && <button onClick={handleCommentDelete}>Delete</button>}
+                            </div>
                           </div>
                         )
                       })

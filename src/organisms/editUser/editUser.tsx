@@ -2,48 +2,41 @@ import { useState, useEffect } from "react"
 import styles from "./index.module.scss"
 import { useParams } from 'react-router-dom'
 import showToast from "../../atoms/toast/toast";
+import { getData } from "../../services/getData";
+import TextInput from "../../atoms/textInput/textInput";
+import DateInput from "../../atoms/dateInput/dateInput";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../navbar/navbar";
 
 interface OrganisationUser {
   email_id: string;
   first_name: string;
   last_name: string;
-  dob: Date;
+  dob: string;
   organisation: string;
-  joining_date: Date;
+  joining_date: string;
 }
 
 export default function EditUser() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [organisationUser, setOrganisationUser] = useState<OrganisationUser>({
     email_id: '',
     first_name: '',
     last_name: '',
-    dob: new Date('2022-10-31T09:00:00Z'),
+    dob: "",
     organisation: '',
-    joining_date: new Date('2022-10-31T09:00:00Z')
+    joining_date: ""
   })
 
-  const [organisations, setOrganisations] = useState([]);
+  const organisations = getData('http://127.0.0.1:8000/api/organisation')
+
   const [selectedOrganisation, setSelectedOrganisation] = useState('');
 
   useEffect(() => {
-    fetchOrganisations();
     fetchUser()
   }, []);
-
-  const fetchOrganisations = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/organisation`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch organisations');
-      }
-      const data = await response.json();
-      setOrganisations(data);
-    } catch (error) {
-      console.error('Error fetching organisations:', error);
-    }
-  };
 
   const fetchUser = async () => {
     try {
@@ -54,19 +47,19 @@ export default function EditUser() {
       const data = await response.json();
       console.log(data)
       setOrganisationUser(data);
+      setSelectedOrganisation(data.organisation)
     } catch (error) {
       console.error('Error fetching organisations:', error);
     }
   };
 
-  const handleSelectChange = (e) => {
+  const handleSelectChange = (e: any) => {
     setSelectedOrganisation(e.target.value);
     const { name, value } = e.target;
     setOrganisationUser((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-    console.log(organisationUser)
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,12 +82,13 @@ export default function EditUser() {
       email_id: '',
       first_name: '',
       last_name: '',
-      dob: new Date('2022-10-31T09:00:00Z'),
+      dob: "",
       organisation: '',
-      joining_date: new Date('2022-10-31T09:00:00Z')
+      joining_date: ""
     });
 
     showToast("User edited successfully!")
+    navigate("..")
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,68 +100,33 @@ export default function EditUser() {
   };
 
   return (
+  <div>
+    <Navbar />
     <div className={styles.main}>
-    <span className={styles.title}>Edit User</span>
-    <form onSubmit={handleSubmit}>
-      <div className={styles.fieldInfo}>
-        <label className={styles.fieldTitle}>Email ID</label>
-        <input
-          type="text"
-          name="email_id"
-          value={organisationUser.email_id}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className={styles.fieldInfo}>
-        <label className={styles.fieldTitle}>First Name</label>
-        <input
-          type="text"
-          name="first_name"
-          value={organisationUser.first_name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className={styles.fieldInfo}>
-        <label className={styles.fieldTitle}>Last Name</label>
-        <input
-          type="text"
-          name="last_name"
-          value={organisationUser.last_name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className={styles.fieldInfo}>
-        <label className={styles.fieldTitle}>DOB</label>
-        <input
-          type="date"
-          name="dob"
-          value={organisationUser.dob}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className={styles.fieldInfo}>
-        <label className={styles.fieldTitle}>Joining Date</label>
-        <input
-          type="date"
-          name="joining_date"
-          value={organisationUser.joining_date}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
-        <option value="">Select an organisation</option>
-        {organisations.map((org) => (
-          <option key={org._id} value={org._id}>{org.organisation_name}</option>
-        ))}
-      </select>
-      <button className={styles.addButton} type="submit">Edit</button>
-    </form>
+      <span className={styles.title}>Edit User</span>
+      <form onSubmit={handleSubmit} className={styles.theForm}>
+        <div className={styles.inputs}>
+          <TextInput placeholder="E-mail ID" name="email_id" value={organisationUser.email_id} onChange={handleChange} required={true} />
+          <TextInput placeholder="First Name" name="first_name" value={organisationUser.first_name} onChange={handleChange} required={true} />
+          <TextInput placeholder="Last Name" name="last_name" value={organisationUser.last_name} onChange={handleChange} required={true} />
+        </div>
+        <div className={styles.inputs}>
+          <DateInput name="dob" value={organisationUser.dob} onChange={handleChange} placeholder="DOB" required={true} />
+          <DateInput name="joining_date" value={organisationUser.joining_date} onChange={handleChange} placeholder="Joining Date" required={true} />
+        </div>
+        <div className={styles.inputs}>
+          {!organisations.isLoading &&
+            <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
+            <option value="">Select an organisation</option>
+            {organisations.data.map((org: any) => (
+              <option key={org._id} value={org._id}>{org.organisation_name}</option>
+            ))}
+            </select>
+          }
+          <button type="submit">Edit</button>
+        </div>
+      </form>
+    </div>
   </div>
-
   );
 };

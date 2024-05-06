@@ -9,6 +9,8 @@ import showToast from '../../atoms/toast/toast';
 
 import Cookie from 'js-cookie';
 
+import { Button } from 'rsuite';
+
 export default function Login() {
   const [userType, setUserType] = useState(0)
   const [email, setEmail] = useState("")
@@ -146,7 +148,7 @@ export default function Login() {
                 <input type="text" onChange={(e)=>{setEmail(e.target.value)}} placeholder='Enter your email' />
                 <input onChange={(e)=>{setOtp(e.target.value)}} type="text" placeholder='Enter your 6-digit OTP' />
               </div>
-              <button onClick={handleSendOtp}>Send OTP</button>
+              <Button onClick={handleSendOtp}>Send OTP</Button>
             </div>
           <button type={"submit"} onClick={handleUserLogin} title={"Submit"} className={styles.submitButton}>Submit</button>
         </div>

@@ -8,11 +8,10 @@ interface Props {
   value: string,
   onChange: React.ChangeEventHandler,
   required: boolean,
-  fullWidth: string
 }
 
 export default function TextInput({placeholder, name, value, onChange, required, fullWidth} : Props) {
   return (
-    <input className={styles.textInput} placeholder={placeholder} type="text" name={name} value={value} onChange={onChange} required={required} fullWidth={fullWidth} />
+    <input className={styles.textInput} placeholder={placeholder} type="text" name={name} value={value} onChange={onChange} required={required} />
   )
 }

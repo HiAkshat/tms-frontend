@@ -6,6 +6,7 @@ import { getData } from "../../services/getData";
 import { useSelector } from "react-redux"
 import showToast from "../../atoms/toast/toast";
 import { useNavigate } from "react-router-dom";
+import Popup from "../../atoms/popup/popup";
 
 export default function ManageUsers() {
   const navigate = useNavigate()

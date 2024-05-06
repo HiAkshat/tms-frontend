@@ -27,7 +27,7 @@ export default function ViewTickets() {
       <div className={styles.main}>
         <NewTicketForm />
         <div className={styles.tableDiv}>
-          <span>Tickets</span>
+          <span>Tickets Table</span>
           {!tickets.isLoading && <TicketTable data={tickets.data}/>}
         </div>
       </div>

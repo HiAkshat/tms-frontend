@@ -5,6 +5,9 @@ import { useDispatch } from 'react-redux';
 import { logout } from "../../redux/userSlice";
 import Cookie from "js-cookie"
 
+import { useEffect } from "react";
+import { login } from "../../redux/userSlice";
+
 export default function Navbar() {
   let navigate = useNavigate();
   const dispatch = useDispatch()
@@ -19,6 +22,36 @@ export default function Navbar() {
   function titleCase(word: string) {
     return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
  }
+
+ useEffect(()=>{
+  const verifyToken = async (accessToken: string) => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/verifyToken/`, {
+        method: "POST",
+        headers: {
+          "authorization": `BEARER ${accessToken}`
+        }
+      })
+      
+      let userData = await res.json()
+      userData=userData.decoded.user
+      const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
+      dispatch(
+        login(userDetails)
+      )
+
+      // if (userDetails.userType=="system") navigate("../systemDashboard")
+      // else navigate("../viewTickets")
+
+    } catch (error) {
+      console.log("Session expired!")
+      return error
+    }
+  }
+
+  const accessToken = Cookie.get("accessToken") ?? ""
+  verifyToken(accessToken)
+}, [])
 
   return (
     <div className={styles.navbar}>
