@@ -9,7 +9,7 @@ import showToast from '../../atoms/Toast/Toast';
 
 import Cookie from 'js-cookie';
 
-import { Button } from 'rsuite';
+import { Button, Input } from 'rsuite';
 
 export default function Login() {
   const [userType, setUserType] = useState(0)
@@ -145,12 +145,12 @@ export default function Login() {
         <div className={styles.inputsBox}>
             <div className={styles.inputWithB}>
               <div className={styles.inputs}>
-                <input type="text" onChange={(e)=>{setEmail(e.target.value)}} placeholder='Enter your email' />
-                <input onChange={(e)=>{setOtp(e.target.value)}} type="text" placeholder='Enter your 6-digit OTP' />
+                <Input placeholder="Enter your email" value={email} onChange={setEmail} required={true}/>
+                <Input placeholder="Enter your 6-digit OTP" value={otp} onChange={setOtp} required={true}/>
               </div>
               <Button onClick={handleSendOtp}>Send OTP</Button>
             </div>
-          <button type={"submit"} onClick={handleUserLogin} title={"Submit"} className={styles.submitButton}>Submit</button>
+          <Button type="submit" onClick={handleUserLogin} className={styles.submitButton}>Submit</Button>
         </div>
       </div>
     </div>

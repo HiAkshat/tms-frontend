@@ -45,7 +45,7 @@ export default function RsuiteTable({data}: any) {
     }, 100);
   };
 
-  const ActionCell = ({ rowData, dataKey, ...props }) => {
+  const ActionCell = ({ rowData, dataKey, ...props }: any) => {
 
     // {console.log(rowData)}
     // console.log(rowData[dataKey]);
@@ -64,17 +64,17 @@ export default function RsuiteTable({data}: any) {
 
   const handleDelete = async (id: string) => {
     console.log('Delete entry:', id);
-    const res = await fetch(`http://127.0.0.1:8000/api/organisation/${id}`, {
+    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`, {
       method: "DELETE",
     })
 
 
     if (!res.ok){
-      showToast("Error deleting organisation!")
+      showToast("Error deleting organisation user!")
       return
     }
 
-    showToast("Organisation deleted successfully!")
+    showToast("Organisation user deleted successfully!")
     navigate("")
   };
 

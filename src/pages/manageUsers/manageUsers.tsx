@@ -23,6 +23,7 @@ export default function ManageUsers() {
     return (
       <div className={styles.page}>
         <Navbar />
+        
         <div className={styles.main}>
           <NewUserForm />
           <div className={styles.tableDiv}>
