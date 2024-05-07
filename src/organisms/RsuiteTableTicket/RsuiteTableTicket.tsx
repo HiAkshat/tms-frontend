@@ -4,6 +4,8 @@ import { Table } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 
+import ticketServices from '../../services/ticket';
+
 const { Column, HeaderCell, Cell } = Table;
 
 import styles from "./RsuiteTable.module.scss"
@@ -57,7 +59,7 @@ export default function RsuiteTable({data}: any) {
   };
 
   const handleEdit = (id: string) => {
-    navigate(`edit/${id}`);
+    navigate(`../ticket/edit/${id}`);
   };
 
   const handleDelete = async (id: string) => {

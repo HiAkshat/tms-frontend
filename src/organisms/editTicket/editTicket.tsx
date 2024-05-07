@@ -7,6 +7,7 @@ import styles from "./EditTicket.module.scss"
 
 import showToast from "../../atoms/Toast/Toast"
 import { useNavigate } from "react-router-dom"
+import ticketServices from "../../services/ticket"
 
 interface Ticket {
   type: string,
@@ -29,8 +30,8 @@ export default function EditTicket() {
   const statuses = ['To be picked', 'In progress', 'In testing', 'Completed']
   const [status, setStatus] = useState<string>('')
 
-  const [ticketData, setTicketData] = useState<Ticket>({
-    type: user,
+  const [ticketData, setTicketData] = useState<any>({
+    type: "",
     summary: "",
     description: "",
     assignee: "",
@@ -48,7 +49,13 @@ export default function EditTicket() {
   }
 
   useEffect(()=>{
-    fetchTicket()
+    try {
+      ticketServices.getTicket(id).then(data => {
+        setTicketData(data)
+      })
+    } catch (error){
+      return
+    }
   }, [])
 
   const fetchTicket = async () => {
@@ -65,7 +72,7 @@ export default function EditTicket() {
       setStatus(data.status)
 
       ticketEditDetails.ticket = data._id
-      
+
     } catch (error) {
       console.error('Error fetching organisations:', error);
     }
@@ -73,6 +80,8 @@ export default function EditTicket() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    // ticketServices.editTicket(ticketData, id)
 
     const res = await fetch(`http://127.0.0.1:8000/api/ticket/${id}`, {
       method: "PUT",
@@ -87,18 +96,10 @@ export default function EditTicket() {
       return
     }
 
-    const res2 = await fetch(`http://127.0.0.1:8000/api/ticketHistory/`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(ticketData)
-    })
-
 
     showToast("User edited successfully!")
     navigate("../viewTickets")
-    
+
   };
 
   const handleChange = (e: any) => {
@@ -171,7 +172,7 @@ export default function EditTicket() {
                 ))}
               </select>
             </div>
-          {!users.isLoading && 
+          {!users.isLoading &&
             <div className={styles.fieldInfo}>
               <label className={styles.fieldTitle} htmlFor="assignee">Assignee:</label>
               <select name="assignee" id="assignee" value={assignee} onChange={handleAssigneeChange}>
@@ -182,7 +183,7 @@ export default function EditTicket() {
               </select>
             </div>
           }
-          {!users.isLoading && 
+          {!users.isLoading &&
             <div className={styles.fieldInfo}>
               <label className={styles.fieldTitle} htmlFor="assignee">Reporter:</label>
               <select name="reporter" id="reporter" value={reporter} onChange={handleReporterChange}>
