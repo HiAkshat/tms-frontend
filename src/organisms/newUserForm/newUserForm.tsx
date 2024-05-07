@@ -4,6 +4,9 @@ import { getData } from "../../services/getData";
 import showToast from "../../atoms/Toast/Toast";
 
 import { DatePicker, Button, Input, SelectPicker } from 'rsuite';
+import { useNavigate } from "react-router-dom";
+
+import organisationUserServices from "../../services/organisationUser";
 
 interface OrganisationUser {
   email_id: string;
@@ -15,6 +18,8 @@ interface OrganisationUser {
 }
 
 export default function NewOrganisationForm() {
+  const navigate = useNavigate()
+
   const [organisationUser, setOrganisationUser] = useState<OrganisationUser>({
     email_id: '',
     first_name: '',
@@ -29,29 +34,22 @@ export default function NewOrganisationForm() {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    const res = await fetch("http://127.0.0.1:8000/api/organisationUser", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisationUser)
-    })
+    try {
+      await organisationUserServices.addOrganisationUser(organisationUser)
 
-    if (!res.ok){
-      showToast("Error adding organisation user!")
+      setOrganisationUser({
+        email_id: '',
+        first_name: '',
+        last_name: '',
+        dob: new Date(),
+        organisation: '',
+        joining_date: new Date()
+      });
+
+      navigate(0)
+    } catch (error) {
       return
     }
-
-    setOrganisationUser({
-      email_id: '',
-      first_name: '',
-      last_name: '',
-      dob: new Date(),
-      organisation: '',
-      joining_date: new Date()
-    });
-
-    showToast("User added successfully!")
   };
 
   return (

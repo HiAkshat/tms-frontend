@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Table, Button, Pagination, IconButton, Whisper } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
+import organisationServices from '../../services/organisation';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -44,8 +45,6 @@ export default function RsuiteTable({data}: any) {
   };
 
   const ActionCell = ({ rowData, dataKey, ...props }: any) => {
-
-    // {console.log(rowData)}
     // console.log(rowData[dataKey]);
     return (
       <Cell {...props} className="link-group">
@@ -61,19 +60,12 @@ export default function RsuiteTable({data}: any) {
   };
 
   const handleDelete = async (id: string) => {
-    console.log('Delete entry:', id);
-    const res = await fetch(`http://127.0.0.1:8000/api/organisation/${id}`, {
-      method: "DELETE",
-    })
-
-
-    if (!res.ok){
+    try {
+      await organisationServices.deleteOrganisation(id)
+      showToast("Organisation deleted successfully!")
+    } catch (error) {
       showToast("Error deleting organisation!")
-      return
     }
-
-    showToast("Organisation deleted successfully!")
-    navigate("")
   };
 
   return (

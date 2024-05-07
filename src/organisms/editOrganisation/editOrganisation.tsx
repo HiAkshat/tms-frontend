@@ -2,7 +2,8 @@ import styles from "./EditOrganisation.module.scss"
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import showToast from "../../atoms/Toast/Toast";
+import organisationServices from "../../services/organisation";
+
 
 interface Organisation {
   organisation_name: string;
@@ -19,49 +20,22 @@ export default function EditOrganisation() {
   })
 
   useEffect(()=>{
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/organisation/${id}`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        setOrganisation(jsonData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData()
+    organisationServices.getOrganisation(id).then((data)=>{setOrganisation(data)})
   }, [])
-
-  console.log("HEY")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const res = await fetch(`http://127.0.0.1:8000/api/organisation/${id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisation)
-    })
-
-    if (!res.ok){
-      console.log("NOO")
-      showToast("Error editing organisation!")
+    try {
+      await organisationServices.editOrganisation(organisation, id)
+      navigate("..")
+      setOrganisation({
+        organisation_name: '',
+        display_name: '',
+      });
+    } catch (error) {
       return
     }
-
-    navigate("..")
-
-    setOrganisation({
-      organisation_name: '',
-      display_name: '',
-    });
-
-    showToast("Organisation edited successfully!")
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

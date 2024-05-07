@@ -7,6 +7,7 @@ import showToast from '../../atoms/Toast/Toast';
 const { Column, HeaderCell, Cell } = Table;
 
 import styles from "./RsuiteTable.module.scss"
+import organisationUserServices from '../../services/organisationUser';
 
 export default function RsuiteTable({data}: any) {
   const navigate = useNavigate()
@@ -63,19 +64,12 @@ export default function RsuiteTable({data}: any) {
   };
 
   const handleDelete = async (id: string) => {
-    console.log('Delete entry:', id);
-    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`, {
-      method: "DELETE",
-    })
-
-
-    if (!res.ok){
-      showToast("Error deleting organisation user!")
+    try {
+      await organisationUserServices.deleteOrganisationUser(id)
+      navigate(0)
+    } catch (error) {
       return
     }
-
-    showToast("Organisation user deleted successfully!")
-    navigate("")
   };
 
   return (

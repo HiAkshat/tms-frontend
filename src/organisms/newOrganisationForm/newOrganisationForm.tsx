@@ -4,14 +4,11 @@ import showToast from "../../atoms/Toast/Toast";
 
 import { Input, Button, Schema } from 'rsuite';
 import { StringType } from 'schema-typed';
+import organisationServices from "../../services/organisation";
 
 const model = Schema.Model({
   organisation_name: StringType().isRequired("This field is required!"),
   display_name: StringType().isRequired("This field is required!")
-  // email: StringType().isEmail().isRequired(),
-  // age: NumberType().range(18, 30),
-  // password: StringType().isRequired().proxy(['confirmPassword']),
-  // confirmPassword: StringType().equalTo('password')
 });
 
 interface Organisation {
@@ -29,25 +26,16 @@ export default function NewOrganisationForm() {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    const res = await fetch("http://127.0.0.1:8000/api/organisation", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisation)
-    })
+    try {
+      await organisationServices.addNewOrganisation(organisation)
+      setOrganisation({
+        organisation_name: '',
+        display_name: '',
+      });
 
-    if (!res.ok){
-      showToast("Error adding organisation!")
+    } catch (error) {
       return
     }
-
-    setOrganisation({
-      organisation_name: '',
-      display_name: '',
-    });
-
-    showToast("Organisation added successfully!")
   };
 
   const handleOrgNameChange = (e: string) => {
