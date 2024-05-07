@@ -1,6 +1,6 @@
 import { SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Button, Pagination, IconButton, Whisper } from 'rsuite';
+import { Table } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 import organisationServices from '../../services/organisation';
@@ -12,7 +12,7 @@ export default function RsuiteTable({data}: any) {
 
   const [sortColumn, setSortColumn] = useState<any>();
   const [sortType, setSortType] = useState<any>();
-  const [loading, setLoading] = useState<any>(false);
+  // const [loading, setLoading] = useState<any>(false);
 
   const getData = () => {
     if (sortColumn && sortType) {
@@ -36,9 +36,9 @@ export default function RsuiteTable({data}: any) {
   };
 
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
-    setLoading(true);
+    // setLoading(true);
     setTimeout(() => {
-      setLoading(false);
+      // setLoading(false);
       setSortColumn(sortColumn);
       setSortType(sortType);
     }, 100);

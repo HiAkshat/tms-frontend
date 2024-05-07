@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { DatePicker, Button, Input, SelectPicker } from 'rsuite';
 import ticketServices from '../../services/ticket/index';
 import { NavUserType } from '../../typings/navUser';
-import { TicketType } from '../../services/ticket/types';
 
 
 function NewTicketForm() {

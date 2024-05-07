@@ -71,7 +71,7 @@ export default function TicketDetails() {
 
   const handleCommentDelete = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/comment/${showActions}`, {
+      await fetch(`http://127.0.0.1:8000/api/comment/${showActions}`, {
         method: "DELETE",
         headers: {
           'Content-Type': 'application/json',

@@ -9,15 +9,15 @@ import showToast from "../../atoms/Toast/Toast"
 import { useNavigate } from "react-router-dom"
 import ticketServices from "../../services/ticket"
 
-interface Ticket {
-  type: string,
-  summary: string,
-  description: string,
-  assignee: string,
-  reporter: string,
-  status: string,
-  due_date: string
-}
+// interface Ticket {
+//   type: string,
+//   summary: string,
+//   description: string,
+//   assignee: string,
+//   reporter: string,
+//   status: string,
+//   due_date: string
+// }
 
 export default function EditTicket() {
   const navigate = useNavigate()
@@ -40,13 +40,13 @@ export default function EditTicket() {
     due_date: "new Date('2022-10-31T09:00:00Z')"
   })
 
-  let ticketEditDetails = {
-    ticket: "",
-    user: user.name,
-    field: "",
-    old_value: "",
-    new_value: ""
-  }
+  // let ticketEditDetails = {
+  //   ticket: "",
+  //   user: user.name,
+  //   field: "",
+  //   old_value: "",
+  //   new_value: ""
+  // }
 
   useEffect(()=>{
     try {
@@ -57,26 +57,6 @@ export default function EditTicket() {
       return
     }
   }, [])
-
-  const fetchTicket = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/ticket/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch ticket!');
-      }
-      const data = await response.json();
-      console.log(data)
-      setTicketData(data);
-      setAssignee(data.assignee._id)
-      setReporter(data.reporter._id)
-      setStatus(data.status)
-
-      ticketEditDetails.ticket = data._id
-
-    } catch (error) {
-      console.error('Error fetching organisations:', error);
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

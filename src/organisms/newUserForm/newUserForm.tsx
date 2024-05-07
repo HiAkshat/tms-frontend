@@ -1,7 +1,6 @@
 import { useState } from "react"
 import styles from "./NewUserForm.module.scss"
 import { getData } from "../../services/getData";
-import showToast from "../../atoms/Toast/Toast";
 
 import { DatePicker, Button, Input, SelectPicker } from 'rsuite';
 import { useNavigate } from "react-router-dom";
