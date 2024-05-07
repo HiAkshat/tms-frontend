@@ -1,12 +1,15 @@
 import { SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Button, Pagination, IconButton, Whisper } from 'rsuite';
+import { Table } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 
 const { Column, HeaderCell, Cell } = Table;
 
+import styles from "./RsuiteTable.module.scss"
+
 export default function RsuiteTable({data}: any) {
+  console.log(data)
   const navigate = useNavigate()
 
   const [sortColumn, setSortColumn] = useState<any>();
@@ -15,20 +18,15 @@ export default function RsuiteTable({data}: any) {
 
   const getData = () => {
     if (sortColumn && sortType) {
-      return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
-        let x = a[sortColumn];
-        let y = b[sortColumn];
-        if (typeof x === 'string') {
-          x = x.toLowerCase().charCodeAt(0);
+      return data.sort(( a: any, b: any )=> {
+        console.log(a, b)
+        if ( a.last_nom < b.last_nom ){
+          return -1;
         }
-        if (typeof y === 'string') {
-          y = y.toLowerCase().charCodeAt(0);
+        if ( a.last_nom > b.last_nom ){
+          return 1;
         }
-        if (sortType === 'asc') {
-          return x - y;
-        } else {
-          return y - x;
-        }
+        return 0;
       });
     }
     return data;
@@ -49,6 +47,8 @@ export default function RsuiteTable({data}: any) {
     // console.log(rowData[dataKey]);
     return (
       <Cell {...props} className="link-group">
+        <span onClick={()=>navigate(`../ticket/${rowData[dataKey]}`)}>View</span>
+        <span> - </span>
         <span onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
         <span> - </span>
         <span onClick={()=>handleDelete(rowData[dataKey])}>Delete</span>
@@ -62,22 +62,23 @@ export default function RsuiteTable({data}: any) {
 
   const handleDelete = async (id: string) => {
     console.log('Delete entry:', id);
-    const res = await fetch(`http://127.0.0.1:8000/api/organisation/${id}`, {
+    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`, {
       method: "DELETE",
     })
 
 
     if (!res.ok){
-      showToast("Error deleting organisation!")
+      showToast("Error deleting organisation user!")
       return
     }
 
-    showToast("Organisation deleted successfully!")
+    showToast("Organisation user deleted successfully!")
     navigate("")
   };
 
   return (
     <Table
+      className={styles.userTable}
       sortColumn={sortColumn}
       sortType={sortType}
       onSortColumn={handleSortColumn}
@@ -87,13 +88,29 @@ export default function RsuiteTable({data}: any) {
         console.log(rowData);
       }}
     >
-      <Column flexGrow={3} align="center" sortable>
-        <HeaderCell>Organisation Name</HeaderCell>
-        <Cell dataKey="organisation_name" />
+      <Column flexGrow={1} align="center" sortable>
+        <HeaderCell>Type</HeaderCell>
+        <Cell dataKey="type" />
       </Column>
-      <Column flexGrow={3} align="center" sortable>
-        <HeaderCell>Display Name</HeaderCell>
-        <Cell dataKey="display_name" />
+      <Column flexGrow={1} align="center" sortable>
+        <HeaderCell>Key</HeaderCell>
+        <Cell dataKey="key" />
+      </Column>
+      <Column flexGrow={1} align="center">
+        <HeaderCell>Assignee</HeaderCell>
+        <Cell dataKey="assignee.first_name" />
+      </Column>
+      <Column flexGrow={1} align="center">
+        <HeaderCell>Reporter</HeaderCell>
+        <Cell dataKey="reporter.first_name" />
+      </Column>
+      <Column flexGrow={1} align="center" sortable>
+        <HeaderCell>Status</HeaderCell>
+        <Cell dataKey="status" />
+      </Column>
+      <Column flexGrow={1} align="center" sortable>
+        <HeaderCell>Due Date</HeaderCell>
+        <Cell dataKey="due_date">{rowData => new Date(rowData.due_date).toLocaleString().split(",")[0]}</Cell>
       </Column>
       <Column flexGrow={1}>
         <HeaderCell>Actions</HeaderCell>

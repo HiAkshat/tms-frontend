@@ -9,9 +9,9 @@ interface OrganisationUser {
   email_id: string;
   first_name: string;
   last_name: string;
-  dob: string;
+  dob: Date;
   organisation: string;
-  joining_date: string;
+  joining_date: Date;
 }
 
 export default function NewOrganisationForm() {
@@ -19,9 +19,9 @@ export default function NewOrganisationForm() {
     email_id: '',
     first_name: '',
     last_name: '',
-    dob: '',
+    dob: new Date(),
     organisation: '',
-    joining_date: ''
+    joining_date: new Date()
   })
 
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
@@ -46,9 +46,9 @@ export default function NewOrganisationForm() {
       email_id: '',
       first_name: '',
       last_name: '',
-      dob: '',
+      dob: new Date(),
       organisation: '',
-      joining_date: ''
+      joining_date: new Date()
     });
 
     showToast("User added successfully!")
@@ -64,12 +64,11 @@ export default function NewOrganisationForm() {
           <Input placeholder="Last Name" value={organisationUser.last_name} onChange={(val: string)=>setOrganisationUser({...organisationUser, last_name: val})}required={true}/>
         </div>
         <div className={styles.inputs}>
-          <DatePicker name="dob" value={organisationUser.dob} onChange={(val: string)=>{setOrganisationUser({...organisationUser, dob: val})}} placeholder="DOB" required={true}/>
-          <DatePicker name="joining_date" value={organisationUser.joining_date} onChange={(val: string)=>{setOrganisationUser({...organisationUser, joining_date: val})}} placeholder="Joining Date" required={true}/>
-          {!organisations.isLoading &&
-            <SelectPicker data={organisations.data.map(org => ({label: org.organisation_name, value: org._id}))} onChange={(val: any)=>{setOrganisationUser({...organisationUser, organisation: val})}} value={organisationUser.organisation}/>
-          }
-        </div>
+          <DatePicker name="dob" value={organisationUser.dob} onChange={(val: Date|null)=>{setOrganisationUser({...organisationUser, dob: val ?? new Date()})}} placeholder="DOB"/>
+          <DatePicker name="joining_date" value={organisationUser.joining_date} onChange={(val: Date|null)=>{setOrganisationUser({...organisationUser, joining_date: val ?? new Date()})}} placeholder="Joining Date" />
+          {!organisations.isLoading && <SelectPicker data={organisations.data.map((org: any) => ({label: org.organisation_name, value: org._id}))} onChange={(val: any)=>{setOrganisationUser({...organisationUser, organisation: val})}} value={organisationUser.organisation}/> }
+
+          </div>
         <div className={styles.inputs}>
           <Button onClick={handleSubmit} type="submit">Add</Button>
         </div>

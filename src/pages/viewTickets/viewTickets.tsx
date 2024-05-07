@@ -7,6 +7,7 @@ import { getData } from "../../services/getData"
 import styles from "./index.module.scss"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import RsuiteTable from "../../organisms/RsuiteTableTicket/RsuiteTableTicket"
 
 export default function ViewTickets() {
   const navigate = useNavigate()
@@ -28,6 +29,7 @@ export default function ViewTickets() {
         <NewTicketForm />
         <div className={styles.tableDiv}>
           <span>Tickets Table</span>
+          {!tickets.isLoading && <RsuiteTable data={tickets.data}/>}
           {!tickets.isLoading && <TicketTable data={tickets.data}/>}
         </div>
       </div>
