@@ -24,7 +24,7 @@ export default function TicketDetails() {
   const comments = getData(`http://localhost:8000/api/comment/${id}`)
   const [commentInput, setCommentInput] = useState("")
 
-  const [showActions, setShowActions] = useState(false)
+  const [showActions, setShowActions] = useState<string>()
 
   const user = useSelector((state: StateType) => state.user)
 
@@ -42,7 +42,7 @@ export default function TicketDetails() {
     return formattedDate;
   }
 
-  const handleCommentSubmit = async (e: any) => {
+  const handleCommentSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     const body = {
@@ -124,9 +124,9 @@ export default function TicketDetails() {
                     </form>
                     <div className={styles.commentSection}>
                       {
-                        !comments.isLoading && comments.data.map((comment: any) => {
+                        !comments.isLoading && comments.data.map((comment: CommentType) => {
                           return (
-                            <div  onMouseEnter={()=>setShowActions(comment._id)} onMouseLeave={()=>setShowActions(false)} className={styles.comment} key={comment._id}>
+                            <div  onMouseEnter={()=>setShowActions(comment._id)} onMouseLeave={()=>setShowActions("")} className={styles.comment} key={comment._id}>
                               <div className={styles.commentContent}>
                                 <span className={styles.user}>{comment.user.first_name}</span>
                                 <span className={styles.content}>{comment.content}</span>

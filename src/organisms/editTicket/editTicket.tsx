@@ -7,7 +7,7 @@ import styles from "./EditTicket.module.scss"
 
 import { useNavigate } from "react-router-dom"
 import ticketServices from "../../services/ticket"
-import { NavUserType, StateType } from "../../typings/navUser"
+import { StateType } from "../../typings/navUser"
 
 // interface Ticket {
 //   type: string,
@@ -70,13 +70,31 @@ export default function EditTicket() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<any>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setTicketData({
       ...ticketData,
       [name]: value,
     });
   };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setTicketData({
+      ...ticketData,
+      [name]: value,
+    });
+  };
+
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTicketData({
+      ...ticketData,
+      [name]: value,
+    });
+  };
+
+
 
   const handleAssigneeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {name, value} = e.target;
@@ -112,7 +130,7 @@ export default function EditTicket() {
         <div className={styles.fieldsDiv}>
           <div className={styles.fieldInfo}>
             <label className={styles.fieldTitle} htmlFor="type">Type:</label>
-            <select id="type" name="type" value={ticketData.type} onChange={handleChange} required>
+            <select id="type" name="type" value={ticketData.type} onChange={handleSelectChange} required>
               <option value="">Select Type</option>
               <option value="Story">Story</option>
               <option value="Task">Task</option>
@@ -125,7 +143,7 @@ export default function EditTicket() {
           </div>
           <div className={styles.fieldInfo}>
             <label className={styles.fieldTitle} htmlFor="description">Description:</label>
-            <textarea id="description" name="description" value={ticketData.description} onChange={handleChange}></textarea>
+            <textarea id="description" name="description" value={ticketData.description} onChange={handleTextAreaChange}></textarea>
           </div>
           <div className={styles.fieldInfo}>
             <label className={styles.fieldTitle} htmlFor="due_date">Due Date:</label>

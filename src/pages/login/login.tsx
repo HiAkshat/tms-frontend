@@ -24,12 +24,13 @@ export default function Login() {
   useEffect(()=>{
     const verification = async () => {
       const accessToken = Cookie.get("accessToken") ?? ""
-      let userData:any
+      let userData:VerifyUserDataType|undefined
       try {
         await verifyTokenServices.verifyToken(accessToken).then(data => userData=data)
+        console.log(userData)
         if (userData){
-          userData=userData.decoded.user
-          const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
+          const decodedUser: UserType = userData.decoded.user
+          const userDetails = { id: decodedUser._id, name: `${decodedUser.first_name} ${decodedUser.last_name}`, email: decodedUser.email_id, organisation_id: decodedUser.organisation ? decodedUser.organisation : "", userType: decodedUser.organisation ? "organisation" : "system", isAuthenticated: true };
           dispatch(
             login(userDetails)
           )
@@ -62,18 +63,18 @@ export default function Login() {
       otp
     }
 
-    let otpData: any
+    let otpData: OtpDataType | undefined
 
     try {
       if (userType==0) await systemUserServices.verifyOtp(body).then(data => otpData=data)
       else await organisationUserServices.verifyOtp(body).then(data => otpData=data)
 
 
-    if (otpData.valid){
+    if (otpData && otpData.valid){
+      console.log(otpData)
       Cookie.set("accessToken", otpData.accessToken)
 
-      let userData: any
-      console.log(otpData)
+      let userData: UserType | undefined
       if (userType==0) await systemUserServices.getSystemUserByEmail(email).then(data => userData=data)
       else{
         await organisationUserServices.getOrganisationUserByEmail(email).then(data => userData=data)

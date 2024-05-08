@@ -8,27 +8,26 @@ const { Column, HeaderCell, Cell } = Table;
 
 import styles from "./RsuiteTable.module.scss"
 
-export default function RsuiteTable({data}: any) {
+export default function RsuiteTable({data}: {data: [TicketType]}) {
   console.log(data)
   const navigate = useNavigate()
 
   const [sortColumn, setSortColumn] = useState<any>();
-  const [sortType, setSortType] = useState<any>();
-  // const [loading, setLoading] = useState<any>(false);
+  const [sortType, setSortType] = useState<SortType>();
 
   const getData = () => {
-    if (sortColumn && sortType) {
-      return data.sort(( a: any, b: any )=> {
-        console.log(a, b)
-        if ( a.last_nom < b.last_nom ){
-          return -1;
-        }
-        if ( a.last_nom > b.last_nom ){
-          return 1;
-        }
-        return 0;
-      });
-    }
+    // if (sortColumn && sortType) {
+    //   return data.sort(( a: string, b: string )=> {
+    //     console.log(a, b)
+    //     if ( a.last_nom < b.last_nom ){
+    //       return -1;
+    //     }
+    //     if ( a.last_nom > b.last_nom ){
+    //       return 1;
+    //     }
+    //     return 0;
+    //   });
+    // }
     return data;
   };
 
@@ -37,6 +36,7 @@ export default function RsuiteTable({data}: any) {
     setTimeout(() => {
       // setLoading(false);
       setSortColumn(sortColumn);
+      console.log(sortColumn)
       setSortType(sortType);
     }, 100);
   };

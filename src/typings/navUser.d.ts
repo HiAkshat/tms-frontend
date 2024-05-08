@@ -1,4 +1,4 @@
-interface NavUser{
+type NavUser = {
   id: string,
   name: string,
   email: string,

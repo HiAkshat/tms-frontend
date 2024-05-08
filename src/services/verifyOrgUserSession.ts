@@ -1,6 +1,6 @@
 import Cookie from "js-cookie"
 
-export default async function verifySession(): Promise<any> {
+export default async function verifySession(): Promise<void> {
   const accessToken: string = Cookie.get("accessToken") ?? ""
 
   try {
@@ -10,7 +10,7 @@ export default async function verifySession(): Promise<any> {
         "authorization": `BEARER ${accessToken}`
       }
     })
-    
+
     const data = await res.json()
     return data
   } catch (error) {
