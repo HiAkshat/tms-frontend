@@ -12,9 +12,9 @@ export default function RsuiteTable() {
   const navigate = useNavigate()
 
   const [sortColumn, setSortColumn] = useState<any>();
-  const [sortType, setSortType] = useState<any>();
-  const [loading, setLoading] = useState<any>(true);
-  const [data, setData] = useState<any>()
+  const [sortType, setSortType] = useState<SortType>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [data, setData] = useState<[OrganisationType]>()
 
   useEffect(()=>{
     organisationServices.getOrganisations().then(orgs => {
@@ -24,7 +24,7 @@ export default function RsuiteTable() {
   }, [])
 
   const getData = () => {
-    if (sortColumn && sortType) {
+    if (sortColumn && sortType && data) {
       return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
         let x = a[sortColumn];
         let y = b[sortColumn];
@@ -80,7 +80,7 @@ export default function RsuiteTable() {
   if (loading){
     return <Placeholder.Grid rows={8} columns={3} active />
   }
-  
+
   else{
     return (
       <Table

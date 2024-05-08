@@ -5,16 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import organisationServices from "../../services/organisation";
 
 
-interface Organisation {
-  organisation_name: string;
-  display_name: string;
-}
-
 export default function EditOrganisation() {
   const navigate = useNavigate()
 
   const { id } = useParams()
-  const [organisation, setOrganisation] = useState<Organisation>({
+  const [organisation, setOrganisation] = useState<OrganisationType>({
     organisation_name: '',
     display_name: '',
   })

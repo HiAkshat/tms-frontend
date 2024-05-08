@@ -1,7 +1,7 @@
 import { useState } from "react"
 import styles from "./NewOrganisationForm.module.scss"
 
-import { Input, Button, Schema, Form, MaskedInput } from 'rsuite';
+import { Input, Button, Schema, Form } from 'rsuite';
 import { StringType } from 'schema-typed';
 import organisationServices from "../../services/organisation";
 
@@ -24,7 +24,7 @@ export default function NewOrganisationForm() {
     display_name: '',
   })
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     try {

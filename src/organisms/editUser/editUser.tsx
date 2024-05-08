@@ -22,13 +22,13 @@ export default function EditUser() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const [organisationUser, setOrganisationUser] = useState<OrganisationUser>({
+  const [organisationUser, setOrganisationUser] = useState<SendUserType>({
     email_id: '',
     first_name: '',
     last_name: '',
-    dob: '',
+    dob: new Date(),
     organisation: '',
-    joining_date: ""
+    joining_date: new Date()
   })
 
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
@@ -46,7 +46,7 @@ export default function EditUser() {
     }
   }, []);
 
-  const handleSelectChange = (e: any) => {
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOrganisation(e.target.value);
     const { name, value } = e.target;
     setOrganisationUser((prevState) => ({
@@ -64,9 +64,9 @@ export default function EditUser() {
         email_id: '',
         first_name: '',
         last_name: '',
-        dob: "",
+        dob: new Date(),
         organisation: '',
-        joining_date: ""
+        joining_date: new Date()
       });
       navigate("..")
     } catch (error) {
@@ -94,14 +94,14 @@ export default function EditUser() {
           <TextInput placeholder="Last Name" name="last_name" value={organisationUser.last_name} onChange={handleChange} required={true} />
         </div>
         <div className={styles.inputs}>
-          <DateInput name="dob" value={organisationUser.dob} onChange={handleChange} placeholder="DOB" required={true} />
-          <DateInput name="joining_date" value={organisationUser.joining_date} onChange={handleChange} placeholder="Joining Date" required={true} />
+          <DateInput name="dob" value={organisationUser.dob.toString()} onChange={handleChange} placeholder="DOB" required={true} />
+          <DateInput name="joining_date" value={organisationUser.joining_date.toString()} onChange={handleChange} placeholder="Joining Date" required={true} />
         </div>
         <div className={styles.inputs}>
           {!organisations.isLoading &&
             <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
             <option value="">Select an organisation</option>
-            {organisations.data.map((org: any) => (
+            {organisations.data.map((org: OrganisationType) => (
               <option key={org._id} value={org._id}>{org.organisation_name}</option>
             ))}
             </select>

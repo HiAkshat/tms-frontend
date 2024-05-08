@@ -7,19 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 import organisationUserServices from "../../services/organisationUser";
 
-interface OrganisationUser {
-  email_id: string;
-  first_name: string;
-  last_name: string;
-  dob: Date;
-  organisation: string;
-  joining_date: Date;
-}
-
 export default function NewOrganisationForm() {
   const navigate = useNavigate()
 
-  const [organisationUser, setOrganisationUser] = useState<OrganisationUser>({
+  const [organisationUser, setOrganisationUser] = useState<SendUserType>({
     email_id: '',
     first_name: '',
     last_name: '',
@@ -30,7 +21,7 @@ export default function NewOrganisationForm() {
 
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
     try {
@@ -63,7 +54,7 @@ export default function NewOrganisationForm() {
         <div className={styles.inputs}>
           <DatePicker name="dob" value={organisationUser.dob} onChange={(val: Date|null)=>{setOrganisationUser({...organisationUser, dob: val ?? new Date()})}} placeholder="DOB"/>
           <DatePicker name="joining_date" value={organisationUser.joining_date} onChange={(val: Date|null)=>{setOrganisationUser({...organisationUser, joining_date: val ?? new Date()})}} placeholder="Joining Date" />
-          {!organisations.isLoading && <SelectPicker data={organisations.data.map((org: any) => ({label: org.organisation_name, value: org._id}))} onChange={(val: any)=>{setOrganisationUser({...organisationUser, organisation: val})}} value={organisationUser.organisation}/> }
+          {!organisations.isLoading && <SelectPicker data={organisations.data.map((org: OrganisationType) => ({label: org.organisation_name, value: org._id}))} onChange={(val)=>{setOrganisationUser({...organisationUser, organisation: val ?? ""})}} value={organisationUser.organisation}/> }
 
           </div>
         <div className={styles.inputs}>

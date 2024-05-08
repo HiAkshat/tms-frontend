@@ -26,7 +26,7 @@ export const getTicket = async (id: string|undefined) => {
   return res
 }
 
-export const addTicket = async (ticket: TicketType) => {
+export const addTicket = async (ticket: SendTicketType) => {
   await axios
     .post(apiEndpoint, ticket)
     .then(()=>{

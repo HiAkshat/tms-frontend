@@ -17,7 +17,7 @@ function NewTicketForm() {
   console.log(users)
   const ticketTypeOptions = ["Story", "Task", "Bug"]
 
-  const [ticketData, setTicketData] = useState<any>({
+  const [ticketData, setTicketData] = useState<SendTicketType>({
     organisation: user.organisation_id ?? "",
     type: '',
     key: '',
@@ -42,10 +42,10 @@ function NewTicketForm() {
       <span className={styles.title}>Add New Ticket</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <SelectPicker placeholder="Type" data={ticketTypeOptions.map(ticketType => ({label: ticketType, value: ticketType}))} onChange={(val: any)=>{setTicketData({...ticketData, type: val})}} value={ticketData.type}/>
+          <SelectPicker placeholder="Type" data={ticketTypeOptions.map(ticketType => ({label: ticketType, value: ticketType}))} onChange={(val: string)=>{setTicketData({...ticketData, type: val})}} value={ticketData.type}/>
           <DatePicker placeholder="Due Date" name="Due Date" value={ticketData.due_date} onChange={(val: Date|null)=>{setTicketData({...ticketData, due_date: val ?? new Date()})}} />
-          {!users.isLoading && <SelectPicker placeholder="Assignee" data={users.data.map((user: any) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val: any)=>{setTicketData({...ticketData, assignee: val})}} value={ticketData.assignee}/>}
-          {!users.isLoading && <SelectPicker placeholder="Reporter" data={users.data.map((user: any) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val: any)=>{setTicketData({...ticketData, reporter: val})}} value={ticketData.reporter}/>}
+          {!users.isLoading && <SelectPicker placeholder="Assignee" data={users.data.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, assignee: val ?? ""})}} value={ticketData.assignee}/>}
+          {!users.isLoading && <SelectPicker placeholder="Reporter" data={users.data.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, reporter: val ?? ""})}} value={ticketData.reporter}/>}
         </div>
         <div className={styles.inputs}>
           <Input placeholder="Summary" value={ticketData.summary} onChange={(val: string)=>setTicketData({...ticketData, summary: val})} required={true}/>

@@ -135,7 +135,7 @@ export default function EditTicket() {
               <label className={styles.fieldTitle} htmlFor="status">Status:</label>
               <select name="status" id="status" value={status} onChange={handleStatusChange}>
                 <option value="">Select status</option>
-                {statuses.map((status: any) => (
+                {statuses.map((status: string) => (
                   <option key={status} value={status}>{`${status}`}</option>
                 ))}
               </select>
@@ -145,7 +145,7 @@ export default function EditTicket() {
               <label className={styles.fieldTitle} htmlFor="assignee">Assignee:</label>
               <select name="assignee" id="assignee" value={assignee} onChange={handleAssigneeChange}>
                 <option value="">Select Assignee</option>
-                {users.data.map((user: any) => (
+                {users.data.map((user: UserType) => (
                   <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
                 ))}
               </select>
@@ -156,7 +156,7 @@ export default function EditTicket() {
               <label className={styles.fieldTitle} htmlFor="assignee">Reporter:</label>
               <select name="reporter" id="reporter" value={reporter} onChange={handleReporterChange}>
                 <option value="">Select Reporter</option>
-                {users.data.map((user: any) => (
+                {users.data.map((user: UserType) => (
                   <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
                 ))}
               </select>

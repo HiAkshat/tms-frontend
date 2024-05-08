@@ -48,12 +48,14 @@ const UserTable = ({ data }: any) => {
       },
       {
         Header: 'Actions',
-        Cell: ({ row }: any) => (
+        Cell: ({ row } : {row: any}) => {
+          return (
           <div className={styles.actions}>
             <button onClick={() => handleEdit(row.original)}>Edit</button>
             <button onClick={() => handleDelete(row.original)}>Delete</button>
           </div>
-        ),
+          )
+        },
       },
     ],
     []
@@ -72,7 +74,7 @@ const UserTable = ({ data }: any) => {
     navigate(`edit/${entry._id}`);
   };
 
-  const handleDelete = async (entry: any) => {
+  const handleDelete = async (entry: UserType) => {
     console.log('Delete entry:', entry);
     const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${entry._id}`, {
       method: "DELETE",
