@@ -12,7 +12,7 @@ import { StateType } from "../../typings/navUser"
 export default function ViewTickets() {
   const navigate = useNavigate()
   const user = useSelector((state: StateType) => state.user)
-  const [tickets, setTickets] = useState([])
+  const [tickets, setTickets] = useState<[TicketType]>()
 
   useEffect(()=>{
     if (!(user.isAuthenticated && user.userType=='organisation')){
@@ -30,7 +30,7 @@ export default function ViewTickets() {
         <NewTicketForm />
         <div className={styles.tableDiv}>
           <span>Tickets Table</span>
-          <RsuiteTable data={tickets}/>
+          {tickets && <RsuiteTable data={tickets}/>}
         </div>
       </div>
     </div>

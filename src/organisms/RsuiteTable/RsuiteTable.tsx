@@ -46,8 +46,10 @@ export default function RsuiteTable() {
 
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
     // setLoading(true);
+    console.log(typeof sortType)
     setTimeout(() => {
       // setLoading(false);
+      console.log(typeof sortColumn)
       setSortColumn(sortColumn);
       setSortType(sortType);
     }, 100);

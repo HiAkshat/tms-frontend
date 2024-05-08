@@ -12,12 +12,12 @@ import organisationUserServices from '../../services/organisationUser';
 export default function RsuiteTable() {
   const navigate = useNavigate()
 
-  const [data, setData] = useState<any>()
+  const [data, setData] = useState<[UserType]>()
 
   const [sortColumn, setSortColumn] = useState<any>();
   const [sortType, setSortType] = useState<any>();
 
-  const [loading, setLoading] = useState<any>(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(()=>{
     organisationUserServices.getOrganisationUsers().then((users)=>{
@@ -27,7 +27,7 @@ export default function RsuiteTable() {
   }, [])
 
   const getData = () => {
-    if (sortColumn && sortType) {
+    if (data && sortColumn && sortType) {
       return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
         let x = a[sortColumn];
         let y = b[sortColumn];
