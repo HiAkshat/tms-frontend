@@ -7,11 +7,12 @@ import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import RsuiteTable from "../../organisms/RsuiteTable/RsuiteTable"
 import { useEffect } from "react"
+import { StateType } from "../../typings/navUser"
 
 export default function ManageOrganisations(){
   const navigate = useNavigate()
   const organisations = getData('http://127.0.0.1:8000/api/organisation')
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: StateType) => state.user)
 
   useEffect(()=>{
     if (!(user.isAuthenticated && user.userType=='system')){

@@ -13,19 +13,19 @@
 // }, {timestamps: true});
 
 interface Ticket {
-  type: "Story" | "Task" | "Bug",
-  key: string | undefined,
+  type: string,
+  key?: string | undefined,
   summary: string,
   description: string,
   assignee: string,
   reporter: string,
-  organisation: string,
-  status: "To be picked" | "In progress" | "In testing" | "Completed" | undefined,
-  due_date: Date,
-  files: []|undefined,
-  comments: []|undefined,
-  createdAt: string,
-  updatedAt: string
+  organisation?: string,
+  status: string | "To be picked" | "In progress" | "In testing" | "Completed" | undefined,
+  due_date: Date|string,
+  files?: []|undefined,
+  comments?: []|undefined,
+  createdAt?: string,
+  updatedAt?: string
 }
 
 export type {Ticket as TicketType}

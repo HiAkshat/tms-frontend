@@ -7,18 +7,19 @@ import { useNavigate } from "react-router-dom";
 import RsuiteTable from "../../organisms/RsuiteTableUser/RsuiteTableUser";
 import { useEffect, useState } from "react";
 import organisationUserServices from "../../services/organisationUser";
+import { StateType } from "../../typings/navUser";
 
 export default function ManageUsers() {
   const navigate = useNavigate()
 
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: StateType) => state.user)
   const [users, setUsers] = useState([])
 
   useEffect(()=>{
     organisationUserServices.getOrganisationUsers().then(data=>{setUsers(data)})
   }, [])
 
-  if (false && !user.isAuthenitcated || user.usertype=='organisation'){
+  if (false && !user.isAuthenticated || user.userType=='organisation'){
     showToast("Login as system user to access!")
     navigate("../login")
   }

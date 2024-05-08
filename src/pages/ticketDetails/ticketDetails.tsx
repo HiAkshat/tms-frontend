@@ -6,10 +6,11 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import showToast from "../../atoms/Toast/Toast"
 import ticketServices from "../../services/ticket/index"
+import { StateType } from "../../typings/navUser"
 
 export default function TicketDetails() {
   const {id} = useParams()
-  const [ticket, setTicket] = useState<any>()
+  const [ticket, setTicket] = useState<TicketType>()
 
   useEffect(()=>{
     try {
@@ -25,7 +26,7 @@ export default function TicketDetails() {
 
   const [showActions, setShowActions] = useState(false)
 
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: StateType) => state.user)
 
   function formattedDate(dateString: string) {
     const date = new Date(dateString);
@@ -106,7 +107,7 @@ export default function TicketDetails() {
                   </div>
                   <div className={styles.colDiv}>
                     <span>Current Status <span>{ticket.status}</span></span>
-                    <span>Due Date <span>{formattedDate(ticket.due_date)}</span></span>
+                    <span>Due Date <span>{formattedDate(ticket.due_date.toString())}</span></span>
                   </div>
                   <div className={styles.colDiv}>
                     <span>Description</span>

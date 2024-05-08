@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom"
 import { useEffect } from "react";
 import showToast from "../../atoms/Toast/Toast";
 import { useSelector } from "react-redux"
+import { StateType } from "../../typings/navUser";
 
 export default function SystemUserDashboard() {
   let navigate = useNavigate();
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: StateType) => state.user)
 
   useEffect(()=>{
     if (!(user.isAuthenticated && user.userType=='system')){

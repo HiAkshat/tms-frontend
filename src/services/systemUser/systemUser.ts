@@ -1,10 +1,21 @@
 import axios from "axios"
-import { OrganisationUserType, VerifyOtpBodyType } from "./types"
+import { SystemUserType, VerifyOtpBodyType } from "./types"
 import showToast from "../../atoms/Toast/Toast"
 
-export const getOrganisationUsers = async () => {
+export const getSystemUser = async (id: string|undefined) => {
   const res = await axios
-    .get("http://127.0.0.1:8000/api/organisationUser")
+    .get(`http://127.0.0.1:8000/api/systemUser/${id}`)
+    .then(res => {return res.data})
+    .catch(error => {
+      throw error
+    })
+
+  return res
+}
+
+export const getSystemUserByEmail = async (email: string|undefined) => {
+  const res = await axios
+    .get(`http://127.0.0.1:8000/api/systemUser/email/${email}`)
     .then(res => {return res.data})
     .catch(error => {
       throw error
@@ -15,7 +26,7 @@ export const getOrganisationUsers = async () => {
 
 export const sendOtp = async (email: string|undefined) => {
   await axios
-    .post(`http://127.0.0.1:8000/api/organisationUser/sendOtp/${email}`)
+    .post(`http://127.0.0.1:8000/api/systemUser/sendOtp/${email}`)
     .then(()=>{
       showToast(`OTP sent to ${email}`)
     })
@@ -27,7 +38,7 @@ export const sendOtp = async (email: string|undefined) => {
 
 export const verifyOtp = async (body: VerifyOtpBodyType) => {
   const res = await axios
-    .post(`http://127.0.0.1:8000/api/organisationUser/verifyOtp`, body)
+    .post(`http://127.0.0.1:8000/api/systemUser/verifyOtp`, body)
     .then((res)=>{
       showToast("Logged in successfully!")
       return res.data
@@ -40,29 +51,7 @@ export const verifyOtp = async (body: VerifyOtpBodyType) => {
   return res
 }
 
-export const getOrganisationUser = async (id: string|undefined) => {
-  const res = await axios
-    .get(`http://127.0.0.1:8000/api/organisationUser/${id}`)
-    .then(res => {return res.data})
-    .catch(error => {
-      throw error
-    })
-
-  return res
-}
-
-export const getOrganisationUserByEmail = async (email: string|undefined) => {
-  const res = await axios
-    .get(`http://127.0.0.1:8000/api/organisationUser/email/${email}`)
-    .then(res => {return res.data})
-    .catch(error => {
-      throw error
-    })
-
-  return res
-}
-
-export const addOrganisationUser = async (organisationUser: OrganisationUserType) => {
+export const addOrganisationUser = async (organisationUser: SystemUserType) => {
   await axios
     .post("http://127.0.0.1:8000/api/organisationUser", organisationUser)
     .then(()=>{
@@ -73,7 +62,7 @@ export const addOrganisationUser = async (organisationUser: OrganisationUserType
     })
 }
 
-export const editOrganisationUser = async (organisationUser: OrganisationUserType, id: string|undefined) => {
+export const editOrganisationUser = async (organisationUser: SystemUserType, id: string|undefined) => {
   await axios
     .put(`http://127.0.0.1:8000/api/organisationUser/${id}`, organisationUser)
     .then(()=>{

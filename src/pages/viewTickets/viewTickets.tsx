@@ -7,10 +7,11 @@ import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import RsuiteTable from "../../organisms/RsuiteTableTicket/RsuiteTableTicket"
 import ticketServices from "../../services/ticket/index"
+import { StateType } from "../../typings/navUser"
 
 export default function ViewTickets() {
   const navigate = useNavigate()
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: StateType) => state.user)
   const [tickets, setTickets] = useState([])
 
   useEffect(()=>{

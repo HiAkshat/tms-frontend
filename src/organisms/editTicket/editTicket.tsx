@@ -5,9 +5,9 @@ import { useSelector } from "react-redux"
 
 import styles from "./EditTicket.module.scss"
 
-import showToast from "../../atoms/Toast/Toast"
 import { useNavigate } from "react-router-dom"
 import ticketServices from "../../services/ticket"
+import { NavUserType, StateType } from "../../typings/navUser"
 
 // interface Ticket {
 //   type: string,
@@ -22,7 +22,7 @@ import ticketServices from "../../services/ticket"
 export default function EditTicket() {
   const navigate = useNavigate()
   const {id} = useParams()
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state : StateType) => state.user)
   const users = getData(`http://localhost:8000/api/organisationUser/organisation/${user.organisation_id}`)
 
   const [assignee, setAssignee] = useState<string>('');
@@ -30,7 +30,7 @@ export default function EditTicket() {
   const statuses = ['To be picked', 'In progress', 'In testing', 'Completed']
   const [status, setStatus] = useState<string>('')
 
-  const [ticketData, setTicketData] = useState<any>({
+  const [ticketData, setTicketData] = useState({
     type: "",
     summary: "",
     description: "",
@@ -52,6 +52,7 @@ export default function EditTicket() {
     try {
       ticketServices.getTicket(id).then(data => {
         setTicketData(data)
+        console.log("HEY")
       })
     } catch (error){
       return
@@ -69,7 +70,7 @@ export default function EditTicket() {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value } = e.target;
     setTicketData({
       ...ticketData,
@@ -77,7 +78,7 @@ export default function EditTicket() {
     });
   };
 
-  const handleAssigneeChange = (e: any) => {
+  const handleAssigneeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {name, value} = e.target;
     setAssignee(value)
     setTicketData({
@@ -86,7 +87,7 @@ export default function EditTicket() {
     })
   }
 
-  const handleReporterChange = (e: any) => {
+  const handleReporterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {name, value} = e.target;
     setReporter(value)
     setTicketData({
@@ -95,7 +96,7 @@ export default function EditTicket() {
     })
   }
 
-  const handleStatusChange = (e: any) => {
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {name, value} = e.target;
     setStatus(value)
     setTicketData({

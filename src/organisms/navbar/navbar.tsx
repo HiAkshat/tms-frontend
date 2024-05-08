@@ -7,12 +7,12 @@ import Cookie from "js-cookie"
 
 import { useEffect } from "react";
 import { login } from "../../redux/userSlice";
-import { NavUserType } from "../../typings/navUser";
+import { NavUserType, StateType } from "../../typings/navUser";
 
 export default function Navbar() {
   let navigate = useNavigate();
   const dispatch = useDispatch()
-  const user: NavUserType = useSelector((state: any) => state.user)
+  const user: NavUserType = useSelector((state: StateType) => state.user)
 
   const handleLogout = () => {
     Cookie.remove("accessToken")

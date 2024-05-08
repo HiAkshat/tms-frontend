@@ -7,4 +7,8 @@ interface NavUser{
   isAuthenticated: boolean
 }
 
-export type {NavUser as NavUserType}
+type StateType = {
+  user: NavUser
+}
+
+export type {NavUser as NavUserType, StateType}

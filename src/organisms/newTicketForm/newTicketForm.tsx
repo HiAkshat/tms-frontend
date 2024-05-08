@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { DatePicker, Button, Input, SelectPicker } from 'rsuite';
 import ticketServices from '../../services/ticket/index';
-import { NavUserType } from '../../typings/navUser';
+import { NavUserType, StateType } from '../../typings/navUser';
 
 
 function NewTicketForm() {
   const navigate = useNavigate()
-  const user:NavUserType = useSelector((state: any) => state.user)
+  const user:NavUserType = useSelector((state: StateType) => state.user)
   const users = getData(`http://localhost:8000/api/organisationUser/organisation/${user.organisation_id}`)
   console.log(users)
   const ticketTypeOptions = ["Story", "Task", "Bug"]

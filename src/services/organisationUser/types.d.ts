@@ -7,4 +7,9 @@ interface OrganisationUser {
   joining_date: Date|string
 }
 
-export type {OrganisationUser as OrganisationUserType}
+interface VerifyOtpBody {
+  email_id: string,
+  otp: string
+}
+
+export type {OrganisationUser as OrganisationUserType, VerifyOtpBody as VerifyOtpBodyType}
