@@ -28,9 +28,9 @@ export const addOrganisationUser = async (organisationUser: OrganisationUserType
   await axios
     .post("http://127.0.0.1:8000/api/organisationUser", organisationUser)
     .then(()=>{
-      showToast("Organisation user added successfully!")
+      showToast("User added successfully!")
     }).catch((error) => {
-      showToast("Error adding organisation user!")
+      showToast("Error adding user!")
       throw error
     })
 }
@@ -39,10 +39,10 @@ export const editOrganisationUser = async (organisationUser: OrganisationUserTyp
   await axios
     .put(`http://127.0.0.1:8000/api/organisationUser/${id}`, organisationUser)
     .then(()=>{
-      showToast("Organisation user edited successfully!")
+      showToast("User edited successfully!")
     })
     .catch((error)=>{
-      showToast("Error editing organisation user!")
+      showToast("Error editing user!")
       throw error
     })
 }
@@ -51,10 +51,10 @@ export const deleteOrganisationUser = async (id: string|undefined) => {
   await axios
     .delete(`http://127.0.0.1:8000/api/organisationUser/${id}`)
     .then(()=>{
-      showToast("Organisation user deleted successfully!")
+      showToast("User deleted successfully!")
     })
     .catch((error)=>{
-      showToast("Error deleting organisation user!")
+      showToast("Error deleting user!")
       throw error
     })
 }

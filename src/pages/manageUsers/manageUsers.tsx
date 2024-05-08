@@ -20,18 +20,18 @@ export default function ManageUsers() {
 
   if (false && !user.isAuthenitcated || user.usertype=='organisation'){
     showToast("Login as system user to access!")
-    navigate("../login") 
+    navigate("../login")
   }
 
   else{
     return (
       <div className={styles.page}>
-        <Navbar /> 
+        <Navbar />
         <div className={styles.main}>
           <NewUserForm />
           <div className={styles.tableDiv}>
             <span>Users Table</span>
-            <RsuiteTable data={users}/>
+            <RsuiteTable />
           </div>
         </div>
       </div>

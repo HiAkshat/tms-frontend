@@ -27,7 +27,7 @@ export default function ManageOrganisations(){
         <NewOrganisationForm />
         <div className={styles.tableDiv}>
           <span>Organisations Table</span>
-          {!organisations.isLoading && <RsuiteTable data={organisations.data} />}
+          {!organisations.isLoading && <RsuiteTable />}
         </div>
       </div>
     </div>

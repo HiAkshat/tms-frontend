@@ -7,6 +7,7 @@ import TextInput from "../../atoms/TextInput/TextInput";
 import DateInput from "../../atoms/DateInput/DateInput";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/navbar";
+import organisationUserServices from "../../services/organisationUser";
 
 interface OrganisationUser {
   email_id: string;
@@ -25,7 +26,7 @@ export default function EditUser() {
     email_id: '',
     first_name: '',
     last_name: '',
-    dob: "",
+    dob: '',
     organisation: '',
     joining_date: ""
   })
@@ -35,23 +36,15 @@ export default function EditUser() {
   const [selectedOrganisation, setSelectedOrganisation] = useState('');
 
   useEffect(() => {
-    fetchUser()
-  }, []);
-
-  const fetchUser = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch organisations');
-      }
-      const data = await response.json();
-      console.log(data)
-      setOrganisationUser(data);
-      setSelectedOrganisation(data.organisation)
+      organisationUserServices.getOrganisationUser(id).then(data => {
+        setOrganisationUser(data)
+        setSelectedOrganisation(data.organisation)
+      })
     } catch (error) {
-      console.error('Error fetching organisations:', error);
+      return
     }
-  };
+  }, []);
 
   const handleSelectChange = (e: any) => {
     setSelectedOrganisation(e.target.value);
@@ -64,31 +57,21 @@ export default function EditUser() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(organisationUser)
-    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisationUser)
-    })
 
-    if (!res.ok){
-      showToast("Error editing user!")
+    try {
+      await organisationUserServices.editOrganisationUser(organisationUser, id)
+      setOrganisationUser({
+        email_id: '',
+        first_name: '',
+        last_name: '',
+        dob: "",
+        organisation: '',
+        joining_date: ""
+      });
+      navigate("..")
+    } catch (error) {
       return
     }
-
-    setOrganisationUser({
-      email_id: '',
-      first_name: '',
-      last_name: '',
-      dob: "",
-      organisation: '',
-      joining_date: ""
-    });
-
-    showToast("User edited successfully!")
-    navigate("..")
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

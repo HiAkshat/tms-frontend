@@ -1,20 +1,30 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Button, Pagination, IconButton, Whisper } from 'rsuite';
+import { Table } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
-import showToast from '../../atoms/Toast/Toast';
+import { Placeholder } from 'rsuite';
 
 const { Column, HeaderCell, Cell } = Table;
 
 import styles from "./RsuiteTable.module.scss"
 import organisationUserServices from '../../services/organisationUser';
 
-export default function RsuiteTable({data}: any) {
+export default function RsuiteTable() {
   const navigate = useNavigate()
+
+  const [data, setData] = useState<any>()
 
   const [sortColumn, setSortColumn] = useState<any>();
   const [sortType, setSortType] = useState<any>();
-  const [loading, setLoading] = useState<any>(false);
+
+  const [loading, setLoading] = useState<any>(true);
+
+  useEffect(()=>{
+    organisationUserServices.getOrganisationUsers().then((users)=>{
+      setData(users)
+      setLoading(false)
+    })
+  }, [])
 
   const getData = () => {
     if (sortColumn && sortType) {
@@ -38,16 +48,15 @@ export default function RsuiteTable({data}: any) {
   };
 
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
-    setLoading(true);
+    // setLoading(true);
     setTimeout(() => {
       setLoading(false);
       setSortColumn(sortColumn);
       setSortType(sortType);
-    }, 100);
+    }, 500);
   };
 
   const ActionCell = ({ rowData, dataKey, ...props }: any) => {
-
     // {console.log(rowData)}
     // console.log(rowData[dataKey]);
     return (
@@ -72,46 +81,53 @@ export default function RsuiteTable({data}: any) {
     }
   };
 
-  return (
-    <Table
-      className={styles.userTable}
-      sortColumn={sortColumn}
-      sortType={sortType}
-      onSortColumn={handleSortColumn}
-      height={400}
-      data={getData()}
-      onRowClick={rowData => {
-        console.log(rowData);
-      }}
-    >
-      <Column flexGrow={1} align="center" sortable>
-        <HeaderCell>Email ID</HeaderCell>
-        <Cell dataKey="email_id" />
-      </Column>
-      <Column flexGrow={1} align="center" sortable>
-        <HeaderCell>First Name</HeaderCell>
-        <Cell dataKey="first_name" />
-      </Column>
-      <Column flexGrow={1} align="center" sortable>
-        <HeaderCell>Last Name</HeaderCell>
-        <Cell dataKey="last_name" />
-      </Column>
-      <Column flexGrow={1} align="center" sortable>
-        <HeaderCell>DOB</HeaderCell>
-        <Cell dataKey="dob">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
-      </Column>
-      <Column flexGrow={1} align="center">
-        <HeaderCell>Organisation</HeaderCell>
-        <Cell dataKey="organisation.organisation_name" />
-      </Column>
-      <Column flexGrow={1} align="center" sortable>
-        <HeaderCell>Joining Date</HeaderCell>
-        <Cell dataKey="joining_date">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
-      </Column>
-      <Column flexGrow={1}>
-        <HeaderCell>Actions</HeaderCell>
-        <ActionCell dataKey="_id" rowData={undefined} />
-      </Column>
-    </Table>
-  )
+  if (loading){
+    return <Placeholder.Grid rows={10} columns={7} active />
+  }
+
+  else{
+    return (
+      <Table
+        className={styles.userTable}
+        sortColumn={sortColumn}
+        sortType={sortType}
+        onSortColumn={handleSortColumn}
+        height={400}
+        data={getData()}
+        onRowClick={rowData => {
+          console.log(rowData);
+        }}
+      >
+        <Column flexGrow={1} align="center" sortable>
+          <HeaderCell>Email ID</HeaderCell>
+          <Cell dataKey="email_id" />
+        </Column>
+        <Column flexGrow={1} align="center" sortable>
+          <HeaderCell>First Name</HeaderCell>
+          <Cell dataKey="first_name" />
+        </Column>
+        <Column flexGrow={1} align="center" sortable>
+          <HeaderCell>Last Name</HeaderCell>
+          <Cell dataKey="last_name" />
+        </Column>
+        <Column flexGrow={1} align="center" sortable>
+          <HeaderCell>DOB</HeaderCell>
+          <Cell dataKey="dob">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
+        </Column>
+        <Column flexGrow={1} align="center">
+          <HeaderCell>Organisation</HeaderCell>
+          <Cell dataKey="organisation.organisation_name" />
+        </Column>
+        <Column flexGrow={1} align="center" sortable>
+          <HeaderCell>Joining Date</HeaderCell>
+          <Cell dataKey="joining_date">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
+        </Column>
+        <Column flexGrow={1}>
+          <HeaderCell>Actions</HeaderCell>
+          <ActionCell dataKey="_id" rowData={undefined} />
+        </Column>
+      </Table>
+    )
+  }
+
 }

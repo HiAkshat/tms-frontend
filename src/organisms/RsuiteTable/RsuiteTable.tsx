@@ -1,18 +1,27 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 import organisationServices from '../../services/organisation';
+import { Placeholder } from 'rsuite';
 
 const { Column, HeaderCell, Cell } = Table;
 
-export default function RsuiteTable({data}: any) {
+export default function RsuiteTable() {
   const navigate = useNavigate()
 
   const [sortColumn, setSortColumn] = useState<any>();
   const [sortType, setSortType] = useState<any>();
-  // const [loading, setLoading] = useState<any>(false);
+  const [loading, setLoading] = useState<any>(true);
+  const [data, setData] = useState<any>()
+
+  useEffect(()=>{
+    organisationServices.getOrganisations().then(orgs => {
+      setData(orgs)
+      setLoading(false)
+    })
+  }, [])
 
   const getData = () => {
     if (sortColumn && sortType) {
@@ -68,29 +77,36 @@ export default function RsuiteTable({data}: any) {
     }
   };
 
-  return (
-    <Table
-      sortColumn={sortColumn}
-      sortType={sortType}
-      onSortColumn={handleSortColumn}
-      height={400}
-      data={getData()}
-      onRowClick={rowData => {
-        console.log(rowData);
-      }}
-    >
-      <Column flexGrow={3} align="center" sortable>
-        <HeaderCell>Organisation Name</HeaderCell>
-        <Cell dataKey="organisation_name" />
-      </Column>
-      <Column flexGrow={3} align="center" sortable>
-        <HeaderCell>Display Name</HeaderCell>
-        <Cell dataKey="display_name" />
-      </Column>
-      <Column flexGrow={1}>
-        <HeaderCell>Actions</HeaderCell>
-        <ActionCell dataKey="_id" rowData={undefined} />
-      </Column>
-    </Table>
-  )
+  if (loading){
+    return <Placeholder.Grid rows={8} columns={3} active />
+  }
+  
+  else{
+    return (
+      <Table
+        sortColumn={sortColumn}
+        sortType={sortType}
+        onSortColumn={handleSortColumn}
+        height={400}
+        data={getData()}
+        onRowClick={rowData => {
+          console.log(rowData);
+        }}
+      >
+        <Column flexGrow={3} align="center" sortable>
+          <HeaderCell>Organisation Name</HeaderCell>
+          <Cell dataKey="organisation_name" />
+        </Column>
+        <Column flexGrow={3} align="center" sortable>
+          <HeaderCell>Display Name</HeaderCell>
+          <Cell dataKey="display_name" />
+        </Column>
+        <Column flexGrow={1}>
+          <HeaderCell>Actions</HeaderCell>
+          <ActionCell dataKey="_id" rowData={undefined} />
+        </Column>
+      </Table>
+    )
+  }
+
 }

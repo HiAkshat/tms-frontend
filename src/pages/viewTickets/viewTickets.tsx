@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import showToast from "../../atoms/Toast/Toast"
 import Navbar from "../../organisms/Navbar/navbar"
 import NewTicketForm from "../../organisms/NewTicketForm/NewTicketForm"
-import TicketTable from "../../organisms/TicketTable/TicketTable"
 import styles from "./index.module.scss"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -31,7 +30,6 @@ export default function ViewTickets() {
         <div className={styles.tableDiv}>
           <span>Tickets Table</span>
           <RsuiteTable data={tickets}/>
-          <TicketTable data={tickets}/>
         </div>
       </div>
     </div>

@@ -61,25 +61,12 @@ export default function EditTicket() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // ticketServices.editTicket(ticketData, id)
-
-    const res = await fetch(`http://127.0.0.1:8000/api/ticket/${id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(ticketData)
-    })
-
-    if (!res.ok){
-      showToast("Error editing user!")
+    try {
+      await ticketServices.editTicket(ticketData, id)
+      navigate("../viewTickets")
+    } catch (error) {
       return
     }
-
-
-    showToast("User edited successfully!")
-    navigate("../viewTickets")
-
   };
 
   const handleChange = (e: any) => {

@@ -7,11 +7,12 @@ import Cookie from "js-cookie"
 
 import { useEffect } from "react";
 import { login } from "../../redux/userSlice";
+import { NavUserType } from "../../typings/navUser";
 
 export default function Navbar() {
   let navigate = useNavigate();
   const dispatch = useDispatch()
-  const user = useSelector((state: any) => state.user)
+  const user: NavUserType = useSelector((state: any) => state.user)
 
   const handleLogout = () => {
     Cookie.remove("accessToken")
@@ -32,7 +33,7 @@ export default function Navbar() {
           "authorization": `BEARER ${accessToken}`
         }
       })
-      
+
       let userData = await res.json()
       userData=userData.decoded.user
       const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
@@ -55,7 +56,7 @@ export default function Navbar() {
 
   return (
     <div className={styles.navbar}>
-      {user.userType=="system" ? 
+      {user.userType=="system" ?
         <div className={styles.navbarPart}>
           <span onClick={()=>{navigate("/manageUsers")}} className={styles.navbarButton}>Manage Users</span>
           <span onClick={()=>{navigate("/manageOrganisations")}} className={styles.navbarButton}>Manage Organisations</span>
