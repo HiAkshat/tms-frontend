@@ -6,21 +6,13 @@ import { Input, Button } from 'rsuite';
 // import { StringType } from 'schema-typed';
 import organisationServices from "../../services/organisation";
 
-
-
 // const model = Schema.Model({
 //   organisation_name: StringType().isRequired("This field is required!"),
 //   display_name: StringType().isRequired("This field is required!")
 // });
 
-interface Organisation {
-  organisation_name: string;
-  display_name: string;
-}
-
-
 export default function NewOrganisationForm() {
-  const [organisation, setOrganisation] = useState<Organisation>({
+  const [organisation, setOrganisation] = useState<OrganisationType>({
     organisation_name: '',
     display_name: '',
   })

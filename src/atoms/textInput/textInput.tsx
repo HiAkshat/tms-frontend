@@ -2,7 +2,7 @@
 
 import styles from "./TextInput.module.scss"
 
-interface Props {
+type Props = {
   placeholder: string,
   name: string,
   value: string,

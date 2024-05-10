@@ -1,6 +1,6 @@
 import styles from "./DateInput.module.scss"
 
-interface Props {
+type Props = {
   placeholder: string,
   name: string,
   value: string,

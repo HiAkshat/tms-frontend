@@ -1,22 +1,12 @@
 import { useState, useEffect } from "react"
 import styles from "./EditUser.module.scss"
 import { useParams } from 'react-router-dom'
-import showToast from "../../atoms/Toast/Toast";
 import { getData } from "../../services/getData";
 import TextInput from "../../atoms/TextInput/TextInput";
 import DateInput from "../../atoms/DateInput/DateInput";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/navbar";
 import organisationUserServices from "../../services/organisationUser";
-
-interface OrganisationUser {
-  email_id: string;
-  first_name: string;
-  last_name: string;
-  dob: string;
-  organisation: string;
-  joining_date: string;
-}
 
 export default function EditUser() {
   const { id } = useParams()

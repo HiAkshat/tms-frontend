@@ -1,4 +1,4 @@
-interface Organisation {
+type Organisation = {
   organisation_name: string,
   display_name: string
 }

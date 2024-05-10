@@ -9,15 +9,6 @@ import { useNavigate } from "react-router-dom"
 import ticketServices from "../../services/ticket"
 import { StateType } from "../../typings/navUser"
 
-// interface Ticket {
-//   type: string,
-//   summary: string,
-//   description: string,
-//   assignee: string,
-//   reporter: string,
-//   status: string,
-//   due_date: string
-// }
 
 export default function EditTicket() {
   const navigate = useNavigate()
