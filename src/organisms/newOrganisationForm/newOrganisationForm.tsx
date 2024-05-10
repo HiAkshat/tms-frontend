@@ -38,6 +38,10 @@ export default function NewOrganisationForm() {
   };
 
   const handleOrgNameChange = (e: string) => {
+    setTimeout(() => {
+      validateName(e, setIsOrgnNameValid)
+    }, 1000);
+
     setOrganisation((prevState) => ({
       ...prevState,
       organisation_name: e,
@@ -45,6 +49,10 @@ export default function NewOrganisationForm() {
   };
 
   const handleDisplayNameChange = (e: string) => {
+    setTimeout(() => {
+      validateName(e, setIsDisplayNameValid)
+    }, 1000);
+
     setOrganisation((prevState) => ({
       ...prevState,
       display_name: e,
@@ -70,7 +78,7 @@ export default function NewOrganisationForm() {
           </div>
           <div className={styles.inputField}>
             <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
-            <span hidden={isDisplayNameValid}>Invalid display name</span>
+            <span hidden={isOrgNameValid}>Invalid display name</span>
           </div>
         </div>
         <Button onClick={handleSubmit} type="submit">Add</Button>

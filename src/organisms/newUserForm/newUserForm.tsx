@@ -24,6 +24,7 @@ export default function NewOrganisationForm() {
   const [isFirstNameValid, setIsFirstNameValid] = useState(true)
   const [isLastNameValid, setIsLastNameValid] = useState(true)
 
+
   const validateEmail = (email: string) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
@@ -85,6 +86,9 @@ export default function NewOrganisationForm() {
               placeholder="E-mail ID"
               value={organisationUser.email_id}
               onChange={(val: string) =>{
+                setTimeout(() => {
+                  validateEmail(val)
+                }, 1000);
                 setOrganisationUser({ ...organisationUser, email_id: val })
               }
               }
@@ -96,9 +100,12 @@ export default function NewOrganisationForm() {
             <Input
               placeholder="First Name"
               value={organisationUser.first_name}
-              onChange={(val: string) =>
+              onChange={(val: string) =>{
+                setTimeout(() => {
+                  validateName(val, setIsFirstNameValid)
+                }, 1000);
                 setOrganisationUser({ ...organisationUser, first_name: val })
-              }
+              }}
               required={true}
             />
             <span hidden={isFirstNameValid}>Invalid first name</span>
@@ -107,9 +114,12 @@ export default function NewOrganisationForm() {
             <Input
               placeholder="Last Name"
               value={organisationUser.last_name}
-              onChange={(val: string) =>
+              onChange={(val: string) =>{
+                setTimeout(() => {
+                  validateName(val, setIsLastNameValid)
+                }, 1000);
                 setOrganisationUser({ ...organisationUser, last_name: val })
-              }
+              }}
               required={true}
             />
             <span hidden={isLastNameValid}>Invalid last name</span>

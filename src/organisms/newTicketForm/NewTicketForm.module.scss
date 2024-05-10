@@ -17,7 +17,7 @@
 //       // background-color: beige;
 //       justify-content: space-between;
 //       gap: 25px;
-      
+
 //       .fieldInfo{
 //         display: flex;
 //         flex-direction: column;
@@ -85,13 +85,13 @@
     // width: fit-content;
     padding: 16px;
     border-radius: 10px;
-    
+
     .inputs{
       display: flex;
       flex-direction: column;
       gap: 8px;
       justify-content: space-between;
-      
+
       select{
         min-width: 300px;
         // height: 46.5%;
@@ -116,7 +116,7 @@
         border: none;
         outline: none;
         background-color: #2A2A2A;
-      
+
         &:focus{
           background-color: #383838;
         }
