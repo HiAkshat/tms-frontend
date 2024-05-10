@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table } from 'rsuite';
+import { Table, Pagination } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 import organisationServices from '../../services/organisation';
@@ -11,7 +11,7 @@ const { Column, HeaderCell, Cell } = Table;
 export default function RsuiteTable() {
   const navigate = useNavigate()
 
-  const [sortColumn, setSortColumn] = useState<any>();
+  const [sortColumn, setSortColumn] = useState<string>('');
   const [sortType, setSortType] = useState<SortType>();
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<[OrganisationType]>()
@@ -25,9 +25,10 @@ export default function RsuiteTable() {
 
   const getData = () => {
     if (sortColumn && sortType && data) {
-      return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+      return data.sort((a: { [x: string]: string|number; }, b: { [x: string]: string|number; }) => {
         let x = a[sortColumn];
         let y = b[sortColumn];
+
         if (typeof x === 'string') {
           x = x.toLowerCase().charCodeAt(0);
         }
@@ -46,10 +47,8 @@ export default function RsuiteTable() {
 
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
     // setLoading(true);
-    console.log(typeof sortType)
     setTimeout(() => {
       // setLoading(false);
-      console.log(typeof sortColumn)
       setSortColumn(sortColumn);
       setSortType(sortType);
     }, 100);

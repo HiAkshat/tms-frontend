@@ -1,16 +1,17 @@
 import { useState } from "react"
 import styles from "./NewOrganisationForm.module.scss"
 
-import { Input, Button, Schema, Form } from 'rsuite';
-import { StringType } from 'schema-typed';
+import { Input, Button } from 'rsuite';
+// import { Input, Button, Schema, Form } from 'rsuite';
+// import { StringType } from 'schema-typed';
 import organisationServices from "../../services/organisation";
 
 
 
-const model = Schema.Model({
-  organisation_name: StringType().isRequired("This field is required!"),
-  display_name: StringType().isRequired("This field is required!")
-});
+// const model = Schema.Model({
+//   organisation_name: StringType().isRequired("This field is required!"),
+//   display_name: StringType().isRequired("This field is required!")
+// });
 
 interface Organisation {
   organisation_name: string;
@@ -57,13 +58,11 @@ export default function NewOrganisationForm() {
     <div className={styles.main}>
       <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
-      <Form model={model}>
         <div className={styles.inputs}>
           <Input placeholder="Organisation Name" value={organisation.organisation_name} onChange={handleOrgNameChange} required={true}/>
           <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
         </div>
         <Button onClick={handleSubmit} type="submit">Add</Button>
-      </Form>
       </form>
     </div>
   );

@@ -12,7 +12,7 @@ export default function RsuiteTable({data}: {data: [TicketType]}) {
   console.log(data)
   const navigate = useNavigate()
 
-  const [sortColumn, setSortColumn] = useState<any>();
+  const [sortColumn, setSortColumn] = useState<string>("");
   const [sortType, setSortType] = useState<SortType>();
 
   const getData = () => {

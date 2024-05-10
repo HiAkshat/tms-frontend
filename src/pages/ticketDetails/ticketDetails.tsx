@@ -15,7 +15,6 @@ export default function TicketDetails() {
   useEffect(()=>{
     try {
       ticketServices.getTicket(id).then(data => setTicket(data))
-      console.log(ticket)
     } catch (error) {
       return
     }

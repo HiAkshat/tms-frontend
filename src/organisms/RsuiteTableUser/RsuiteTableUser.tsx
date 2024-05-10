@@ -14,8 +14,8 @@ export default function RsuiteTable() {
 
   const [data, setData] = useState<[UserType]>()
 
-  const [sortColumn, setSortColumn] = useState<any>();
-  const [sortType, setSortType] = useState<any>();
+  const [sortColumn, setSortColumn] = useState<string>("");
+  const [sortType, setSortType] = useState<SortType>();
 
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -24,24 +24,35 @@ export default function RsuiteTable() {
       setData(users)
       setLoading(false)
     })
+
   }, [])
 
   const getData = () => {
     if (data && sortColumn && sortType) {
-      return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
+      return data.sort((a: any, b: any) => {
+      // return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
         let x = a[sortColumn];
         let y = b[sortColumn];
+
+        let m=0
+        let n=0
+
         if (typeof x === 'string') {
-          x = x.toLowerCase().charCodeAt(0);
+          m = x.toLowerCase().charCodeAt(0);
         }
         if (typeof y === 'string') {
-          y = y.toLowerCase().charCodeAt(0);
+          n = y.toLowerCase().charCodeAt(0);
         }
-        if (sortType === 'asc') {
-          return x - y;
-        } else {
-          return y - x;
+
+        if (m && n){
+          if (sortType === 'asc') {
+            return m - n;
+          } else {
+            return n - m;
+          }
         }
+
+        return 0
       });
     }
     return data;
@@ -56,8 +67,7 @@ export default function RsuiteTable() {
     }, 500);
   };
 
-  const ActionCell = ({ rowData, dataKey, ...props }: any) => {
-    // {console.log(rowData)}
+  const ActionCell = ({ rowData, dataKey, ...props }:any) => {
     // console.log(rowData[dataKey]);
     return (
       <Cell {...props} className="link-group">

@@ -55,7 +55,6 @@ export default function NewOrganisationForm() {
           <DatePicker name="dob" value={organisationUser.dob} onChange={(val: Date|null)=>{setOrganisationUser({...organisationUser, dob: val ?? new Date()})}} placeholder="DOB"/>
           <DatePicker name="joining_date" value={organisationUser.joining_date} onChange={(val: Date|null)=>{setOrganisationUser({...organisationUser, joining_date: val ?? new Date()})}} placeholder="Joining Date" />
           {!organisations.isLoading && <SelectPicker data={organisations.data.map((org: OrganisationType) => ({label: org.organisation_name, value: org._id}))} onChange={(val)=>{setOrganisationUser({...organisationUser, organisation: val ?? ""})}} value={organisationUser.organisation}/> }
-
           </div>
         <div className={styles.inputs}>
           <Button onClick={handleSubmit} type="submit">Add</Button>

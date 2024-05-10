@@ -27,7 +27,6 @@ export default function Login() {
       let userData:VerifyUserDataType|undefined
       try {
         await verifyTokenServices.verifyToken(accessToken).then(data => userData=data)
-        console.log(userData)
         if (userData){
           const decodedUser: UserType = userData.decoded.user
           const userDetails = { id: decodedUser._id, name: `${decodedUser.first_name} ${decodedUser.last_name}`, email: decodedUser.email_id, organisation_id: decodedUser.organisation ? decodedUser.organisation : "", userType: decodedUser.organisation ? "organisation" : "system", isAuthenticated: true };
@@ -71,7 +70,6 @@ export default function Login() {
 
 
     if (otpData && otpData.valid){
-      console.log(otpData)
       Cookie.set("accessToken", otpData.accessToken)
 
       let userData: UserType | undefined

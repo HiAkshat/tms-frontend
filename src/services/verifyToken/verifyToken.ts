@@ -7,7 +7,6 @@ export const verifyToken = async (accessToken: string) => {
   const res = await axios
     .post(`http://127.0.0.1:8000/api/verifyToken/`, "", {headers})
     .then(res => {
-      console.log(res.data)
       return res.data
     })
     .catch(error => {
