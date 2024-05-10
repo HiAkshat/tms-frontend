@@ -8,19 +8,31 @@
   }
 
   .theForm{
-    
+
     display: flex;
     background-color: #1C1C1C;
     gap: 16px;
     width: fit-content;
     padding: 16px;
     border-radius: 10px;
-    
+
     .inputs{
       display: flex;
       flex-direction: column;
       gap: 8px;
       justify-content: space-between;
+
+      .inputField{
+        display: flex;
+        flex-direction: column;
+        span{
+          // position: absolute;
+          font-size: 12px;
+          color: rgb(208, 208, 208);
+          font-family: "Ubuntu Sans Mono", monospace;
+          padding: 4px 0 4px 14px;
+        }
+      }
 
       input{
         width: 300px;
@@ -31,12 +43,13 @@
         border: none;
         outline: none;
         background-color: #2A2A2A;
-      
+
         &:focus{
           background-color: #383838;
         }
       }
-      
+
+
       select{
         width: 300px;
         height: 46.5%;

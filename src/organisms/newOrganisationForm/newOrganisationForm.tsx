@@ -20,6 +20,11 @@ export default function NewOrganisationForm() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
+    validateName(organisation.organisation_name, setIsOrgnNameValid)
+    validateName(organisation.display_name, setIsDisplayNameValid)
+
+    if (!isOrgNameValid || !isDisplayNameValid) return
+
     try {
       await organisationServices.addNewOrganisation(organisation)
       setOrganisation({
@@ -46,13 +51,27 @@ export default function NewOrganisationForm() {
     }));
   }
 
+  const [isDisplayNameValid, setIsDisplayNameValid] = useState(true)
+  const [isOrgNameValid, setIsOrgnNameValid] = useState(true)
+
+  const validateName = (name: string, setIsNameValid: any) => {
+    if (name=="") setIsNameValid(false)
+    else setIsNameValid(true)
+  };
+
   return (
     <div className={styles.main}>
       <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <Input placeholder="Organisation Name" value={organisation.organisation_name} onChange={handleOrgNameChange} required={true}/>
-          <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
+          <div className={styles.inputField}>
+            <Input placeholder="Organisation Name" value={organisation.organisation_name} onChange={handleOrgNameChange} required={true}/>
+            <span hidden={isOrgNameValid}>Invalid organisation name</span>
+          </div>
+          <div className={styles.inputField}>
+            <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
+            <span hidden={isDisplayNameValid}>Invalid display name</span>
+          </div>
         </div>
         <Button onClick={handleSubmit} type="submit">Add</Button>
       </form>
