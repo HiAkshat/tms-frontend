@@ -1,13 +1,17 @@
 import axios from "axios"
 import { TicketType } from "./types"
 import showToast from "../../atoms/Toast/Toast"
+import server from "../../globals"
 
-const apiEndpoint = "http://127.0.0.1:8000/api/ticket/"
+const apiEndpoint = `${server}/ticket/`
 
 export const getOrgTickets = async (id: string|undefined) => {
   const res = await axios
     .get(apiEndpoint+`organisation/${id}`)
-    .then(res => {return res.data})
+    .then(res => {
+      console.log(res)
+      return res.data
+    })
     .catch(error => {
       throw error
     })

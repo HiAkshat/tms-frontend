@@ -1,10 +1,13 @@
 import axios from "axios"
-import { SystemUserType, VerifyOtpBodyType } from "./types"
+import { VerifyOtpBodyType } from "./types"
 import showToast from "../../atoms/Toast/Toast"
+import server from "../../globals"
+
+const apiEndpoint = `${server}/systemUser`
 
 export const getSystemUser = async (id: string|undefined) => {
   const res = await axios
-    .get(`http://127.0.0.1:8000/api/systemUser/${id}`)
+    .get(`${apiEndpoint}/${id}`)
     .then(res => {return res.data})
     .catch(error => {
       throw error
@@ -15,7 +18,7 @@ export const getSystemUser = async (id: string|undefined) => {
 
 export const getSystemUserByEmail = async (email: string|undefined) => {
   const res = await axios
-    .get(`http://127.0.0.1:8000/api/systemUser/email/${email}`)
+    .get(`${apiEndpoint}/email/${email}`)
     .then(res => {return res.data})
     .catch(error => {
       throw error
@@ -26,7 +29,7 @@ export const getSystemUserByEmail = async (email: string|undefined) => {
 
 export const sendOtp = async (email: string|undefined) => {
   await axios
-    .post(`http://127.0.0.1:8000/api/systemUser/sendOtp/${email}`)
+    .post(`${apiEndpoint}/sendOtp/${email}`)
     .then(()=>{
       showToast(`OTP sent to ${email}`)
     })
@@ -38,7 +41,7 @@ export const sendOtp = async (email: string|undefined) => {
 
 export const verifyOtp = async (body: VerifyOtpBodyType) => {
   const res = await axios
-    .post(`http://127.0.0.1:8000/api/systemUser/verifyOtp`, body)
+    .post(`${apiEndpoint}/verifyOtp`, body)
     .then((res)=>{
       showToast("Logged in successfully!")
       return res.data
@@ -49,39 +52,4 @@ export const verifyOtp = async (body: VerifyOtpBodyType) => {
     })
 
   return res
-}
-
-export const addOrganisationUser = async (organisationUser: SystemUserType) => {
-  await axios
-    .post("http://127.0.0.1:8000/api/organisationUser", organisationUser)
-    .then(()=>{
-      showToast("User added successfully!")
-    }).catch((error) => {
-      showToast("Error adding user!")
-      throw error
-    })
-}
-
-export const editOrganisationUser = async (organisationUser: SystemUserType, id: string|undefined) => {
-  await axios
-    .put(`http://127.0.0.1:8000/api/organisationUser/${id}`, organisationUser)
-    .then(()=>{
-      showToast("User edited successfully!")
-    })
-    .catch((error)=>{
-      showToast("Error editing user!")
-      throw error
-    })
-}
-
-export const deleteOrganisationUser = async (id: string|undefined) => {
-  await axios
-    .delete(`http://127.0.0.1:8000/api/organisationUser/${id}`)
-    .then(()=>{
-      showToast("User deleted successfully!")
-    })
-    .catch((error)=>{
-      showToast("Error deleting user!")
-      throw error
-    })
 }

@@ -20,7 +20,7 @@ export default function TicketDetails() {
     }
   }, [])
 
-  const comments = getData(`http://localhost:8000/api/comment/${id}`)
+  const comments = getData(`http://localhost:3000/api/comment/${id}`)
   const [commentInput, setCommentInput] = useState("")
 
   const [showActions, setShowActions] = useState<string>()

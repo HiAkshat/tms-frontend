@@ -8,14 +8,17 @@ import styles from "./EditTicket.module.scss"
 import { useNavigate } from "react-router-dom"
 import ticketServices from "../../services/ticket"
 import { StateType } from "../../typings/navUser"
+import organisationUserServices from "../../services/organisationUser"
+import { OrganisationUserType } from "../../services/organisationUser/types"
 
 
 export default function EditTicket() {
   const navigate = useNavigate()
   const {id} = useParams()
   const user = useSelector((state : StateType) => state.user)
-  const users = getData(`http://localhost:8000/api/organisationUser/organisation/${user.organisation_id}`)
+  // const users = getData(`http://localhost:8000/api/organisationUser/organisation/${user.organisation_id}`)
 
+  const [users, setUsers] = useState<[OrganisationUserType]>()
   const [assignee, setAssignee] = useState<string>('');
   const [reporter, setReporter] = useState<string>('');
   const statuses = ['To be picked', 'In progress', 'In testing', 'Completed']
@@ -31,16 +34,9 @@ export default function EditTicket() {
     due_date: "new Date('2022-10-31T09:00:00Z')"
   })
 
-  // let ticketEditDetails = {
-  //   ticket: "",
-  //   user: user.name,
-  //   field: "",
-  //   old_value: "",
-  //   new_value: ""
-  // }
-
   useEffect(()=>{
     try {
+      organisationUserServices.getOrganisationUsersByOrgId(user.organisation_id).then(data => setUsers(data))
       ticketServices.getTicket(id).then(data => {
         setTicketData(data)
         console.log("HEY")

@@ -24,20 +24,13 @@ export default function Login() {
   useEffect(()=>{
     const verification = async () => {
       const accessToken = Cookie.get("accessToken") ?? ""
-      let userData:VerifyUserDataType|undefined
       try {
-        await verifyTokenServices.verifyToken(accessToken).then(data => userData=data)
-        if (userData){
-          const decodedUser: UserType = userData.decoded.user
-          const userDetails = { id: decodedUser._id, name: `${decodedUser.first_name} ${decodedUser.last_name}`, email: decodedUser.email_id, organisation_id: decodedUser.organisation ? decodedUser.organisation : "", userType: decodedUser.organisation ? "organisation" : "system", isAuthenticated: true };
-          dispatch(
-            login(userDetails)
-          )
-
-          if (userDetails.userType=="system") navigate("../systemDashboard")
-          else navigate("../viewTickets")
-        }
-
+        await verifyTokenServices.verifyToken(accessToken).then(data => {
+          if (data.valid){
+            if (data.userType=="system") navigate("../systemDashboard")
+              else navigate("../viewTickets")
+          }
+        })
       } catch (error) {
         return
       }

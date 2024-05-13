@@ -2,12 +2,13 @@ import styles from "./navbar.module.scss"
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux"
 import { useDispatch } from 'react-redux';
+import { login } from "../../redux/userSlice";
 import { logout } from "../../redux/userSlice";
 import Cookie from "js-cookie"
 
 import { useEffect } from "react";
-import { login } from "../../redux/userSlice";
 import { NavUserType, StateType } from "../../typings/navUser";
+import verifyTokenServices from "../../services/verifyToken";
 
 export default function Navbar() {
   let navigate = useNavigate();
@@ -25,33 +26,22 @@ export default function Navbar() {
  }
 
  useEffect(()=>{
-  const verifyToken = async (accessToken: string) => {
+  const verifyToken = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/verifyToken/`, {
-        method: "POST",
-        headers: {
-          "authorization": `BEARER ${accessToken}`
-        }
+      await verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
+        console.log("INSIDE NAVBAR")
+        console.log(res)
+        const userData = res.decoded.user
+        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation._id : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
+        dispatch(login(userDetails))
       })
-
-      let userData = await res.json()
-      userData=userData.decoded.user
-      const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
-      dispatch(
-        login(userDetails)
-      )
-
-      // if (userDetails.userType=="system") navigate("../systemDashboard")
-      // else navigate("../viewTickets")
-
     } catch (error) {
       console.log("Session expired!")
       return error
     }
   }
 
-  const accessToken = Cookie.get("accessToken") ?? ""
-  verifyToken(accessToken)
+  verifyToken()
 }, [])
 
   return (

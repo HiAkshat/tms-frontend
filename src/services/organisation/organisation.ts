@@ -1,10 +1,13 @@
 import showToast from "../../atoms/Toast/Toast"
+import server from "../../globals"
 import {OrganisationType} from "./types"
 import axios from "axios"
 
-export const getOrganisations = async () => {
+const apiEndpoint = `${server}/organisation`
+
+export const getOrganisations = async (page: number=1, pageSize: number=10) => {
   const res = await axios
-    .get("http://127.0.0.1:8000/api/organisation")
+    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}`)
     .then(res => {return res.data})
     .catch(error => {throw error})
 
@@ -13,16 +16,16 @@ export const getOrganisations = async () => {
 
 export const getOrganisation = async (id: string|undefined) => {
   const res = await axios
-    .get(`http://127.0.0.1:8000/api/organisation/${id}`)
+    .get(`${apiEndpoint}/${id}`)
     .then(res => {return res.data})
     .catch(error => {throw error})
 
   return res
-} 
+}
 
 export const addNewOrganisation = async (organisation: OrganisationType) => {
   await axios
-    .post("http://127.0.0.1:8000/api/organisation", organisation)
+    .post(`${apiEndpoint}`, organisation)
     .then(()=>{
       showToast("Organisation added successfully!")
     }).catch((error) => {
@@ -33,7 +36,7 @@ export const addNewOrganisation = async (organisation: OrganisationType) => {
 
 export const editOrganisation = async (organisation: OrganisationType, id: string|undefined) => {
   await axios
-    .put(`http://127.0.0.1:8000/api/organisation/${id}`, organisation)
+    .put(`${apiEndpoint}/${id}`, organisation)
     .then(()=>{
       showToast("Organisation edited successfully!")
     })
@@ -45,7 +48,7 @@ export const editOrganisation = async (organisation: OrganisationType, id: strin
 
 export const deleteOrganisation = async (id: string|undefined) => {
   await axios
-    .delete(`http://127.0.0.1:8000/api/organisation/${id}`)
+    .delete(`${apiEndpoint}/${id}`)
     .then(()=>{
       showToast("Organisation deleted successfully!")
     })

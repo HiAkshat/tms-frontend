@@ -1,4 +1,5 @@
 type Organisation = {
+  _id?: string,
   organisation_name: string,
   display_name: string
 }

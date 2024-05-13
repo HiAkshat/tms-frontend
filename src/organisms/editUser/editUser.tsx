@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
 import styles from "./EditUser.module.scss"
 import { useParams } from 'react-router-dom'
-import { getData } from "../../services/getData";
 import TextInput from "../../atoms/TextInput/TextInput";
 import DateInput from "../../atoms/DateInput/DateInput";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/navbar";
 import organisationUserServices from "../../services/organisationUser";
+import organisationServices from "../../services/organisation";
 
 export default function EditUser() {
   const { id } = useParams()
@@ -20,13 +20,13 @@ export default function EditUser() {
     organisation: '',
     joining_date: new Date()
   })
-
-  const organisations = getData('http://127.0.0.1:8000/api/organisation')
-
+  const [organisations, setOrganisations] = useState<[OrganisationType]>()
   const [selectedOrganisation, setSelectedOrganisation] = useState('');
 
   useEffect(() => {
     try {
+      organisationServices.getOrganisations().then(res => setOrganisations(res.data))
+
       organisationUserServices.getOrganisationUser(id).then(data => {
         setOrganisationUser(data)
         setSelectedOrganisation(data.organisation)
@@ -88,10 +88,10 @@ export default function EditUser() {
           <DateInput name="joining_date" value={organisationUser.joining_date.toString()} onChange={handleChange} placeholder="Joining Date" required={true} />
         </div>
         <div className={styles.inputs}>
-          {!organisations.isLoading &&
+          {organisations &&
             <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
             <option value="">Select an organisation</option>
-            {organisations.data.map((org: OrganisationType) => (
+            {organisations.map((org: OrganisationType) => (
               <option key={org._id} value={org._id}>{org.organisation_name}</option>
             ))}
             </select>

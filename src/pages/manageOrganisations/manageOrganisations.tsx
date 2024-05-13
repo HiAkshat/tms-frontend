@@ -1,25 +1,23 @@
 import styles from "./ManageOrganisations.module.scss"
 import NewOrganisationForm from "../../organisms/NewOrganisationForm/NewOrganisationForm"
 import Navbar from "../../organisms/Navbar/navbar"
-import { getData } from "../../services/getData"
 import showToast from "../../atoms/Toast/Toast"
 import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
 import RsuiteTable from "../../organisms/RsuiteTable/RsuiteTable"
 import { useEffect } from "react"
-import { StateType } from "../../typings/navUser"
+import verifyTokenServices from "../../services/verifyToken"
+import Cookie from "js-cookie"
 
 export default function ManageOrganisations(){
   const navigate = useNavigate()
-  const organisations = getData('http://127.0.0.1:8000/api/organisation')
-  const user = useSelector((state: StateType) => state.user)
-
   useEffect(()=>{
-    if (!(user.isAuthenticated && user.userType=='system')){
-      showToast("Login as system user to access!")
-      navigate("../login")
-    }
-  })
+    verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(res=>{
+      if (!(res.valid && res.userType=='system')){
+        showToast("Login as system user to access!")
+        navigate("../login")
+      }
+    })
+  }, [])
 
   return (
     <div className={styles.page}>
@@ -28,7 +26,7 @@ export default function ManageOrganisations(){
         <NewOrganisationForm />
         <div className={styles.tableDiv}>
           <span>Organisations Table</span>
-          {!organisations.isLoading && <RsuiteTable />}
+          <RsuiteTable />
         </div>
       </div>
     </div>

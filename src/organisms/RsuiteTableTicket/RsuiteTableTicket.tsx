@@ -1,33 +1,62 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 
+import { useSelector } from "react-redux"
+
 const { Column, HeaderCell, Cell } = Table;
 
 import styles from "./RsuiteTable.module.scss"
+import ticketServices from '../../services/ticket';
+import { StateType } from '../../typings/navUser';
+import verifyTokenServices from '../../services/verifyToken';
 
-export default function RsuiteTable({data}: {data: [TicketType]}) {
-  console.log(data)
+import Cookie from "js-cookie"
+
+export default function RsuiteTable() {
   const navigate = useNavigate()
+  const user = useSelector((state: StateType) => state.user)
 
+  const [data, setData] = useState<[TicketType]>()
   const [sortColumn, setSortColumn] = useState<string>("");
   const [sortType, setSortType] = useState<SortType>();
 
+  useEffect(()=>{
+    // verifyTokenServices.verifyToken
+    console.log("INSIDE TICKET TABLE")
+    console.log(user)
+    verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(()=>{
+      ticketServices.getOrgTickets(user.organisation_id).then((data)=>{
+        setData(data)
+        console.log(data)
+      })
+    })
+
+
+
+  }, [user])
+
   const getData = () => {
-    // if (sortColumn && sortType) {
-    //   return data.sort(( a: string, b: string )=> {
-    //     console.log(a, b)
-    //     if ( a.last_nom < b.last_nom ){
-    //       return -1;
-    //     }
-    //     if ( a.last_nom > b.last_nom ){
-    //       return 1;
-    //     }
-    //     return 0;
-    //   });
-    // }
+    if (sortColumn && sortType && data) {
+      return data.sort((a: { [x: string]: any }, b: { [x: string]: any }) => {
+        let x = a[sortColumn];
+        let y = b[sortColumn];
+
+        if (typeof x === 'string') {
+          x = x.toLowerCase().charCodeAt(0);
+        }
+        if (typeof y === 'string') {
+          y = y.toLowerCase().charCodeAt(0);
+        }
+        if (sortType === 'asc') {
+          return x - y;
+        } else {
+          return y - x;
+        }
+      });
+    }
     return data;
   };
 

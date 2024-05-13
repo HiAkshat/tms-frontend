@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table } from 'rsuite';
+import { Table, Pagination } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import { Placeholder } from 'rsuite';
 
@@ -12,25 +12,33 @@ import organisationUserServices from '../../services/organisationUser';
 export default function RsuiteTable() {
   const navigate = useNavigate()
 
-  const [data, setData] = useState<[UserType]>()
-
   const [sortColumn, setSortColumn] = useState<string>("");
   const [sortType, setSortType] = useState<SortType>();
-
+  const [data, setData] = useState<[UserType]>()
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10);
+  const [totalEntries, setTotalEntries] = useState(0)
+
+  const handleChangeLimit = (dataKey: any) => {
+    setPage(1);
+    setLimit(dataKey);
+  };
+
   useEffect(()=>{
-    organisationUserServices.getOrganisationUsers().then((users)=>{
-      setData(users)
+    organisationUserServices.getOrganisationUsers(page, limit).then((users)=>{
+      setData(users.data)
+      setTotalEntries(users.totalEntries)
       setLoading(false)
+      console.log(data)
     })
 
-  }, [])
+  }, [page, limit])
 
   const getData = () => {
     if (data && sortColumn && sortType) {
       return data.sort((a: any, b: any) => {
-      // return data.sort((a: { [x: string]: any; }, b: { [x: string]: any; }) => {
         let x = a[sortColumn];
         let y = b[sortColumn];
 
@@ -71,9 +79,9 @@ export default function RsuiteTable() {
     // console.log(rowData[dataKey]);
     return (
       <Cell {...props} className="link-group">
-        <span onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
+        <span className={styles.actionButton} onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
         <span> - </span>
-        <span onClick={()=>handleDelete(rowData[dataKey])}>Delete</span>
+        <span className={styles.actionButton} onClick={()=>handleDelete(rowData[dataKey])}>Delete</span>
       </Cell>
     );
   };
@@ -97,46 +105,69 @@ export default function RsuiteTable() {
 
   else{
     return (
-      <Table
-        className={styles.userTable}
-        sortColumn={sortColumn}
-        sortType={sortType}
-        onSortColumn={handleSortColumn}
-        height={400}
-        data={getData()}
-        onRowClick={rowData => {
-          console.log(rowData);
-        }}
-      >
-        <Column flexGrow={1} align="center" sortable>
-          <HeaderCell>Email ID</HeaderCell>
-          <Cell dataKey="email_id" />
-        </Column>
-        <Column flexGrow={1} align="center" sortable>
-          <HeaderCell>First Name</HeaderCell>
-          <Cell dataKey="first_name" />
-        </Column>
-        <Column flexGrow={1} align="center" sortable>
-          <HeaderCell>Last Name</HeaderCell>
-          <Cell dataKey="last_name" />
-        </Column>
-        <Column flexGrow={1} align="center" sortable>
-          <HeaderCell>DOB</HeaderCell>
-          <Cell dataKey="dob">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
-        </Column>
-        <Column flexGrow={1} align="center">
-          <HeaderCell>Organisation</HeaderCell>
-          <Cell dataKey="organisation.organisation_name" />
-        </Column>
-        <Column flexGrow={1} align="center" sortable>
-          <HeaderCell>Joining Date</HeaderCell>
-          <Cell dataKey="joining_date">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
-        </Column>
-        <Column flexGrow={1}>
-          <HeaderCell>Actions</HeaderCell>
-          <ActionCell dataKey="_id" rowData={undefined} />
-        </Column>
-      </Table>
+      <div>
+
+        <Table
+          className={styles.userTable}
+          sortColumn={sortColumn}
+          sortType={sortType}
+          onSortColumn={handleSortColumn}
+          // height={400}
+          autoHeight
+          data={getData()}
+          onRowClick={rowData => {
+            console.log(rowData);
+          }}
+        >
+          <Column flexGrow={1} align="center" sortable>
+            <HeaderCell>Email ID</HeaderCell>
+            <Cell dataKey="email_id" />
+          </Column>
+          <Column flexGrow={1} align="center" sortable>
+            <HeaderCell>First Name</HeaderCell>
+            <Cell dataKey="first_name" />
+          </Column>
+          <Column flexGrow={1} align="center" sortable>
+            <HeaderCell>Last Name</HeaderCell>
+            <Cell dataKey="last_name" />
+          </Column>
+          <Column flexGrow={1} align="center" sortable>
+            <HeaderCell>DOB</HeaderCell>
+            <Cell dataKey="dob">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
+          </Column>
+          <Column flexGrow={1} align="center">
+            <HeaderCell>Organisation</HeaderCell>
+            <Cell dataKey="organisation.organisation_name" />
+          </Column>
+          <Column flexGrow={1} align="center" sortable>
+            <HeaderCell>Joining Date</HeaderCell>
+            <Cell dataKey="joining_date">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
+          </Column>
+          <Column flexGrow={1}>
+            <HeaderCell>Actions</HeaderCell>
+            <ActionCell dataKey="_id" rowData={undefined} />
+          </Column>
+        </Table>
+        <div style={{ padding: 20 }}>
+          <Pagination
+            prev
+            next
+            // first
+            // last
+            ellipsis
+            boundaryLinks
+            maxButtons={5}
+            size="xs"
+            layout={['total', '-', 'limit', '|', 'pager', 'skip']}
+            total={totalEntries}
+            limitOptions={[10, 30, 50]}
+            limit={limit}
+            activePage={page}
+            onChangePage={setPage}
+            onChangeLimit={handleChangeLimit}
+          />
+        </div>
+      </div>
     )
   }
 

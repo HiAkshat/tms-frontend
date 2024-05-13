@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./NewUserForm.module.scss";
-import { getData } from "../../services/getData";
 
 import { DatePicker, Button, Input, SelectPicker } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
 import organisationUserServices from "../../services/organisationUser";
-import showToast from "../../atoms/Toast/Toast";
+import { OrganisationType } from "../../services/organisation/types";
+import organisationServices from "../../services/organisation";
 
 export default function NewOrganisationForm() {
   const navigate = useNavigate();
@@ -20,10 +20,15 @@ export default function NewOrganisationForm() {
     joining_date: new Date(),
   });
 
+  const [organisations, setOrganisations] = useState<[OrganisationType]>()
+
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isFirstNameValid, setIsFirstNameValid] = useState(true)
   const [isLastNameValid, setIsLastNameValid] = useState(true)
 
+  useEffect(()=>{
+    organisationServices.getOrganisations().then((res)=>setOrganisations(res.data))
+  }, [])
 
   const validateEmail = (email: string) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,7 +41,7 @@ export default function NewOrganisationForm() {
     }
   };
 
-  const validateName = (name: string, setIsNameValid: any) => {
+  const validateName = (name: string, setIsNameValid: React.Dispatch<React.SetStateAction<boolean>>) => {
     const namePattern = /^[a-z ,.'-]+$/i
     if (!namePattern.test(name)) {
       setIsNameValid(false);
@@ -47,7 +52,6 @@ export default function NewOrganisationForm() {
     }
   };
 
-  const organisations = getData("http://127.0.0.1:8000/api/organisation");
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -149,9 +153,9 @@ export default function NewOrganisationForm() {
             }}
             placeholder="Joining Date"
           />
-          {!organisations.isLoading && (
+          {organisations &&
             <SelectPicker
-              data={organisations.data.map((org: OrganisationType) => ({
+              data={organisations.map((org: OrganisationType) => ({
                 label: org.organisation_name,
                 value: org._id,
               }))}
@@ -163,7 +167,7 @@ export default function NewOrganisationForm() {
               }}
               value={organisationUser.organisation}
             />
-          )}
+          }
         </div>
         <div className={styles.inputs}>
           <Button onClick={handleSubmit} type="submit">
