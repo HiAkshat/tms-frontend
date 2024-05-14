@@ -53,7 +53,10 @@ function NewTicketForm() {
 
   useEffect(()=>{
     try {
-      organisationUserServices.getOrganisationUsersByOrgId(user.organisation_id).then(res => setUsers(res.data))
+      organisationUserServices.getOrganisationUsersByOrgId(user.organisation_id).then(res => {
+        setUsers(res)
+        console.log(users)
+      })
     } catch (error){
       return
     }
