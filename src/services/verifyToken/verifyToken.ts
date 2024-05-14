@@ -1,8 +1,8 @@
 import axios from "axios"
 import server from "../../globals"
 
-import store from "../../redux/store";
-import { login } from "../../redux/userSlice";
+// import store from "../../redux/store";
+// import { login } from "../../redux/userSlice";
 
 const apiEndpoint = `${server}`
 

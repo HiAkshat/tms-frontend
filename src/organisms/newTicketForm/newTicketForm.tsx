@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getData } from '../../services/getData';
 import { useSelector } from 'react-redux';
 import styles from "./NewTicketForm.module.scss"
@@ -9,25 +9,27 @@ import { DatePicker, Button, Input, SelectPicker, Uploader } from 'rsuite';
 import ticketServices from '../../services/ticket/index';
 import { NavUserType, StateType } from '../../typings/navUser';
 import axios from 'axios';
+import organisationUserServices from '../../services/organisationUser';
 
 
 function NewTicketForm() {
   const navigate = useNavigate()
   const user:NavUserType = useSelector((state: StateType) => state.user)
-  const users = getData(`http://localhost:8000/api/organisationUser/organisation/${user.organisation_id}`)
+  // const users = getData(`http://localhost:3000/api/organisationUser/organisation/${user.organisation_id}`)
+  const [users, setUsers] = useState<[UserType]>()
   console.log(users)
   const ticketTypeOptions = ["Story", "Task", "Bug"]
 
   const [file, setFile] = useState<any>()
 
-  const upload = () => {
-    const formData = new FormData()
-    formData.append("file", file)
-    axios
-      .post("http://localhost:8000/api/ticket/upload", formData)
-      .then(res => {})
-      .catch(err => console.log(err))
-  }
+  // const upload = () => {
+  //   const formData = new FormData()
+  //   formData.append("file", file)
+  //   axios
+  //     .post("http://localhost:3000/api/ticket/upload", formData)
+  //     .then(res => {})
+  //     .catch(err => console.log(err))
+  // }
 
   const [ticketData, setTicketData] = useState<SendTicketType>({
     organisation: user.organisation_id ?? "",
@@ -49,6 +51,14 @@ function NewTicketForm() {
     }
   };
 
+  useEffect(()=>{
+    try {
+      organisationUserServices.getOrganisationUsersByOrgId(user.organisation_id).then(res => setUsers(res.data))
+    } catch (error){
+      return
+    }
+  }, [])
+
   return (
     <div className={styles.main}>
       <span className={styles.title}>Add New Ticket</span>
@@ -56,8 +66,8 @@ function NewTicketForm() {
         <div className={styles.inputs}>
           <SelectPicker placeholder="Type" data={ticketTypeOptions.map(ticketType => ({label: ticketType, value: ticketType}))} onChange={(val)=>{setTicketData({...ticketData, type: val ?? ""})}} value={ticketData.type}/>
           <DatePicker placeholder="Due Date" name="Due Date" value={ticketData.due_date} onChange={(val: Date|null)=>{setTicketData({...ticketData, due_date: val ?? new Date()})}} />
-          {!users.isLoading && <SelectPicker placeholder="Assignee" data={users.data.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, assignee: val ?? ""})}} value={ticketData.assignee}/>}
-          {!users.isLoading && <SelectPicker placeholder="Reporter" data={users.data.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, reporter: val ?? ""})}} value={ticketData.reporter}/>}
+          {users && <SelectPicker placeholder="Assignee" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, assignee: val ?? ""})}} value={ticketData.assignee}/>}
+          {users && <SelectPicker placeholder="Reporter" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, reporter: val ?? ""})}} value={ticketData.reporter}/>}
         </div>
         <div className={styles.inputs}>
           <Input placeholder="Summary" value={ticketData.summary} onChange={(val: string)=>setTicketData({...ticketData, summary: val})} required={true}/>

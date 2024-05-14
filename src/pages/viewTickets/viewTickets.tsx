@@ -24,7 +24,7 @@ export default function ViewTickets() {
     <div className={styles.page}>
       <Navbar />
       <div className={styles.main}>
-        {/* <NewTicketForm /> */}
+        <NewTicketForm />
         <div className={styles.tableDiv}>
           <span>Tickets Table</span>
           <RsuiteTable />

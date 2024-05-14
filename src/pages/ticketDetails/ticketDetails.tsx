@@ -1,26 +1,29 @@
 import { useParams } from "react-router-dom"
-import { getData } from "../../services/getData"
 import Navbar from "../../organisms/Navbar/navbar"
 import styles from "./TicketDetails.module.scss"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import showToast from "../../atoms/Toast/Toast"
 import ticketServices from "../../services/ticket/index"
 import { StateType } from "../../typings/navUser"
+import commentServices from "../../services/comment"
+import { useNavigate } from "react-router-dom"
 
 export default function TicketDetails() {
+  const navigate = useNavigate()
+
   const {id} = useParams()
   const [ticket, setTicket] = useState<TicketType>()
 
   useEffect(()=>{
     try {
       ticketServices.getTicket(id).then(data => setTicket(data))
+      commentServices.getComments(id).then(data => setComments(data))
     } catch (error) {
       return
     }
   }, [])
 
-  const comments = getData(`http://localhost:3000/api/comment/${id}`)
+  const [comments, setComments] = useState<[Comment]>()
   const [commentInput, setCommentInput] = useState("")
 
   const [showActions, setShowActions] = useState<string>()
@@ -48,39 +51,23 @@ export default function TicketDetails() {
       ticket: id,
       user: user.id,
       content: commentInput
-
     }
 
-    const res = await fetch("http://127.0.0.1:8000/api/comment", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    })
-
-    console.log(res)
-    if (!res.ok){
-      showToast("Error adding comment!")
+    try {
+      await commentServices.addComment(body)
+      setCommentInput("")
+      navigate(0)
+    } catch (error) {
       return
     }
-
-    showToast("Comment added successfully!")
-    setCommentInput("")
   }
 
   const handleCommentDelete = async () => {
     try {
-      await fetch(`http://127.0.0.1:8000/api/comment/${showActions}`, {
-        method: "DELETE",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      showToast("Comment successfully deleted!")
+      await commentServices.deleteComment(showActions)
+      navigate(0)
     } catch (error) {
-      showToast("Error deleting comment!")
+      return
     }
   }
 
@@ -109,6 +96,10 @@ export default function TicketDetails() {
                     <span>Due Date <span>{formattedDate(ticket.due_date.toString())}</span></span>
                   </div>
                   <div className={styles.colDiv}>
+                    <span>Summary</span>
+                    <p className={styles.desc}>{ticket.summary}</p>
+                  </div>
+                  <div className={styles.colDiv}>
                     <span>Description</span>
                     <p className={styles.desc}>{ticket.description}</p>
                   </div>
@@ -123,7 +114,7 @@ export default function TicketDetails() {
                     </form>
                     <div className={styles.commentSection}>
                       {
-                        !comments.isLoading && comments.data.map((comment: CommentType) => {
+                        comments && comments.map((comment: any) => {
                           return (
                             <div  onMouseEnter={()=>setShowActions(comment._id)} onMouseLeave={()=>setShowActions("")} className={styles.comment} key={comment._id}>
                               <div className={styles.commentContent}>
@@ -141,7 +132,6 @@ export default function TicketDetails() {
                   </div>
                 </div>
               </div>
-
             </div>
           }
         </div>

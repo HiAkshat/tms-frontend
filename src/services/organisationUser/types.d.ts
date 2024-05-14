@@ -4,7 +4,8 @@ type OrganisationUser = {
   last_name: string,
   dob: Date|string,
   organisation: string,
-  joining_date: Date|string
+  joining_date: Date|string,
+  is_active?: boolean
 }
 
 type VerifyOtpBody = {

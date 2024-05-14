@@ -15,12 +15,13 @@ import { OrganisationUserType } from "../../services/organisationUser/types"
 export default function EditTicket() {
   const navigate = useNavigate()
   const {id} = useParams()
+
   const user = useSelector((state : StateType) => state.user)
-  // const users = getData(`http://localhost:8000/api/organisationUser/organisation/${user.organisation_id}`)
 
   const [users, setUsers] = useState<[OrganisationUserType]>()
   const [assignee, setAssignee] = useState<string>('');
   const [reporter, setReporter] = useState<string>('');
+
   const statuses = ['To be picked', 'In progress', 'In testing', 'Completed']
   const [status, setStatus] = useState<string>('')
 
@@ -36,7 +37,7 @@ export default function EditTicket() {
 
   useEffect(()=>{
     try {
-      organisationUserServices.getOrganisationUsersByOrgId(user.organisation_id).then(data => setUsers(data))
+      organisationUserServices.getOrganisationUsersByOrgId(user.organisation_id).then(res => setUsers(res.data))
       ticketServices.getTicket(id).then(data => {
         setTicketData(data)
         console.log("HEY")
@@ -145,28 +146,24 @@ export default function EditTicket() {
                 ))}
               </select>
             </div>
-          {!users.isLoading &&
             <div className={styles.fieldInfo}>
               <label className={styles.fieldTitle} htmlFor="assignee">Assignee:</label>
               <select name="assignee" id="assignee" value={assignee} onChange={handleAssigneeChange}>
                 <option value="">Select Assignee</option>
-                {users.data.map((user: UserType) => (
+                {users && users.map((user: any) => (
                   <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
                 ))}
               </select>
             </div>
-          }
-          {!users.isLoading &&
             <div className={styles.fieldInfo}>
               <label className={styles.fieldTitle} htmlFor="assignee">Reporter:</label>
               <select name="reporter" id="reporter" value={reporter} onChange={handleReporterChange}>
                 <option value="">Select Reporter</option>
-                {users.data.map((user: UserType) => (
+                {users && users.map((user: any) => (
                   <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
                 ))}
               </select>
             </div>
-          }
         </div>
         <button className={styles.addButton} type="submit">Submit</button>
       </form>

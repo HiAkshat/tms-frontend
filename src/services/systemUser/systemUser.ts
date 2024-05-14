@@ -34,7 +34,8 @@ export const sendOtp = async (email: string|undefined) => {
       showToast(`OTP sent to ${email}`)
     })
     .catch(error => {
-      showToast(`Error sending OTP!`)
+      if (error.response.data.message) showToast(error.response.data.message)
+      else showToast("Unexpected error occured!")
       throw error
     })
 }

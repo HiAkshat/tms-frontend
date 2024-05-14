@@ -78,7 +78,7 @@ export default function NewOrganisationForm() {
           </div>
           <div className={styles.inputField}>
             <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
-            <span hidden={isOrgNameValid}>Invalid display name</span>
+            <span hidden={isDisplayNameValid}>Invalid display name</span>
           </div>
         </div>
         <Button onClick={handleSubmit} type="submit">Add</Button>

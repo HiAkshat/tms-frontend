@@ -34,7 +34,8 @@ export const sendOtp = async (email: string|undefined) => {
       showToast(`OTP sent to ${email}`)
     })
     .catch(error => {
-      showToast(`Error sending OTP!`)
+      if (error.response.data.message) showToast(error.response.data.message)
+      else showToast(`Error sending OTP!`)
       throw error
     })
 }
@@ -101,7 +102,7 @@ export const editOrganisationUser = async (organisationUser: OrganisationUserTyp
 
 export const deleteOrganisationUser = async (id: string|undefined) => {
   await axios
-    .delete(`${apiEndpoint}/${id}`)
+    .put(`${apiEndpoint}/${id}`)
     .then(()=>{
       showToast("User deleted successfully!")
     })

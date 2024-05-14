@@ -33,6 +33,10 @@ body{
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.rs-table{
+  border-radius: 10px;
+}
+
 .rs-theme-dark{
   --rs-body: blue;
 }

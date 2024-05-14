@@ -27,15 +27,13 @@ export default function RsuiteTable() {
     // verifyTokenServices.verifyToken
     console.log("INSIDE TICKET TABLE")
     console.log(user)
+
     verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(()=>{
       ticketServices.getOrgTickets(user.organisation_id).then((data)=>{
         setData(data)
         console.log(data)
       })
     })
-
-
-
   }, [user])
 
   const getData = () => {
@@ -71,7 +69,6 @@ export default function RsuiteTable() {
   };
 
   const ActionCell = ({ rowData, dataKey, ...props }: any) => {
-
     // {console.log(rowData)}
     // console.log(rowData[dataKey]);
     return (
@@ -90,19 +87,12 @@ export default function RsuiteTable() {
   };
 
   const handleDelete = async (id: string) => {
-    console.log('Delete entry:', id);
-    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`, {
-      method: "DELETE",
-    })
-
-
-    if (!res.ok){
-      showToast("Error deleting organisation user!")
+    try {
+      await ticketServices.deleteTicket(id)
+      navigate(0)
+    } catch (error) {
       return
     }
-
-    showToast("Organisation user deleted successfully!")
-    navigate("")
   };
 
   return (

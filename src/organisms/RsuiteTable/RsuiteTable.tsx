@@ -87,6 +87,7 @@ export default function RsuiteTable() {
     try {
       await organisationServices.deleteOrganisation(id)
       showToast("Organisation deleted successfully!")
+      navigate(0)
     } catch (error) {
       showToast("Error deleting organisation!")
     }
