@@ -1,39 +1,3 @@
-// .page{
-//   display: flex;
-//   flex-direction: column;
-//   background: none;  
-
-//   .main{
-//     display: flex;
-//     flex-direction: column;
-//     padding: 50px 50px;
-//     gap: 50px;
-
-//     .buttons{
-//       display: flex;
-//       flex-direction: column;
-//       font-size: 32px;
-//       gap: 20px;
-
-//       button{
-//         cursor: pointer;
-//         width: fit-content;
-//         background: none;
-//         outline: none;
-//         color: white;
-//         border: none;
-//         font-size: 32px;
-//       }
-//     }
-//   }
-
-//   .title{
-//     font-weight: 600;
-//     font-size: 48px;
-//   }
-
-// }
-
 .page{
   position: relative;
   width: 100%;
@@ -50,8 +14,13 @@
   .choices{
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 40px);
+    padding-top: 40px;
     align-items: center;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
 
     .choice{
       flex: 1;
@@ -59,11 +28,17 @@
       align-items: center;
       justify-content: center;
       height: 100%;
+      width: 100%;
+
 
       span{
         text-align: center;
         width: min-content;
         font-size: 64px;
+
+        @media screen and (max-width: 768px) {
+          font-size: 32px;
+        }
       }
 
       &:hover{
