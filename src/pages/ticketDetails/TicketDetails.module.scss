@@ -1,7 +1,7 @@
 .page{
   display: flex;
   flex-direction: column;
-  background: none;  
+  background: none;
 
   .main{
     display: flex;
@@ -28,11 +28,11 @@
           display: flex;
           flex-direction: column;
           gap: 30px;
-          
+
           .rowDiv{
             display: flex;
             gap: 20px;
-    
+
             span{
               font-family: "Ubuntu Sans Mono", monospace;
               font-weight:100;
@@ -44,12 +44,12 @@
               }
             }
           }
-    
+
           .colDiv{
             display: flex;
             flex-direction: column;
             gap: 8px;
-    
+
             span{
               font-family: "Ubuntu Sans Mono", monospace;
               font-weight:100;
@@ -58,31 +58,59 @@
                 color: white;
                 font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
                 font-weight: 600;
+              }
+            }
+
+            .fileDownload{
+              display: flex;
+              gap: 10px;
+
+              img{
+                width: 20px;
+              }
+
+              .filename{
+                color: white;
+                font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+                font-weight: 400;
+
+                &:hover{
+                  cursor: pointer;
+                  text-decoration: underline;
+                }
+              }
+
+              :hover{
+                cursor: pointer;
+              }
+              :hover~.filename{
+                cursor: pointer;
+                text-decoration: underline;
               }
             }
           }
         }
 
-        
+
         .commentsDiv{
           display: flex;
           flex-direction: column;
           gap: 14px;
-  
+
           background-color: #1C1C1C;
           padding: 20px 30px;
           border-radius: 10px;
           // width: 80%;
-  
+
           .heading{
             font-family: "Ubuntu Sans Mono", monospace;
             font-weight:100;
           }
-  
+
           form{
             display: flex;
             gap: 10px;
-            
+
             input{
               width: 300px;
               color: white;
@@ -92,12 +120,12 @@
               border: none;
               outline: none;
               background-color: #2A2A2A;
-      
+
               &:focus{
                 background-color: #383838;
               }
             }
-  
+
             button{
               font-size: 16px;
               border-radius: 10px;
@@ -107,24 +135,24 @@
               background-color: #2A2A2A;
               border: none;
               color: white;
-        
+
               &:hover{
                 background-color: #383838;
                 cursor: pointer;
               }
             }
           }
-          
+
           .commentSectionWithForm{
             display: flex;
             flex-direction: column;
             gap: 20px;
-  
+
             .commentSection{
               display: flex;
               flex-direction: column-reverse;
               gap: 8px;
-    
+
               .comment{
                 display: flex;
                 justify-content: space-between;
@@ -136,12 +164,12 @@
                   width: 80%;
                   display: flex;
                   gap: 8px;
-      
+
                   .user{
                     font-family: "Ubuntu Sans Mono", monospace;
                     font-weight:100;
                     color: rgb(208, 208, 208);
-                  }               
+                  }
                 }
 
                 button{

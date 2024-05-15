@@ -63,3 +63,17 @@ export const deleteTicket = async (id: string|undefined) => {
       throw error
     })
 }
+
+export const downloadFile = async (filename: string) => {
+  // const res = await axios
+  //   .get(apiEndpoint+`download/${filename}`, {
+  //     responseType: 'blob'
+  //   })
+  //   .then(res => {return res.data})
+  //   .catch(error => {
+  //     throw error
+  //   })
+
+  // return res
+  window.open(apiEndpoint+`download/${filename}`, '_blank')
+}

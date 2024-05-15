@@ -18,6 +18,7 @@ export default function TicketDetails() {
     try {
       ticketServices.getTicket(id).then(data => setTicket(data))
       commentServices.getComments(id).then(data => setComments(data))
+      console.log(ticket)
     } catch (error) {
       return
     }
@@ -102,6 +103,22 @@ export default function TicketDetails() {
                   <div className={styles.colDiv}>
                     <span>Description</span>
                     <p className={styles.desc}>{ticket.description}</p>
+                  </div>
+                  <div className={styles.colDiv}>
+                    <span>Files</span>
+                    {ticket.files && ticket.files.map((file) => {
+                      if (file!=""){
+                        return (
+                        <div className={styles.fileDownload} onClick={async ()=>{
+                          console.log("TRYING..")
+                          await ticketServices.downloadFile(file)
+                        }}>
+                          <img src="/attach-128.png" alt="" />
+                          <p className={styles.filename}>{file}</p>
+                        </div>
+                      )
+                      }
+                    })}
                   </div>
                 </div>
 

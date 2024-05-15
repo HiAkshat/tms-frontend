@@ -49,6 +49,11 @@ body{
   width: 300px;
 }
 
+.rs-uploader-draggable{
+
+  /* background: #2a2a2a !important; */
+}
+
 .rs-uploader-trigger-btn{
   border-radius: 10px;
   width: auto !important;
