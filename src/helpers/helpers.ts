@@ -37,3 +37,24 @@ export const validateNameAndSet = (name: string, setIsNameValid: React.Dispatch<
     return true
   }
 };
+
+export const isTextEmpty = (text: string) => {
+  if (text==""){
+    return true
+  }
+  
+  else{
+    return false
+  }
+}
+
+export const isTextEmptyAndSet = (text: string, setIsTextValid: React.Dispatch<React.SetStateAction<boolean>>) => {
+  if (text==""){
+    setIsTextValid(false)
+    return false
+  }
+  else{
+    setIsTextValid(true)
+    return true
+  }
+}

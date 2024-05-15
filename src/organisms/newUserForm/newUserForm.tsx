@@ -77,14 +77,12 @@ export default function NewOrganisationForm() {
           <EmailInput email={email} setEmail={setEmail} placeholder={"Email"} />
           <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
           <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
-          <CustomButton onClick={handleSubmit} type="submit" text="Add" />
+          <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
         </div>
         <div className={styles.inputs}>
           <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
           <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
           {organisations && <SelectInput data={organisations} value={"_id"} label={"organisation_name"} setValue={setOrganisation}/>}
-        </div>
-        <div className={styles.inputs}>
         </div>
       </form>
     </div>

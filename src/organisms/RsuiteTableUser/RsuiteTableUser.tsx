@@ -8,6 +8,7 @@ const { Column, HeaderCell, Cell } = Table;
 
 import styles from "./RsuiteTable.module.scss"
 import organisationUserServices from '../../services/organisationUser';
+import useDeviceSize from '../../utils/useDeviceSize';
 
 export default function RsuiteTable() {
   const navigate = useNavigate()
@@ -99,51 +100,52 @@ export default function RsuiteTable() {
     }
   };
 
+  const [windowWidth] = useDeviceSize()
+
   if (loading){
     return <Placeholder.Grid rows={10} columns={7} active />
   }
 
+
   else{
     return (
       <div>
-
         <Table
           className={styles.userTable}
           sortColumn={sortColumn}
           sortType={sortType}
           onSortColumn={handleSortColumn}
-          // height={400}
           autoHeight
           data={getData()}
           onRowClick={rowData => {
             console.log(rowData);
           }}
         >
-          <Column flexGrow={1} align="center" sortable>
+          <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1.5} align="center" sortable>
             <HeaderCell>Email ID</HeaderCell>
             <Cell dataKey="email_id" />
           </Column>
-          <Column flexGrow={1} align="center" sortable>
+          <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
             <HeaderCell>First Name</HeaderCell>
             <Cell dataKey="first_name" />
           </Column>
-          <Column flexGrow={1} align="center" sortable>
+          <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
             <HeaderCell>Last Name</HeaderCell>
             <Cell dataKey="last_name" />
           </Column>
-          <Column flexGrow={1} align="center" sortable>
+          <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
             <HeaderCell>DOB</HeaderCell>
             <Cell dataKey="dob">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
           </Column>
-          <Column flexGrow={1} align="center">
+          <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center">
             <HeaderCell>Organisation</HeaderCell>
             <Cell dataKey="organisation.organisation_name" />
           </Column>
-          <Column flexGrow={1} align="center" sortable>
+          <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
             <HeaderCell>Joining Date</HeaderCell>
             <Cell dataKey="joining_date">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
           </Column>
-          <Column flexGrow={1}>
+          <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1}>
             <HeaderCell>Actions</HeaderCell>
             <ActionCell dataKey="_id" rowData={undefined} />
           </Column>

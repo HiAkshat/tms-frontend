@@ -1,18 +1,13 @@
-.textInput{
-  width: 300px;
-  color: white;
-  font-size: 16px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  background-color: #2A2A2A;
+.inputField{
+  display: flex;
+  flex-direction: column;
+  height: 60px;
 
-  &:focus{
-    background-color: #383838;
+  span{
+    // position: absolute;
+    font-size: 12px;
+    color: rgb(210, 116, 116);
+    font-family: "Ubuntu Sans Mono", monospace;
+    padding: 4px 0 4px 14px;
   }
 }
-
-// .textInput[fullWidth=true]{
-//   width: inherit;
-// }

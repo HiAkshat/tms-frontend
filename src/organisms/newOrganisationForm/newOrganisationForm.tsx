@@ -5,6 +5,10 @@ import { Input, Button } from 'rsuite';
 // import { Input, Button, Schema, Form } from 'rsuite';
 // import { StringType } from 'schema-typed';
 import organisationServices from "../../services/organisation";
+import TextInput from "../../atoms/TextInput/TextInput";
+import CustomButton from "../../atoms/CustomButton/CustomButton";
+import helpers from "../../helpers";
+import showToast from "../../atoms/Toast/Toast";
 
 // const model = Schema.Model({
 //   organisation_name: StringType().isRequired("This field is required!"),
@@ -12,59 +16,34 @@ import organisationServices from "../../services/organisation";
 // });
 
 export default function NewOrganisationForm() {
-  const [organisation, setOrganisation] = useState<OrganisationType>({
-    organisation_name: '',
-    display_name: '',
-  })
+  const [organisationName, setOrganisationName] = useState("")
+  const [displayName, setDisplayName] = useState("")
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
-    validateName(organisation.organisation_name, setIsOrgnNameValid)
-    validateName(organisation.display_name, setIsDisplayNameValid)
+    // console.log(organisationName)
+    // console.log(displayName)
 
-    if (!isOrgNameValid || !isDisplayNameValid) return
+    if (helpers.isTextEmpty(organisationName) || helpers.isTextEmpty(displayName)){
+      showToast("Invalid data!")
+      return
+    }
+
+    const data = {
+      organisation_name: organisationName,
+      display_name: displayName
+    }
 
     try {
-      await organisationServices.addNewOrganisation(organisation)
-      setOrganisation({
-        organisation_name: '',
-        display_name: '',
-      });
+      await organisationServices.addNewOrganisation(data)
+
+      setOrganisationName("")
+      setDisplayName("")
 
     } catch (error) {
       return
     }
-  };
-
-  const handleOrgNameChange = (e: string) => {
-    setTimeout(() => {
-      validateName(e, setIsOrgnNameValid)
-    }, 1000);
-
-    setOrganisation((prevState) => ({
-      ...prevState,
-      organisation_name: e,
-    }));
-  };
-
-  const handleDisplayNameChange = (e: string) => {
-    setTimeout(() => {
-      validateName(e, setIsDisplayNameValid)
-    }, 1000);
-
-    setOrganisation((prevState) => ({
-      ...prevState,
-      display_name: e,
-    }));
-  }
-
-  const [isDisplayNameValid, setIsDisplayNameValid] = useState(true)
-  const [isOrgNameValid, setIsOrgnNameValid] = useState(true)
-
-  const validateName = (name: string, setIsNameValid: any) => {
-    if (name=="") setIsNameValid(false)
-    else setIsNameValid(true)
   };
 
   return (
@@ -72,16 +51,10 @@ export default function NewOrganisationForm() {
       <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <div className={styles.inputField}>
-            <Input placeholder="Organisation Name" value={organisation.organisation_name} onChange={handleOrgNameChange} required={true}/>
-            <span hidden={isOrgNameValid}>Invalid organisation name</span>
-          </div>
-          <div className={styles.inputField}>
-            <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
-            <span hidden={isDisplayNameValid}>Invalid display name</span>
-          </div>
+          <TextInput text={organisationName} field="Organisation Name" setText={setOrganisationName} placeholder="Organisation Name"  />
+          <TextInput text={displayName} field="Display Name" setText={setDisplayName} placeholder="Display Name"  />
+          <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
         </div>
-        <Button onClick={handleSubmit} type="submit">Add</Button>
       </form>
     </div>
   );

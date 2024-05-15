@@ -8,7 +8,6 @@
   }
 
   .theForm{
-
     display: flex;
     background-color: #1C1C1C;
     gap: 16px;
@@ -42,7 +41,7 @@
       font-size: 16px;
       border-radius: 10px;
       height: fit-content;
-      align-self: flex-end;
+      // align-self: flex-end;
       padding: 8px 12px;
       background-color: #2A2A2A;
       border: none;
