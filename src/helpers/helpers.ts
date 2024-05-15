@@ -42,7 +42,7 @@ export const isTextEmpty = (text: string) => {
   if (text==""){
     return true
   }
-  
+
   else{
     return false
   }
@@ -57,4 +57,22 @@ export const isTextEmptyAndSet = (text: string, setIsTextValid: React.Dispatch<R
     setIsTextValid(true)
     return true
   }
+}
+
+export const toTitleCase = (text: string) => {
+  return text.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
+}
+
+export const isDateBeforeDate = (date1: Date, date2: Date) => {
+  if (date1<date2) return true
+  else return false
+}
+
+export const isDateBeforeNow = (date: Date) => {
+  return date < new Date()
 }

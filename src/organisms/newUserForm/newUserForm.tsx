@@ -13,6 +13,7 @@ import showToast from "../../atoms/Toast/Toast";
 import DateInput from "../../atoms/DateInput/DateInput";
 import SelectInput from "../../atoms/SelectInput/SelectInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
+import { isDateBeforeDate, isDateBeforeNow } from "../../helpers/helpers";
 
 export default function NewOrganisationForm() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function NewOrganisationForm() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate)){
+    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate && isDateBeforeDate(dob, joiningDate) && isDateBeforeNow(joiningDate))){
       showToast("Invalid data")
       return
     }

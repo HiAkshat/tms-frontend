@@ -9,6 +9,7 @@ const { Column, HeaderCell, Cell } = Table;
 import styles from "./RsuiteTable.module.scss"
 import organisationUserServices from '../../services/organisationUser';
 import useDeviceSize from '../../utils/useDeviceSize';
+import helpers from '../../helpers';
 
 export default function RsuiteTable() {
   const navigate = useNavigate()
@@ -127,11 +128,11 @@ export default function RsuiteTable() {
           </Column>
           <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
             <HeaderCell>First Name</HeaderCell>
-            <Cell dataKey="first_name" />
+            <Cell dataKey="first_name">{rowData => helpers.toTitleCase(rowData.first_name)}</Cell>
           </Column>
           <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
             <HeaderCell>Last Name</HeaderCell>
-            <Cell dataKey="last_name" />
+            <Cell dataKey="last_name">{rowData => helpers.toTitleCase(rowData.last_name)}</Cell>
           </Column>
           <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
             <HeaderCell>DOB</HeaderCell>
