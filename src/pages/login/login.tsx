@@ -4,19 +4,20 @@ import { login } from '../../redux/userSlice';
 import { useNavigate } from "react-router-dom";
 
 import styles from "./Login.module.scss"
-import showToast from '../../atoms/Toast/Toast';
-
 import Cookie from 'js-cookie';
 
 import { Button, Input } from 'rsuite';
 import systemUserServices from '../../services/systemUser';
 import organisationUserServices from '../../services/organisationUser';
 import verifyTokenServices from '../../services/verifyToken';
+import helpers from '../../helpers';
 
 export default function Login() {
   const [userType, setUserType] = useState(0)
   const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
+
+  const [isEmailValid, setIsEmailValid] = useState(true);
 
   const dispatch = useDispatch()
   let navigate = useNavigate();
@@ -98,8 +99,22 @@ export default function Login() {
         <div className={styles.inputsBox}>
             <div className={styles.inputWithB}>
               <div className={styles.inputs}>
-                <Input placeholder="Enter your email" value={email} onChange={setEmail} required={true}/>
-                <Input placeholder="Enter your 6-digit OTP" value={otp} onChange={setOtp} required={true}/>
+                <div className={styles.inputField}>
+                  <Input placeholder="Enter your email" value={email} onChange={(val: string)=>{
+                    setTimeout(() => {
+                      helpers.validateEmail(val, setIsEmailValid)
+                    }, 1000);
+                    setEmail(val)
+
+                  }} required={true}/>
+                  <span hidden={isEmailValid}>Invalid Email</span>
+                </div>
+                <Input placeholder="Enter your 6-digit OTP" value={otp} onChange={(val: string)=>{
+                  const inputValue = val
+                  const numericValue = inputValue.replace(/\D/g, '');
+                  const truncatedValue = numericValue.slice(0, 6);
+                  setOtp(truncatedValue)
+                }} required={true}/>
               </div>
               <Button onClick={handleSendOtp}>Send OTP</Button>
             </div>
