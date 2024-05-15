@@ -41,9 +41,8 @@ export default function Login() {
 
   const handleSendOtp = async () => {
     try{
-      showToast("Sending OTP...")
-      if (userType==0) await systemUserServices.sendOtp(email)
-      else await organisationUserServices.sendOtp(email)
+      if (userType==0) await systemUserServices.sendOtpBetter(email)
+      else await organisationUserServices.sendOtpBetter(email)
     } catch (error){
       return
     }

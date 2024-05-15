@@ -4,6 +4,8 @@ import showToast from "../../atoms/Toast/Toast"
 import server from "../../globals"
 
 const apiEndpoint = `${server}/organisationUser`
+let otp_flag = true
+let otp_timeout_flag = true
 
 export const getOrganisationUsers = async (page: number=1, pageSize: number=10) => {
   const res = await axios
@@ -28,7 +30,7 @@ export const getOrganisationUsersByOrgId = async (org_id: string) => {
 }
 
 export const sendOtp = async (email: string|undefined) => {
-  await axios
+  return await axios
     .post(`${apiEndpoint}/sendOtp/${email}`)
     .then(()=>{
       showToast(`OTP sent to ${email}`)
@@ -38,6 +40,30 @@ export const sendOtp = async (email: string|undefined) => {
       else showToast(`Error sending OTP!`)
       throw error
     })
+}
+
+const throttle = (func: any, email: string|undefined, limit: number) => {
+  if (otp_flag){
+    func(email)
+    showToast("Sending OTP...")
+    otp_flag = false
+    setTimeout(()=>{
+      otp_flag=true
+    }, limit)
+  }
+}
+
+export const sendOtpBetter = async (email: string|undefined) => {
+  if (otp_flag) throttle(sendOtp, email, 10000)
+  else{
+    if (otp_timeout_flag){
+      showToast("Wait for 10 seconds before resending OTP!")
+      otp_timeout_flag=false
+      setTimeout(() => {
+        otp_timeout_flag=true
+      }, 10000);
+    }
+  }
 }
 
 export const verifyOtp = async (body: VerifyOtpBodyType) => {
