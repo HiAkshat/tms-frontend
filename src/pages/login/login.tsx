@@ -11,6 +11,8 @@ import systemUserServices from '../../services/systemUser';
 import organisationUserServices from '../../services/organisationUser';
 import verifyTokenServices from '../../services/verifyToken';
 import helpers from '../../helpers';
+import EmailInput from '../../atoms/EmailInput/EmailInput';
+import showToast from '../../atoms/Toast/Toast';
 
 export default function Login() {
   const [userType, setUserType] = useState(0)
@@ -41,6 +43,11 @@ export default function Login() {
   }, [])
 
   const handleSendOtp = async () => {
+    if (!helpers.validateEmail(email)){
+      showToast("Invalid email!")
+      return
+    }
+
     try{
       if (userType==0) await systemUserServices.sendOtpBetter(email)
       else await organisationUserServices.sendOtpBetter(email)
@@ -99,16 +106,7 @@ export default function Login() {
         <div className={styles.inputsBox}>
             <div className={styles.inputWithB}>
               <div className={styles.inputs}>
-                <div className={styles.inputField}>
-                  <Input placeholder="Enter your email" value={email} onChange={(val: string)=>{
-                    setTimeout(() => {
-                      helpers.validateEmail(val, setIsEmailValid)
-                    }, 1000);
-                    setEmail(val)
-
-                  }} required={true}/>
-                  <span hidden={isEmailValid}>Invalid Email</span>
-                </div>
+                <EmailInput email={email} setEmail={setEmail}/>
                 <Input placeholder="Enter your 6-digit OTP" value={otp} onChange={(val: string)=>{
                   const inputValue = val
                   const numericValue = inputValue.replace(/\D/g, '');

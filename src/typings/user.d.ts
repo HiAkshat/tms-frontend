@@ -14,7 +14,7 @@ type SendUserType = {
   email_id: string;
   first_name: string;
   last_name: string;
-  dob: Date;
+  dob?: Date;
   organisation: string;
-  joining_date: Date;
+  joining_date?: Date;
 }
