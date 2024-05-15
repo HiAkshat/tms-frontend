@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Pagination } from 'rsuite';
+import { Table, Pagination, Modal } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import { Placeholder } from 'rsuite';
 
@@ -10,6 +10,7 @@ import styles from "./RsuiteTable.module.scss"
 import organisationUserServices from '../../services/organisationUser';
 import useDeviceSize from '../../utils/useDeviceSize';
 import helpers from '../../helpers';
+import CustomButton from '../../atoms/CustomButton/CustomButton';
 
 export default function RsuiteTable() {
   const navigate = useNavigate()
@@ -83,7 +84,10 @@ export default function RsuiteTable() {
       <Cell {...props} className="link-group">
         <span className={styles.actionButton} onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
         <span> - </span>
-        <span className={styles.actionButton} onClick={()=>handleDelete(rowData[dataKey])}>Delete</span>
+        <span className={styles.actionButton} onClick={()=>{
+          setOpenModal(true)
+          setDeleteUser(rowData[dataKey])
+        }}>Delete</span>
       </Cell>
     );
   };
@@ -102,6 +106,9 @@ export default function RsuiteTable() {
   };
 
   const [windowWidth] = useDeviceSize()
+
+  const [openModal, setOpenModal] = useState(false)
+  const [deleteUser, setDeleteUser] = useState("")
 
   if (loading){
     return <Placeholder.Grid rows={10} columns={7} active />
@@ -135,16 +142,16 @@ export default function RsuiteTable() {
             <Cell dataKey="last_name">{rowData => helpers.toTitleCase(rowData.last_name)}</Cell>
           </Column>
           <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
-            <HeaderCell>DOB</HeaderCell>
-            <Cell dataKey="dob">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
+            <HeaderCell>DOB (DD/MM/YYY)</HeaderCell>
+            <Cell dataKey="dob">{rowData => new Date(rowData.dob).toLocaleString('en-GB').split(",")[0]}</Cell>
           </Column>
           <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center">
             <HeaderCell>Organisation</HeaderCell>
             <Cell dataKey="organisation.organisation_name" />
           </Column>
           <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1} align="center" sortable>
-            <HeaderCell>Joining Date</HeaderCell>
-            <Cell dataKey="joining_date">{rowData => new Date(rowData.dob).toLocaleString().split(",")[0]}</Cell>
+            <HeaderCell>Joining Date (DD/MM/YYY)</HeaderCell>
+            <Cell dataKey="joining_date">{rowData => new Date(rowData.dob).toLocaleString('en-GB').split(",")[0]}</Cell>
           </Column>
           <Column minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1}>
             <HeaderCell>Actions</HeaderCell>
@@ -170,6 +177,18 @@ export default function RsuiteTable() {
             onChangeLimit={handleChangeLimit}
           />
         </div>
+        <Modal open={openModal} onClose={()=>{setOpenModal(false)}}>
+          <div className={styles.deleteModal}>
+            <span>Delete user {data?.find(user => user._id==deleteUser)?.email_id}?</span>
+            <div className={styles.buttons}>
+              <CustomButton backgroundColor="#f54260" onClick={()=>{
+                setOpenModal(false)
+                handleDelete(deleteUser)
+              }} text="Yes, delete!" />
+              <CustomButton backgroundColor="rgba(0,0,0,0)" border="1px solid white" onClick={()=>{setOpenModal(false)}} text="Cancel" />
+            </div>
+          </div>
+        </Modal>
       </div>
     )
   }

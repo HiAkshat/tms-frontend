@@ -1,12 +1,13 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Pagination } from 'rsuite';
+import { Table, Pagination, Button } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 import organisationServices from '../../services/organisation';
-import { Placeholder } from 'rsuite';
+import { Placeholder, Modal } from 'rsuite';
 
 import styles from "./RsuiteTable.module.scss"
+import CustomButton from '../../atoms/CustomButton/CustomButton';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,6 +23,8 @@ export default function RsuiteTable() {
   const [limit, setLimit] = useState(10);
   const [totalEntries, setTotalEntries] = useState(0)
 
+  const [deleteOrg, setDeleteOrg] = useState('')
+
   const handleChangeLimit = (dataKey: any) => {
     setPage(1);
     setLimit(dataKey);
@@ -36,6 +39,8 @@ export default function RsuiteTable() {
       console.log(data)
     })
   }, [page, limit])
+
+  const [openModal, setOpenModal] = useState(false)
 
   const getData = () => {
     if (sortColumn && sortType && data) {
@@ -74,7 +79,11 @@ export default function RsuiteTable() {
       <Cell {...props} className="link-group">
         <span className={styles.actionButton} onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
         <span> - </span>
-        <span className={styles.actionButton} onClick={()=>handleDelete(rowData[dataKey])}>Delete</span>
+        <span className={styles.actionButton} onClick={()=>{
+          setDeleteOrg(rowData[dataKey])
+          setOpenModal(true)
+          // handleDelete(rowData[dataKey])}
+        }}>Delete</span>
       </Cell>
     );
   };
@@ -125,24 +134,36 @@ export default function RsuiteTable() {
           </Column>
         </Table>
         <div style={{ padding: 20 }}>
-        <Pagination
-          prev
-          next
-          // first
-          // last
-          ellipsis
-          boundaryLinks
-          maxButtons={5}
-          size="xs"
-          layout={['total', '-', 'limit', '|', 'pager', 'skip']}
-          total={totalEntries}
-          limitOptions={[10, 30, 50]}
-          limit={limit}
-          activePage={page}
-          onChangePage={setPage}
-          onChangeLimit={handleChangeLimit}
-        />
-      </div>
+          <Pagination
+            prev
+            next
+            // first
+            // last
+            ellipsis
+            boundaryLinks
+            maxButtons={5}
+            size="xs"
+            layout={['total', '-', 'limit', '|', 'pager', 'skip']}
+            total={totalEntries}
+            limitOptions={[10, 30, 50]}
+            limit={limit}
+            activePage={page}
+            onChangePage={setPage}
+            onChangeLimit={handleChangeLimit}
+          />
+        </div>
+        <Modal open={openModal} onClose={()=>{setOpenModal(false)}}>
+          <div className={styles.deleteModal}>
+            <span>Delete organisation?</span>
+            <div className={styles.buttons}>
+              <CustomButton backgroundColor="#f54260" onClick={()=>{
+                setOpenModal(false)
+                handleDelete(deleteOrg)
+              }} text="Yes, delete!" />
+              <CustomButton backgroundColor="rgba(0,0,0,0)" border="1px solid white" onClick={()=>{setOpenModal(false)}} text="Cancel" />
+            </div>
+          </div>
+        </Modal>
       </div>
     )
   }
