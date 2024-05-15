@@ -1,38 +1,27 @@
 import { useEffect, useState } from 'react';
-import { getData } from '../../services/getData';
-import { useSelector } from 'react-redux';
 import styles from "./NewTicketForm.module.scss"
 
 import { useNavigate } from 'react-router-dom';
 
 import { DatePicker, Button, Input, SelectPicker, Uploader } from 'rsuite';
 import ticketServices from '../../services/ticket/index';
-import { NavUserType, StateType } from '../../typings/navUser';
-import axios from 'axios';
-import organisationUserServices from '../../services/organisationUser';
 
+import organisationUserServices from '../../services/organisationUser';
+import verifyTokenServices from '../../services/verifyToken';
+
+import Cookie from "js-cookie"
 
 function NewTicketForm() {
   const navigate = useNavigate()
-  const user:NavUserType = useSelector((state: StateType) => state.user)
-  // const users = getData(`http://localhost:3000/api/organisationUser/organisation/${user.organisation_id}`)
+
   const [users, setUsers] = useState<[UserType]>()
-  console.log(users)
+  const [orgId, setOrgId] = useState('')
   const ticketTypeOptions = ["Story", "Task", "Bug"]
 
   const [file, setFile] = useState<any>()
 
-  // const upload = () => {
-  //   const formData = new FormData()
-  //   formData.append("file", file)
-  //   axios
-  //     .post("http://localhost:3000/api/ticket/upload", formData)
-  //     .then(res => {})
-  //     .catch(err => console.log(err))
-  // }
-
   const [ticketData, setTicketData] = useState<SendTicketType>({
-    organisation: user.organisation_id ?? "",
+    organisation: orgId ?? "",
     type: '',
     key: '',
     summary: '',
@@ -40,12 +29,15 @@ function NewTicketForm() {
     assignee: '',
     reporter: '',
     due_date: new Date(),
+    files: [""]
   });
 
   const handleSubmit = async () => {
+    console.log(ticketData)
+
     try {
-      await ticketServices.addTicket(ticketData)
-      navigate(0)
+      await ticketServices.addTicket({...ticketData, organisation: orgId})
+      // navigate(0)
     } catch (error) {
       return
     }
@@ -53,10 +45,14 @@ function NewTicketForm() {
 
   useEffect(()=>{
     try {
-      organisationUserServices.getOrganisationUsersByOrgId(user.organisation_id).then(res => {
-        setUsers(res)
-        console.log(users)
+      verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
+        const org_id = res.decoded.user.organisation._id
+        setOrgId(org_id)
+        organisationUserServices.getOrganisationUsersByOrgId(org_id).then(res => {
+          setUsers(res)
+        })
       })
+
     } catch (error){
       return
     }
@@ -76,22 +72,28 @@ function NewTicketForm() {
           <Input placeholder="Summary" value={ticketData.summary} onChange={(val: string)=>setTicketData({...ticketData, summary: val})} required={true}/>
           <Input as="textarea" rows={3} placeholder="Description" value={ticketData.description} onChange={(val: string) => setTicketData({...ticketData, description: val})} />
         </div>
-        <div className={styles.inputs}>
-          <Uploader action="//jsonplaceholder.typicode.com/posts/" draggable onChange={(e)=>{
-            console.log(e)
-          }}>
-            <div style={{ width: 400, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span>Click or Drag files to this area to upload</span>
-            </div>
-          </Uploader>
+        {/* <div className={styles.inputs}> */}
+
+          {/* <input type="file" onChange={(e: any)=>setFile(e.target.files[0])}/> */}
+          {/* <button onClick={upload}>Upload file test</button> */}
+        {/* </div> */}
+      <Uploader action="http://localhost:3000/api/ticket/upload" draggable onChange={(e)=>{
+        console.log(e)
+        }}
+
+        onSuccess={(res)=>{
+          console.log(res)
+          const newFiles = ticketData.files ?? [""]
+          newFiles.push(res.filename)
+          setTicketData({...ticketData, files: newFiles})
+          console.log(ticketData)
+        }}
+      >
+        <div style={{ width: 400, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span>Click or Drag files to this area to upload</span>
         </div>
+      </Uploader>
         <div className={styles.inputs}>
-          {/* <input type="file" onChange={(e: any)=>{
-            console.log(e.target.files)
-            setFile(e.target.files[0])
-            console.log(file)
-          }}/>
-        <button onClick={upload}>Upload</button>*/}
           <Button onClick={handleSubmit}>Submit</Button>
         </div>
       </form>

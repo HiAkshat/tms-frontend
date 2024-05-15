@@ -26,12 +26,10 @@ export default function RsuiteTable() {
   useEffect(()=>{
     // verifyTokenServices.verifyToken
     console.log("INSIDE TICKET TABLE")
-    console.log(user)
 
     verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(()=>{
       ticketServices.getOrgTickets(user.organisation_id).then((data)=>{
         setData(data)
-        console.log(data)
       })
     })
   }, [user])

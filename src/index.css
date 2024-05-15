@@ -44,3 +44,12 @@ body{
 .rs-table-cell{
   background-color: #1c1c1c;
 }
+
+.rs-uploader{
+  width: 300px;
+}
+
+.rs-uploader-trigger-btn{
+  border-radius: 10px;
+  width: auto !important;
+}

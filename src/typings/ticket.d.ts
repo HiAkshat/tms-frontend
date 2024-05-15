@@ -24,5 +24,6 @@ type SendTicketType = {
   assignee: string,
   reporter: string,
   status?: string,
-  due_date: Date
+  due_date: Date,
+  files?: [string]
 }

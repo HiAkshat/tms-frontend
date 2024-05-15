@@ -14,7 +14,6 @@ export const verifyToken = async (accessToken: string) => {
   const res = await axios
     .post(`${apiEndpoint}/verifyToken/`, "", {headers})
     .then(res => {
-      console.log("HELLO")
       const userData = res.data.decoded.user
       // const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
       // store.dispatch(login(userDetails))

@@ -8,10 +8,17 @@ import RsuiteTable from "../../organisms/RsuiteTableTicket/RsuiteTableTicket"
 import Cookie from "js-cookie"
 import verifyTokenServices from "../../services/verifyToken"
 
+import socket from "../../socket/socket"
+
 export default function ViewTickets() {
   const navigate = useNavigate()
 
   useEffect(()=>{
+    socket.on('newticket', (data) => {
+      showToast(`New Ticket YIPEEE: ${data.message}`)
+      // Display toast or notification for the new ticket
+    });
+
     verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(res=>{
       if (!(res.valid && res.userType=='organisation')){
         showToast("Login as organisation user to access!")

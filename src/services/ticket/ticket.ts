@@ -9,7 +9,6 @@ export const getOrgTickets = async (id: string|undefined) => {
   const res = await axios
     .get(apiEndpoint+`organisation/${id}`)
     .then(res => {
-      console.log(res)
       return res.data
     })
     .catch(error => {
