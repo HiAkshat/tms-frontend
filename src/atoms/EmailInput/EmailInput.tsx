@@ -8,7 +8,7 @@ export default function EmailInput({email, setEmail, placeholder="Enter your ema
   const [isEmailValid, setIsEmailValid] = useState(true);
 
   return (
-  <div style={{width: width}} className={styles.inputField}>
+    <div style={{width: width}} className={styles.inputField}>
       <Input placeholder={placeholder} value={email} onChange={(val: string)=>{
         setTimeout(() => {
           helpers.validateEmailAndSet(val, setIsEmailValid)

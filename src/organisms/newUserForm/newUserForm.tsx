@@ -34,7 +34,7 @@ export default function NewOrganisationForm() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (!(dob && joiningDate && helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName))){
+    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate)){
       showToast("Invalid data")
       return
     }
@@ -77,6 +77,7 @@ export default function NewOrganisationForm() {
           <EmailInput email={email} setEmail={setEmail} placeholder={"Email"} />
           <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
           <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
+          <CustomButton onClick={handleSubmit} type="submit" text="Add" />
         </div>
         <div className={styles.inputs}>
           <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
@@ -84,7 +85,6 @@ export default function NewOrganisationForm() {
           {organisations && <SelectInput data={organisations} value={"_id"} label={"organisation_name"} setValue={setOrganisation}/>}
         </div>
         <div className={styles.inputs}>
-          <CustomButton onClick={handleSubmit} type="submit" text="Add" />
         </div>
       </form>
     </div>

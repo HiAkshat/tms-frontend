@@ -19,36 +19,7 @@
     .inputs{
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      justify-content: space-between;
-
-      .inputField{
-        display: flex;
-        flex-direction: column;
-        span{
-          // position: absolute;
-          font-size: 12px;
-          color: rgb(210, 116, 116);
-          font-family: "Ubuntu Sans Mono", monospace;
-          padding: 4px 0 4px 14px;
-        }
-      }
-
-      // input{
-      //   width: 300px;
-      //   color: white;
-      //   font-size: 16px;
-      //   padding: 8px 12px;
-      //   border-radius: 10px;
-      //   border: none;
-      //   outline: none;
-      //   background-color: #2A2A2A;
-
-      //   &:focus{
-      //     background-color: #383838;
-      //   }
-      // }
-
+      gap: 4px;
 
       select{
         width: 300px;
