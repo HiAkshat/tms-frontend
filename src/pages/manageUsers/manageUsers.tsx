@@ -13,11 +13,9 @@ export default function ManageUsers() {
   const navigate = useNavigate()
 
   const user = useSelector((state: StateType) => state.user)
-  const [users, setUsers] = useState([])
 
-  useEffect(()=>{
-    organisationUserServices.getOrganisationUsers().then(data=>{setUsers(data)})
-  }, [])
+  const [isLoading, setIsLoading] = useState(true)
+
 
   if (false && !user.isAuthenticated || user.userType=='organisation'){
     showToast("Login as system user to access!")
@@ -29,10 +27,10 @@ export default function ManageUsers() {
       <div className={styles.page}>
         <Navbar />
         <div className={styles.main}>
-          <NewUserForm />
+          <NewUserForm setIsLoading={setIsLoading}/>
           <div className={styles.tableDiv}>
             <span>Users Table</span>
-            <RsuiteTable />
+            <RsuiteTable isLoading={isLoading} setIsLoading={setIsLoading}/>
           </div>
         </div>
       </div>

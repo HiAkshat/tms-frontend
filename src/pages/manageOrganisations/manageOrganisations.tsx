@@ -4,11 +4,13 @@ import Navbar from "../../organisms/Navbar/navbar"
 import showToast from "../../atoms/Toast/Toast"
 import { useNavigate } from "react-router-dom"
 import RsuiteTable from "../../organisms/RsuiteTable/RsuiteTable"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import verifyTokenServices from "../../services/verifyToken"
 import Cookie from "js-cookie"
 
 export default function ManageOrganisations(){
+  const [isLoading, setIsLoading] = useState(true)
+
   const navigate = useNavigate()
   useEffect(()=>{
     verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(res=>{
@@ -23,10 +25,10 @@ export default function ManageOrganisations(){
     <div className={styles.page}>
       <Navbar />
       <div className={styles.main}>
-        <NewOrganisationForm />
+        <NewOrganisationForm setIsLoading={setIsLoading}/>
         <div className={styles.tableDiv}>
           <span>Organisations Table</span>
-          <RsuiteTable />
+          <RsuiteTable isLoading={isLoading} setIsLoading={setIsLoading}/>
         </div>
       </div>
     </div>

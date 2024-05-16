@@ -12,13 +12,13 @@ import useDeviceSize from '../../utils/useDeviceSize';
 import helpers from '../../helpers';
 import CustomButton from '../../atoms/CustomButton/CustomButton';
 
-export default function RsuiteTable() {
+export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const navigate = useNavigate()
 
   const [sortColumn, setSortColumn] = useState<string>("");
   const [sortType, setSortType] = useState<SortType>();
   const [data, setData] = useState<[UserType]>()
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
 
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10);
@@ -33,11 +33,11 @@ export default function RsuiteTable() {
     organisationUserServices.getOrganisationUsers(page, limit).then((users)=>{
       setData(users.data)
       setTotalEntries(users.totalEntries)
-      setLoading(false)
+      setIsLoading(false)
       console.log(data)
     })
 
-  }, [page, limit])
+  }, [page, limit, isLoading])
 
   const getData = () => {
     if (data && sortColumn && sortType) {
@@ -72,7 +72,7 @@ export default function RsuiteTable() {
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
     // setLoading(true);
     setTimeout(() => {
-      setLoading(false);
+      setIsLoading(false);
       setSortColumn(sortColumn);
       setSortType(sortType);
     }, 500);
@@ -110,7 +110,7 @@ export default function RsuiteTable() {
   const [openModal, setOpenModal] = useState(false)
   const [deleteUser, setDeleteUser] = useState("")
 
-  if (loading){
+  if (isLoading){
     return <Placeholder.Grid rows={10} columns={7} active />
   }
 

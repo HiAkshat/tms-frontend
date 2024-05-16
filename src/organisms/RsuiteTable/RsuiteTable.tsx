@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Pagination, Button } from 'rsuite';
+import { Table, Pagination } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 import organisationServices from '../../services/organisation';
@@ -12,12 +12,11 @@ import useDeviceSize from '../../utils/useDeviceSize';
 
 const { Column, HeaderCell, Cell } = Table;
 
-export default function RsuiteTable() {
+export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const navigate = useNavigate()
 
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortType, setSortType] = useState<SortType>();
-  const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<[OrganisationType]>()
 
   const [page, setPage] = useState(1)
@@ -35,15 +34,14 @@ export default function RsuiteTable() {
     await organisationServices.getOrganisations(page.toString(), limit.toString()).then(orgs => {
       setData(orgs.data)
       setTotalEntries(orgs.totalEntries)
-      setLoading(false)
+      setIsLoading(false)
       console.log(data)
     })
   }
 
   useEffect(()=>{
-    // setLoading(true)
     fetchOrganisationData()
-  }, [page, limit])
+  }, [page, limit, isLoading])
 
   const [openModal, setOpenModal] = useState(false)
 
@@ -109,7 +107,7 @@ export default function RsuiteTable() {
 
   const [windowWidth] = useDeviceSize()
 
-  if (loading){
+  if (isLoading){
     return <Placeholder.Grid rows={8} columns={3} active />
   }
 

@@ -1,29 +1,20 @@
 import { useState } from "react"
 import styles from "./NewOrganisationForm.module.scss"
 
-import { Input, Button } from 'rsuite';
-// import { Input, Button, Schema, Form } from 'rsuite';
-// import { StringType } from 'schema-typed';
 import organisationServices from "../../services/organisation";
+
+import helpers from "../../helpers";
+
 import TextInput from "../../atoms/TextInput/TextInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
-import helpers from "../../helpers";
 import showToast from "../../atoms/Toast/Toast";
 
-// const model = Schema.Model({
-//   organisation_name: StringType().isRequired("This field is required!"),
-//   display_name: StringType().isRequired("This field is required!")
-// });
-
-export default function NewOrganisationForm() {
+export default function NewOrganisationForm({setIsLoading}: any) {
   const [organisationName, setOrganisationName] = useState("")
   const [displayName, setDisplayName] = useState("")
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
-
-    // console.log(organisationName)
-    // console.log(displayName)
 
     if (helpers.isTextEmpty(organisationName) || helpers.isTextEmpty(displayName)){
       showToast("Invalid data!")
@@ -36,6 +27,7 @@ export default function NewOrganisationForm() {
     }
 
     try {
+      setIsLoading(true)
       await organisationServices.addNewOrganisation(data)
 
       setOrganisationName("")

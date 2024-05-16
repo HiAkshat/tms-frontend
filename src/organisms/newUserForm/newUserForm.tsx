@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
 import styles from "./NewUserForm.module.scss";
 
-import { useNavigate } from "react-router-dom";
-
 import organisationUserServices from "../../services/organisationUser";
-import { OrganisationType } from "../../services/organisation/types";
 import organisationServices from "../../services/organisation";
+
+import { OrganisationType } from "../../services/organisation/types";
+
+import helpers from "../../helpers";
+
 import EmailInput from "../../atoms/EmailInput/EmailInput";
 import NameInput from "../../atoms/NameInput/NameInput";
-import helpers from "../../helpers";
-import showToast from "../../atoms/Toast/Toast";
 import DateInput from "../../atoms/DateInput/DateInput";
 import SelectInput from "../../atoms/SelectInput/SelectInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
-import { isDateBeforeDate, isDateBeforeNow } from "../../helpers/helpers";
+import showToast from "../../atoms/Toast/Toast";
 
-export default function NewOrganisationForm() {
-  const navigate = useNavigate();
-
+export default function NewOrganisationForm({setIsLoading}: any) {
   const [email, setEmail] = useState<string>("")
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")
@@ -31,7 +29,6 @@ export default function NewOrganisationForm() {
     organisationServices.getOrganisations().then((res)=>setOrganisations(res.data))
   }, [])
 
-
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -41,7 +38,6 @@ export default function NewOrganisationForm() {
     }
 
     try {
-
       const data = {
         dob: new Date(dob),
         email_id: email,
@@ -51,6 +47,7 @@ export default function NewOrganisationForm() {
         organisation: organisation
       }
 
+      setIsLoading(true)
       await organisationUserServices.addOrganisationUser(data);
 
       setEmail("")
@@ -60,15 +57,10 @@ export default function NewOrganisationForm() {
       setJoiningDate(undefined)
       setOrganisation("")
 
-      navigate(0);
     } catch (error) {
       return;
     }
   };
-
-  useEffect(()=>{
-    console.log(firstName)
-  }, [firstName])
 
   return (
     <div className={styles.main}>
