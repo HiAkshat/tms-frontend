@@ -10,7 +10,7 @@ import helpers from "../../helpers";
 
 import EmailInput from "../../atoms/EmailInput/EmailInput";
 import NameInput from "../../atoms/NameInput/NameInput";
-import DateInput from "../../atoms/DateInput/DateInput";
+import DateInput from "../../atoms/DateInput/dateInput";
 import SelectInput from "../../atoms/SelectInput/SelectInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
 import showToast from "../../atoms/Toast/Toast";

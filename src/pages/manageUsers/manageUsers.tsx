@@ -1,5 +1,5 @@
 import Navbar from "../../organisms/Navbar/navbar"
-import NewUserForm from "../../organisms/NewUserForm/NewUserForm"
+import NewUserForm from "../../organisms/NewUserForm/newUserForm"
 import styles from "./ManageUsers.module.scss"
 import { useSelector } from "react-redux"
 import showToast from "../../atoms/Toast/Toast";

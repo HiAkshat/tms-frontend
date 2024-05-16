@@ -5,7 +5,7 @@ import organisationServices from "../../services/organisation";
 
 import helpers from "../../helpers";
 
-import TextInput from "../../atoms/TextInput/TextInput";
+import TextInput from "../../atoms/TextInput/textInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
 import showToast from "../../atoms/Toast/Toast";
 

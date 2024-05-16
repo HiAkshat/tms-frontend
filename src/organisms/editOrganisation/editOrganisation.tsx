@@ -14,7 +14,7 @@ export default function EditOrganisation() {
   const navigate = useNavigate()
 
   const { id } = useParams()
-  const [organisation, setOrganisation] = useState<OrganisationType>({
+  const [organisation, setOrganisation] = useState<SendOrganisationType>({
     organisation_name: '',
     display_name: '',
   })

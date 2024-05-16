@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import SystemUserDashboard from './pages/SystemUserDashboard/SystemUserDashboard.tsx';
-import TicketDetails from './pages/TicketDetails/TicketDetails.tsx';
-import Login from './pages/Login/Login.tsx';
-import ManageOrganisations from './pages/ManageOrganisations/ManageOrganisations.tsx';
-import ManageUsers from './pages/ManageUsers/ManageUsers.tsx';
-import NewTicketForm from './organisms/NewTicketForm/NewTicketForm.tsx';
-import EditOrganisation from './organisms/EditOrganisation/EditOrganisation.tsx';
-import EditUser from './organisms/EditUser/EditUser.tsx';
-import ViewTickets from './pages/viewTickets/viewTickets.tsx';
-import EditTicket from "./organisms/EditTicket/EditTicket.tsx";
+import SystemUserDashboard from "./pages/SystemUserDashboard/SystemUserDashboard.tsx";
+import TicketDetails from "./pages/TicketDetails/TicketDetails.tsx";
+import Login from "./pages/Login/Login.tsx";
+import ManageOrganisations from "./pages/ManageOrganisations/ManageOrganisations.tsx";
+import ManageUsers from "./pages/ManageUsers/ManageUsers.tsx";
+import NewTicketForm from "./organisms/NewTicketForm/NewTicketForm.tsx";
+import EditUser from "./organisms/EditUser/editUser.tsx";
+import EditOrganisation from "./organisms/EditOrganisation/EditOrganisation.tsx";
+import ViewTickets from "./pages/viewTickets/ViewTickets.tsx";
+import EditTicket from "./organisms/EditTicket/editTicket.tsx";
 
 export default function AppRoutes() {
   return (

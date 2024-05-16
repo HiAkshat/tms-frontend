@@ -1,5 +1,5 @@
 import styles from "./ManageOrganisations.module.scss"
-import NewOrganisationForm from "../../organisms/NewOrganisationForm/NewOrganisationForm"
+import NewOrganisationForm from "../../organisms/NewOrganisationForm/newOrganisationForm"
 import Navbar from "../../organisms/Navbar/navbar"
 import showToast from "../../atoms/Toast/Toast"
 import { useNavigate } from "react-router-dom"

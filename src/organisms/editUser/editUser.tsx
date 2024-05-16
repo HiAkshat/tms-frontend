@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import styles from "./EditUser.module.scss"
 import { useParams } from 'react-router-dom'
-import DateInput from "../../atoms/DateInput/DateInput";
+import DateInput from "../../atoms/DateInput/dateInput";
 import { useNavigate } from "react-router-dom";
 import organisationUserServices from "../../services/organisationUser";
 import organisationServices from "../../services/organisation";
