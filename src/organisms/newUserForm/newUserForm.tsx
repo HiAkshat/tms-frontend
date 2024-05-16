@@ -35,7 +35,7 @@ export default function NewOrganisationForm() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate && isDateBeforeDate(dob, joiningDate) && isDateBeforeNow(joiningDate))){
+    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate && helpers.isDateBeforeDate(dob, joiningDate) && helpers.isDateBeforeNow(joiningDate))){
       showToast("Invalid data")
       return
     }

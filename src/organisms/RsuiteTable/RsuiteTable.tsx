@@ -154,7 +154,7 @@ export default function RsuiteTable() {
         </div>
         <Modal open={openModal} onClose={()=>{setOpenModal(false)}}>
           <div className={styles.deleteModal}>
-            <span>Delete organisation?</span>
+            <span>Delete organisation {data?.find(org => org._id==deleteOrg)?.organisation_name}?</span>
             <div className={styles.buttons}>
               <CustomButton backgroundColor="#f54260" onClick={()=>{
                 setOpenModal(false)
