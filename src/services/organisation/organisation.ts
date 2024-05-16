@@ -5,7 +5,7 @@ import axios from "axios"
 
 const apiEndpoint = `${server}/organisation`
 
-export const getOrganisations = async (page: number=1, pageSize: number=10) => {
+export const getOrganisations = async (page: string="", pageSize: string="") => {
   const res = await axios
     .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}`)
     .then(res => {return res.data})

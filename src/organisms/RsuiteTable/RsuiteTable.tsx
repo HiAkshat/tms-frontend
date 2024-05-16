@@ -8,6 +8,7 @@ import { Placeholder, Modal } from 'rsuite';
 
 import styles from "./RsuiteTable.module.scss"
 import CustomButton from '../../atoms/CustomButton/CustomButton';
+import useDeviceSize from '../../utils/useDeviceSize';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -30,14 +31,18 @@ export default function RsuiteTable() {
     setLimit(dataKey);
   };
 
-  useEffect(()=>{
-    // setLoading(true)
-    organisationServices.getOrganisations(page, limit).then(orgs => {
+  const fetchOrganisationData = async () => {
+    await organisationServices.getOrganisations(page.toString(), limit.toString()).then(orgs => {
       setData(orgs.data)
       setTotalEntries(orgs.totalEntries)
       setLoading(false)
       console.log(data)
     })
+  }
+
+  useEffect(()=>{
+    // setLoading(true)
+    fetchOrganisationData()
   }, [page, limit])
 
   const [openModal, setOpenModal] = useState(false)
@@ -96,11 +101,13 @@ export default function RsuiteTable() {
     try {
       await organisationServices.deleteOrganisation(id)
       showToast("Organisation deleted successfully!")
-      navigate(0)
+      fetchOrganisationData()
     } catch (error) {
       showToast("Error deleting organisation!")
     }
   };
+
+  const [windowWidth] = useDeviceSize()
 
   if (loading){
     return <Placeholder.Grid rows={8} columns={3} active />
@@ -120,15 +127,15 @@ export default function RsuiteTable() {
             console.log(rowData);
           }}
         >
-          <Column flexGrow={3} align="center" sortable>
+          <Column  minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={3} align="center" sortable>
             <HeaderCell>Organisation Name</HeaderCell>
             <Cell dataKey="organisation_name" />
           </Column>
-          <Column flexGrow={3} align="center" sortable>
+          <Column  minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={3} align="center" sortable>
             <HeaderCell>Display Name</HeaderCell>
             <Cell dataKey="display_name" />
           </Column>
-          <Column flexGrow={1}>
+          <Column  minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1}>
             <HeaderCell>Actions</HeaderCell>
             <ActionCell dataKey="_id" rowData={undefined} />
           </Column>
@@ -167,5 +174,6 @@ export default function RsuiteTable() {
       </div>
     )
   }
-
 }
+
+
