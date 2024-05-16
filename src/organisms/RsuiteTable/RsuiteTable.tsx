@@ -45,34 +45,21 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
 
   const [openModal, setOpenModal] = useState(false)
 
-  const getData = () => {
-    if (sortColumn && sortType && data) {
-      return data.sort((a: { [x: string]: string|number; }, b: { [x: string]: string|number; }) => {
-        let x = a[sortColumn];
-        let y = b[sortColumn];
 
-        if (typeof x === 'string') {
-          x = x.toLowerCase().charCodeAt(0);
-        }
-        if (typeof y === 'string') {
-          y = y.toLowerCase().charCodeAt(0);
-        }
-        if (sortType === 'asc') {
-          return x - y;
-        } else {
-          return y - x;
-        }
-      });
-    }
-    return data;
-  };
+  const handleSortUpdate = async () => {
+    await organisationServices.getOrganisations(page.toString(), limit.toString(), `${sortType=="asc"?"":"-"}${sortColumn}`).then(orgs => {
+      setData(orgs.data)
+      setTotalEntries(orgs.totalEntries)
+      setIsLoading(false)
+      console.log(data)
+    })
+  }
 
-  const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
-    // setLoading(true);
+  const handleSortColumn = async (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
     setTimeout(() => {
-      // setLoading(false);
       setSortColumn(sortColumn);
       setSortType(sortType);
+      handleSortUpdate()
     }, 100);
   };
 
@@ -120,7 +107,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
           onSortColumn={handleSortColumn}
           // height={400}
           autoHeight
-          data={getData()}
+          data={data}
           onRowClick={rowData => {
             console.log(rowData);
           }}

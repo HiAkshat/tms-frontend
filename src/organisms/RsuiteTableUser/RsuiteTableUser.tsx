@@ -39,32 +39,47 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
 
   }, [page, limit, isLoading])
 
+  const handleSortUpdate = async () => {
+    await organisationUserServices.getOrganisationUsers(page, limit, `${sortType=="asc"?"":"-"}${sortColumn}`).then((users)=>{
+      setData(users.data)
+      setTotalEntries(users.totalEntries)
+      setIsLoading(false)
+      console.log(data)
+    })
+  }
+
   const getData = () => {
     if (data && sortColumn && sortType) {
-      return data.sort((a: any, b: any) => {
-        let x = a[sortColumn];
-        let y = b[sortColumn];
+      return data.sort((a:any,b:any): any => {
+        a.sortColumn-b.sortColumn
+        console.log(a[sortColumn], b[sortColumn])
+    })
+      // return data.sort((a: any, b: any) => {
+      //   let x = a[sortColumn];
+      //   let y = b[sortColumn];
 
-        let m=0
-        let n=0
+      //   console.log(a)
 
-        if (typeof x === 'string') {
-          m = x.toLowerCase().charCodeAt(0);
-        }
-        if (typeof y === 'string') {
-          n = y.toLowerCase().charCodeAt(0);
-        }
+      //   let m=0
+      //   let n=0
 
-        if (m && n){
-          if (sortType === 'asc') {
-            return m - n;
-          } else {
-            return n - m;
-          }
-        }
+      //   if (typeof x === 'string') {
+      //     m = x.toLowerCase().charCodeAt(0);
+      //   }
+      //   if (typeof y === 'string') {
+      //     n = y.toLowerCase().charCodeAt(0);
+      //   }
 
-        return 0
-      });
+      //   if (m && n){
+      //     if (sortType === 'asc') {
+      //       return m - n;
+      //     } else {
+      //       return n - m;
+      //     }
+      //   }
+
+      //   return 0
+      // });
     }
     return data;
   };
@@ -75,6 +90,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
       setIsLoading(false);
       setSortColumn(sortColumn);
       setSortType(sortType);
+      handleSortUpdate()
     }, 500);
   };
 

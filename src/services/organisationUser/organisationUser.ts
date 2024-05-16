@@ -7,9 +7,10 @@ const apiEndpoint = `${server}/organisationUser`
 let otp_flag = true
 let otp_timeout_flag = true
 
-export const getOrganisationUsers = async (page: number=1, pageSize: number=10) => {
+export const getOrganisationUsers = async (page: number=1, pageSize: number=10, sortBy: string="") => {
+  const sortByString = `&sortBy=${sortBy}`
   const res = await axios
-    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}`)
+    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}${sortBy!="" && sortByString}`)
     .then(res => {return res.data})
     .catch(error => {
       throw error
