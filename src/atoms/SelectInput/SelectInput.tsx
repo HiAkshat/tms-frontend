@@ -1,13 +1,14 @@
 import { SelectPicker } from "rsuite";
 
-export default function SelectInput({data, label, value, setValue}: any) {
+export default function SelectInput({arr, label, value, data, setData}: any) {
   return (
     <SelectPicker
-      data={data.map((item: any) => ({
+      data={arr.map((item: any) => ({
         label: item[label],
         value: item[value],
       }))}
-      onChange={setValue}
+      onChange={setData}
+      value={data}
     />
   )
 }

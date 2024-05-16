@@ -1,5 +1,5 @@
 import axios from "axios"
-import { OrganisationUserType, VerifyOtpBodyType } from "./types"
+import { SendOrganisationUserType, VerifyOtpBodyType } from "./types"
 import showToast from "../../atoms/Toast/Toast"
 import server from "../../globals"
 
@@ -103,7 +103,7 @@ export const getOrganisationUserByEmail = async (email: string|undefined) => {
   return res
 }
 
-export const addOrganisationUser = async (organisationUser: OrganisationUserType) => {
+export const addOrganisationUser = async (organisationUser: SendOrganisationUserType) => {
   await axios
     .post(`${apiEndpoint}`, organisationUser)
     .then(()=>{
@@ -114,7 +114,7 @@ export const addOrganisationUser = async (organisationUser: OrganisationUserType
     })
 }
 
-export const editOrganisationUser = async (organisationUser: OrganisationUserType, id: string|undefined) => {
+export const editOrganisationUser = async (organisationUser: SendOrganisationUserType, id: string|undefined) => {
   await axios
     .put(`${apiEndpoint}/${id}`, organisationUser)
     .then(()=>{

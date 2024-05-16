@@ -19,7 +19,7 @@ export default function NewOrganisationForm({setIsLoading}: any) {
   const [email, setEmail] = useState<string>("")
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")
-  const [dob, setDob] = useState()
+  const [dob, setDob] = useState<Date>()
   const [joiningDate, setJoiningDate] = useState()
   const [organisation, setOrganisation] = useState("")
 
@@ -75,7 +75,7 @@ export default function NewOrganisationForm({setIsLoading}: any) {
         <div className={styles.inputs}>
           <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
           <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
-          {organisations && <SelectInput data={organisations} value={"_id"} label={"organisation_name"} setValue={setOrganisation}/>}
+          {organisations && <SelectInput arr={organisations} value={"_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
         </div>
       </form>
     </div>
