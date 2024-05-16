@@ -1,83 +1,65 @@
-import { useState, useEffect } from "react"
-import styles from "./NewUserForm.module.scss"
-import { getData } from "../../services/getData";
-import showToast from "../../atoms/Toast/Toast";
-import TextInput from "../../atoms/TextInput/TextInput";
+import { useEffect, useState } from "react";
+import styles from "./NewUserForm.module.scss";
+
+import organisationUserServices from "../../services/organisationUser";
+import organisationServices from "../../services/organisation";
+
+import { OrganisationType } from "../../services/organisation/types";
+
+import helpers from "../../helpers";
+
+import EmailInput from "../../atoms/EmailInput/EmailInput";
+import NameInput from "../../atoms/NameInput/NameInput";
 import DateInput from "../../atoms/DateInput/DateInput";
+import SelectInput from "../../atoms/SelectInput/SelectInput";
+import CustomButton from "../../atoms/CustomButton/CustomButton";
+import showToast from "../../atoms/Toast/Toast";
 
-import { Form, ButtonToolbar, Button, Input } from 'rsuite';
-import React from "react";
+export default function NewOrganisationForm({setIsLoading}: any) {
+  const [email, setEmail] = useState<string>("")
+  const [firstName, setFirstName] = useState<string>("")
+  const [lastName, setLastName] = useState<string>("")
+  const [dob, setDob] = useState<Date>()
+  const [joiningDate, setJoiningDate] = useState()
+  const [organisation, setOrganisation] = useState("")
 
-// const Textarea = React.forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
+  const [organisations, setOrganisations] = useState<[OrganisationType]>()
 
+  useEffect(()=>{
+    organisationServices.getOrganisations().then((res)=>setOrganisations(res.data))
+  }, [])
 
-interface OrganisationUser {
-  email_id: string;
-  first_name: string;
-  last_name: string;
-  dob: string;
-  organisation: string;
-  joining_date: string;
-}
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
 
-export default function NewOrganisationForm() {
-  const [organisationUser, setOrganisationUser] = useState<OrganisationUser>({
-    email_id: '',
-    first_name: '',
-    last_name: '',
-    dob: '',
-    organisation: '',
-    joining_date: ''
-  })
-
-  const organisations = getData('http://127.0.0.1:8000/api/organisation')
-  const [selectedOrganisation, setSelectedOrganisation] = useState('');
-
-  const handleSelectChange = (e: any) => {
-    setSelectedOrganisation(e.target.value);
-    const { name, value } = e.target;
-    setOrganisationUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    console.log(organisationUser)
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const res = await fetch("http://127.0.0.1:8000/api/organisationUser", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisationUser)
-    })
-
-    if (!res.ok){
-      showToast("Error adding organisation user!")
+    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate && helpers.isDateBeforeDate(dob, joiningDate) && helpers.isDateBeforeNow(joiningDate))){
+      showToast("Invalid data")
       return
     }
 
-    setSelectedOrganisation("")
-    setOrganisationUser({
-      email_id: '',
-      first_name: '',
-      last_name: '',
-      dob: '',
-      organisation: '',
-      joining_date: ''
-    });
+    try {
+      const data = {
+        dob: new Date(dob),
+        email_id: email,
+        first_name: firstName,
+        last_name: lastName,
+        joining_date: new Date(joiningDate),
+        organisation: organisation
+      }
 
-    showToast("User added successfully!")
-  };
+      setIsLoading(true)
+      await organisationUserServices.addOrganisationUser(data);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const sampleObj = {
-      ...organisationUser,
-      [name]: value,
+      setEmail("")
+      setFirstName("")
+      setLastName("")
+      setDob(undefined)
+      setJoiningDate(undefined)
+      setOrganisation("")
+
+    } catch (error) {
+      return;
     }
-    setOrganisationUser(sampleObj);
   };
 
   return (
@@ -85,26 +67,17 @@ export default function NewOrganisationForm() {
       <span className={styles.title}>Add New User</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <TextInput placeholder="E-mail ID" name="email_id" value={organisationUser.email_id} onChange={handleChange} required={true} />
-          <TextInput placeholder="First Name" name="first_name" value={organisationUser.first_name} onChange={handleChange} required={true} />
-          <TextInput placeholder="Last Name" name="last_name" value={organisationUser.last_name} onChange={handleChange} required={true} />
+          <EmailInput email={email} setEmail={setEmail} placeholder={"Email"} />
+          <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
+          <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
+          <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
         </div>
         <div className={styles.inputs}>
-          <DateInput name="dob" value={organisationUser.dob} onChange={handleChange} placeholder="DOB" required={true} />
-          <DateInput name="joining_date" value={organisationUser.joining_date} onChange={handleChange} placeholder="Joining Date" required={true} />
-        </div>
-        <div className={styles.inputs}>
-          {!organisations.isLoading &&
-            <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
-            <option value="">Select an organisation</option>
-            {organisations.data.map((org: any) => (
-              <option key={org._id} value={org._id}>{org.organisation_name}</option>
-            ))}
-            </select>
-          }
-          <Button type="submit">Add</Button>
+          <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
+          <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
+          {organisations && <SelectInput arr={organisations} value={"_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
         </div>
       </form>
     </div>
   );
-};
+}

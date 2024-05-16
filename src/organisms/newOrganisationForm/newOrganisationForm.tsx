@@ -1,49 +1,41 @@
 import { useState } from "react"
 import styles from "./NewOrganisationForm.module.scss"
-import showToast from "../../atoms/Toast/Toast";
+
+import organisationServices from "../../services/organisation";
+
+import helpers from "../../helpers";
+
 import TextInput from "../../atoms/TextInput/TextInput";
+import CustomButton from "../../atoms/CustomButton/CustomButton";
+import showToast from "../../atoms/Toast/Toast";
 
-interface Organisation {
-  organisation_name: string;
-  display_name: string;
-}
+export default function NewOrganisationForm({setIsLoading}: any) {
+  const [organisationName, setOrganisationName] = useState("")
+  const [displayName, setDisplayName] = useState("")
 
-export default function NewOrganisationForm() {
-  const [organisation, setOrganisation] = useState<Organisation>({
-    organisation_name: '',
-    display_name: '',
-  })
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
-    const res = await fetch("http://127.0.0.1:8000/api/organisation", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisation)
-    })
-
-    if (!res.ok){
-      showToast("Error adding organisation!")
+    if (helpers.isTextEmpty(organisationName) || helpers.isTextEmpty(displayName)){
+      showToast("Invalid data!")
       return
     }
 
-    setOrganisation({
-      organisation_name: '',
-      display_name: '',
-    });
+    const data = {
+      organisation_name: organisationName,
+      display_name: displayName
+    }
 
-    showToast("Organisation added successfully!")
-  };
+    try {
+      setIsLoading(true)
+      await organisationServices.addNewOrganisation(data)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setOrganisation((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+      setOrganisationName("")
+      setDisplayName("")
+
+    } catch (error) {
+      return
+    }
   };
 
   return (
@@ -51,10 +43,10 @@ export default function NewOrganisationForm() {
       <span className={styles.title}>Add New Organisation</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <TextInput name="organisation_name" value={organisation.organisation_name} onChange={handleChange} placeholder="Organisation Name" required={true} />
-          <TextInput name="display_name" value={organisation.display_name} onChange={handleChange} placeholder="Display Name" required={true} />
+          <TextInput text={organisationName} field="Organisation Name" setText={setOrganisationName} placeholder="Organisation Name"  />
+          <TextInput text={displayName} field="Display Name" setText={setDisplayName} placeholder="Display Name"  />
+          <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
         </div>
-        <button type="submit">Add</button>
       </form>
     </div>
   );

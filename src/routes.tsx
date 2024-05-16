@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SystemUserDashboard from './pages/SystemUserDashboard/SystemUserDashboard.tsx';
-import TicketDetails from './pages/ticketDetails/ticketDetails.tsx';
+import TicketDetails from './pages/TicketDetails/TicketDetails.tsx';
 import Login from './pages/Login/Login.tsx';
 import ManageOrganisations from './pages/ManageOrganisations/ManageOrganisations.tsx';
 import ManageUsers from './pages/ManageUsers/ManageUsers.tsx';

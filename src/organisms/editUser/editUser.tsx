@@ -1,129 +1,97 @@
 import { useState, useEffect } from "react"
 import styles from "./EditUser.module.scss"
 import { useParams } from 'react-router-dom'
-import showToast from "../../atoms/Toast/Toast";
-import { getData } from "../../services/getData";
-import TextInput from "../../atoms/TextInput/TextInput";
 import DateInput from "../../atoms/DateInput/DateInput";
 import { useNavigate } from "react-router-dom";
+import organisationUserServices from "../../services/organisationUser";
+import organisationServices from "../../services/organisation";
+import EmailInput from "../../atoms/EmailInput/EmailInput";
+import NameInput from "../../atoms/NameInput/NameInput";
+import CustomButton from "../../atoms/CustomButton/CustomButton";
+import SelectInput from "../../atoms/SelectInput/SelectInput";
+import helpers from "../../helpers";
+import showToast from "../../atoms/Toast/Toast";
+import { OrganisationUserType } from "../../services/organisationUser/types";
 import Navbar from "../Navbar/navbar";
-
-interface OrganisationUser {
-  email_id: string;
-  first_name: string;
-  last_name: string;
-  dob: string;
-  organisation: string;
-  joining_date: string;
-}
 
 export default function EditUser() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const [organisationUser, setOrganisationUser] = useState<OrganisationUser>({
-    email_id: '',
-    first_name: '',
-    last_name: '',
-    dob: "",
-    organisation: '',
-    joining_date: ""
-  })
+  const [email, setEmail] = useState<string>("")
+  const [firstName, setFirstName] = useState<string>("")
+  const [lastName, setLastName] = useState<string>("")
+  const [dob, setDob] = useState<Date>()
+  const [joiningDate, setJoiningDate] = useState<Date>()
+  const [organisation, setOrganisation] = useState("")
+  const [organisations, setOrganisations] = useState<[OrganisationType]>()
 
-  const organisations = getData('http://127.0.0.1:8000/api/organisation')
 
-  const [selectedOrganisation, setSelectedOrganisation] = useState('');
 
   useEffect(() => {
-    fetchUser()
+    try {
+      organisationServices.getOrganisations().then(res => setOrganisations(res.data))
+
+      organisationUserServices.getOrganisationUser(id).then((data: OrganisationUserType) => {
+        console.log(typeof data.dob)
+        if (data){
+        }
+
+        setEmail(data.email_id)
+        setFirstName(data.first_name)
+        setLastName(data.last_name)
+        setDob(new Date(data.dob))
+        setJoiningDate(new Date(data.joining_date))
+        setOrganisation(data.organisation._id)
+      })
+    } catch (error) {
+      return
+    }
   }, []);
 
-  const fetchUser = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch organisations');
-      }
-      const data = await response.json();
-      console.log(data)
-      setOrganisationUser(data);
-      setSelectedOrganisation(data.organisation)
-    } catch (error) {
-      console.error('Error fetching organisations:', error);
-    }
-  };
-
-  const handleSelectChange = (e: any) => {
-    setSelectedOrganisation(e.target.value);
-    const { name, value } = e.target;
-    setOrganisationUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(organisationUser)
-    const res = await fetch(`http://127.0.0.1:8000/api/organisationUser/${id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisationUser)
-    })
 
-    if (!res.ok){
-      showToast("Error editing user!")
+    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate && helpers.isDateBeforeDate(dob, joiningDate) && helpers.isDateBeforeNow(joiningDate))){
+      showToast("Invalid data")
       return
     }
 
-    setOrganisationUser({
-      email_id: '',
-      first_name: '',
-      last_name: '',
-      dob: "",
-      organisation: '',
-      joining_date: ""
-    });
+    const data = {
+      email_id: email,
+      dob: new Date(dob),
+      first_name: firstName,
+      last_name: lastName,
+      joining_date: new Date(joiningDate),
+      organisation: organisation
+    }
 
-    showToast("User edited successfully!")
-    navigate("..")
-  };
+    try {
+      await organisationUserServices.editOrganisationUser(data, id)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setOrganisationUser((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+      navigate("..")
+    } catch (error) {
+      return
+    }
   };
 
   return (
-  <div>
+  <div className={styles.page}>
     <Navbar />
     <div className={styles.main}>
-      <span className={styles.title}>Edit User</span>
+      <span className={styles.title}>Add New User</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <TextInput placeholder="E-mail ID" name="email_id" value={organisationUser.email_id} onChange={handleChange} required={true} />
-          <TextInput placeholder="First Name" name="first_name" value={organisationUser.first_name} onChange={handleChange} required={true} />
-          <TextInput placeholder="Last Name" name="last_name" value={organisationUser.last_name} onChange={handleChange} required={true} />
+          <EmailInput email={email} setEmail={setEmail} placeholder={"Email"} />
+          <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
+          <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
+          <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
         </div>
         <div className={styles.inputs}>
-          <DateInput name="dob" value={organisationUser.dob} onChange={handleChange} placeholder="DOB" required={true} />
-          <DateInput name="joining_date" value={organisationUser.joining_date} onChange={handleChange} placeholder="Joining Date" required={true} />
-        </div>
-        <div className={styles.inputs}>
-          {!organisations.isLoading &&
-            <select name="organisation" id="organisation" value={selectedOrganisation} onChange={handleSelectChange}>
-            <option value="">Select an organisation</option>
-            {organisations.data.map((org: any) => (
-              <option key={org._id} value={org._id}>{org.organisation_name}</option>
-            ))}
-            </select>
-          }
-          <button type="submit">Edit</button>
+          <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
+          <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
+          {organisations && <SelectInput arr={organisations} value={"_id"} label={"organisation_name"} data={organisation} setOrganisation={setOrganisation}/>}
         </div>
       </form>
     </div>

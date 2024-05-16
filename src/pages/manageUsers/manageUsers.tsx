@@ -1,21 +1,25 @@
 import Navbar from "../../organisms/Navbar/navbar"
 import NewUserForm from "../../organisms/NewUserForm/NewUserForm"
-import UserTable from "../../organisms/UserTable/UserTable"
 import styles from "./ManageUsers.module.scss"
-import { getData } from "../../services/getData";
 import { useSelector } from "react-redux"
 import showToast from "../../atoms/Toast/Toast";
 import { useNavigate } from "react-router-dom";
-import Popup from "../../atoms/popup/popup";
+import RsuiteTable from "../../organisms/RsuiteTableUser/RsuiteTableUser";
+import { useEffect, useState } from "react";
+import organisationUserServices from "../../services/organisationUser";
+import { StateType } from "../../typings/navUser";
 
 export default function ManageUsers() {
   const navigate = useNavigate()
-  const users = getData('http://127.0.0.1:8000/api/organisationUser')
-  const user = useSelector((state: any) => state.user)
-  
-  if (false && !user.isAuthenitcated || user.usertype=='organisation'){
+
+  const user = useSelector((state: StateType) => state.user)
+
+  const [isLoading, setIsLoading] = useState(true)
+
+
+  if (false && !user.isAuthenticated || user.userType=='organisation'){
     showToast("Login as system user to access!")
-    navigate("../login") 
+    navigate("../login")
   }
 
   else{
@@ -23,10 +27,10 @@ export default function ManageUsers() {
       <div className={styles.page}>
         <Navbar />
         <div className={styles.main}>
-          <NewUserForm />
+          <NewUserForm setIsLoading={setIsLoading}/>
           <div className={styles.tableDiv}>
             <span>Users Table</span>
-            {!users.isLoading && <UserTable data={users.data}/>}
+            <RsuiteTable isLoading={isLoading} setIsLoading={setIsLoading}/>
           </div>
         </div>
       </div>

@@ -1,162 +1,101 @@
-import { FormEvent, useState, useEffect } from 'react';
-import { getData } from '../../services/getData';
-import showToast from '../../atoms/Toast/Toast';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import styles from "./NewTicketForm.module.scss"
 
-import DateInput from '../../atoms/DateInput/DateInput';
+import { useNavigate } from 'react-router-dom';
+
+import { DatePicker, Button, Input, SelectPicker, Uploader } from 'rsuite';
+import ticketServices from '../../services/ticket/index';
+
+import organisationUserServices from '../../services/organisationUser';
+import verifyTokenServices from '../../services/verifyToken';
+
+import Cookie from "js-cookie"
 
 function NewTicketForm() {
-  const [assignee, setAssignee] = useState<string>('');
-  const [reporter, setReporter] = useState<string>('');
-  const user = useSelector((state: any) => state.user)
-  const users = getData(`http://localhost:8000/api/organisationUser/organisation/${user.organisation_id}`)
+  const navigate = useNavigate()
 
-  const [ticketData, setTicketData] = useState({
-    organisation: user.organisation_id,
+  const [users, setUsers] = useState<[UserType]>()
+  const [orgId, setOrgId] = useState('')
+  const ticketTypeOptions = ["Story", "Task", "Bug"]
+
+  const [file, setFile] = useState<any>()
+
+  const [ticketData, setTicketData] = useState<SendTicketType>({
+    organisation: orgId ?? "",
     type: '',
     key: '',
     summary: '',
     description: '',
     assignee: '',
     reporter: '',
-    due_date: '',
-    files: [],
+    due_date: new Date(),
+    files: [""]
   });
 
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setTicketData({
-      ...ticketData,
-      [name]: value,
-    });
-  };
-
-  const handleAssigneeChange = (e: any) => {
-    const {name, value} = e.target;
-    setAssignee(value)
-    setTicketData({
-      ...ticketData,
-      [name]: value
-    })
-  }
-
-  const handleReporterChange = (e: any) => {
-    const {name, value} = e.target;
-    setReporter(value)
-    setTicketData({
-      ...ticketData,
-      [name]: value
-    })
-  }
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     console.log(ticketData)
-    ticketData.organisation = user.organisation_id
-    const res = await fetch("http://127.0.0.1:8000/api/ticket", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(ticketData)
-    })
-    console.log(res)
 
-    if (!res.ok){
-      showToast("Error adding new ticket!")
+    try {
+      await ticketServices.addTicket({...ticketData, organisation: orgId})
+      // navigate(0)
+    } catch (error) {
       return
     }
-
-    showToast("Ticket successfully added!")
   };
 
+  useEffect(()=>{
+    try {
+      verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
+        const org_id = res.decoded.user.organisation._id
+        setOrgId(org_id)
+        organisationUserServices.getOrganisationUsersByOrgId(org_id).then(res => {
+          setUsers(res)
+        })
+      })
+
+    } catch (error){
+      return
+    }
+  }, [])
+
   return (
-    // <div className={styles.main}>
-    //   <span className={styles.title}>Create Ticket</span>
-    //   <form onSubmit={handleSubmit}>
-    //     <div className={styles.fieldsDiv}>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle} htmlFor="type">Type:</label>
-    //         <select id="type" name="type" value={ticketData.type} onChange={handleChange} required>
-    //           <option value="">Select Type</option>
-    //           <option value="Story">Story</option>
-    //           <option value="Task">Task</option>
-    //           <option value="Bug">Bug</option>
-    //         </select>
-    //       </div>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle} htmlFor="summary">Summary:</label>
-    //         <input type="text" id="summary" name="summary" value={ticketData.summary} onChange={handleChange} required />
-    //       </div>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle} htmlFor="description">Description:</label>
-    //         <textarea id="description" name="description" value={ticketData.description} onChange={handleChange}></textarea>
-    //       </div>
-    //       <div className={styles.fieldInfo}>
-    //         <label className={styles.fieldTitle} htmlFor="due_date">Due Date:</label>
-    //         <input type="date" id="due_date" name="due_date" value={ticketData.due_date} onChange={handleChange} />
-    //       </div>          
-    //       {!users.isLoading && 
-    //         <div className={styles.fieldInfo}>
-    //           <label className={styles.fieldTitle} htmlFor="assignee">Assignee:</label>
-              // <select name="assignee" id="assignee" value={assignee} onChange={handleAssigneeChange}>
-              //   <option value="">Select Assignee</option>
-              //   {users.data.map((user: any) => (
-              //     <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
-              //   ))}
-              // </select>
-    //         </div>
-    //       }
-    //       {!users.isLoading && 
-    //         <div className={styles.fieldInfo}>
-    //           <label className={styles.fieldTitle} htmlFor="assignee">Reporter:</label>
-              // <select name="reporter" id="reporter" value={reporter} onChange={handleReporterChange}>
-              //   <option value="">Select Reporter</option>
-              //   {users.data.map((user: any) => (
-              //     <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
-              //   ))}
-              // </select>
-    //         </div>
-    //       }
-    //     </div>
-    //     <button className={styles.addButton} type="submit">Submit</button>
-    //   </form>
-    // </div>
     <div className={styles.main}>
       <span className={styles.title}>Add New Ticket</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <select id="type" name="type" value={ticketData.type} onChange={handleChange} required>
-            <option value="">Select Type</option>
-            <option value="Story">Story</option>
-            <option value="Task">Task</option>
-            <option value="Bug">Bug</option>
-          </select>
-          <DateInput placeholder='Due Date' name="due_date" value={ticketData.due_date} onChange={handleChange} required={true} />
-          {!users.isLoading && 
-            <select name="assignee" id="assignee" value={assignee} onChange={handleAssigneeChange}>
-              <option value="">Select Assignee</option>
-              {users.data.map((user: any) => (
-                <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
-              ))}
-            </select>
-          }
-          {!users.isLoading && 
-            <select name="reporter" id="reporter" value={reporter} onChange={handleReporterChange}>
-              <option value="">Select Reporter</option>
-              {users.data.map((user: any) => (
-                <option key={user._id} value={user._id}>{`${user.first_name}`}</option>
-              ))}
-            </select>
-          }  
+          <SelectPicker placeholder="Type" data={ticketTypeOptions.map(ticketType => ({label: ticketType, value: ticketType}))} onChange={(val)=>{setTicketData({...ticketData, type: val ?? ""})}} value={ticketData.type}/>
+          <DatePicker placeholder="Due Date" name="Due Date" value={ticketData.due_date} onChange={(val: Date|null)=>{setTicketData({...ticketData, due_date: val ?? new Date()})}} />
+          {users && <SelectPicker placeholder="Assignee" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, assignee: val ?? ""})}} value={ticketData.assignee}/>}
+          {users && <SelectPicker placeholder="Reporter" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, reporter: val ?? ""})}} value={ticketData.reporter}/>}
         </div>
-        <div className={`${styles.inputs} ${styles.desc}`}>
-          {/* <TextInput placeholder="Summary" name="summary" value={ticketData.summary} onChange={handleChange} required={true} fullWidth="true"/> */}
-          <input className={styles.textInput} type='text' placeholder="Summary" name="summary" value={ticketData.summary} onChange={handleChange} required/>
-          <textarea placeholder='Description' id="description" name="description" value={ticketData.description} onChange={handleChange}></textarea>
+        <div className={styles.inputs}>
+          <Input placeholder="Summary" value={ticketData.summary} onChange={(val: string)=>setTicketData({...ticketData, summary: val})} required={true}/>
+          <Input as="textarea" rows={3} placeholder="Description" value={ticketData.description} onChange={(val: string) => setTicketData({...ticketData, description: val})} />
         </div>
-        <button type="submit">Add</button>
+        {/* <div className={styles.inputs}> */}
+
+          {/* <input type="file" onChange={(e: any)=>setFile(e.target.files[0])}/> */}
+          {/* <button onClick={upload}>Upload file test</button> */}
+        {/* </div> */}
+      <Uploader action="http://localhost:3000/api/ticket/upload" draggable onChange={(e)=>{
+        console.log(e)
+        }}
+
+        onSuccess={(res)=>{
+          console.log(res)
+          const newFiles = ticketData.files ?? [""]
+          newFiles.push(res.filename)
+          setTicketData({...ticketData, files: newFiles})
+          console.log(ticketData)
+        }}
+      >
+        <div style={{ width: 400, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span>Click or Drag files to this area to upload</span>
+        </div>
+      </Uploader>
+        <div className={styles.inputs}>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </div>
       </form>
     </div>
   );

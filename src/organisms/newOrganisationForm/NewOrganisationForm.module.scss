@@ -8,19 +8,31 @@
   }
 
   .theForm{
-    
+
     display: flex;
     background-color: #1C1C1C;
     gap: 10px;
     width: fit-content;
     padding: 16px;
     border-radius: 10px;
-    
+
     .inputs{
       display: flex;
       flex-direction: column;
       gap: 8px;
-      
+
+      .inputField{
+        display: flex;
+        flex-direction: column;
+        span{
+          // position: absolute;
+          font-size: 12px;
+          color: rgb(210, 116, 116);
+          font-family: "Ubuntu Sans Mono", monospace;
+          padding: 4px 0 4px 14px;
+        }
+      }
+
       input{
         color: white;
         font-size: 16px;
@@ -46,7 +58,7 @@
       background-color: #2A2A2A;
       border: none;
       color: white;
-      
+
         &:hover{
           background-color: #383838;
           cursor: pointer;

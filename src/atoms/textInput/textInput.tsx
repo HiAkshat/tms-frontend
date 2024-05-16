@@ -1,17 +1,21 @@
-// @ts-nocheck
-
 import styles from "./TextInput.module.scss"
 
-interface Props {
-  placeholder: string,
-  name: string,
-  value: string,
-  onChange: React.ChangeEventHandler,
-  required: boolean,
-}
+import {Input} from "rsuite"
+import { useState } from "react";
+import helpers from "../../helpers";
 
-export default function TextInput({placeholder, name, value, onChange, required, fullWidth} : Props) {
+export default function TextInput({text, field, setText, placeholder="Enter text", width="100%"}: any) {
+  const [isTextValid, setIsTextValid] = useState(true);
+
   return (
-    <input className={styles.textInput} placeholder={placeholder} type="text" name={name} value={value} onChange={onChange} required={required} />
+  <div style={{width: width}} className={styles.inputField}>
+    <Input placeholder={placeholder} value={text} onChange={(val: string)=>{
+      setTimeout(() => {
+        helpers.isTextEmptyAndSet(val, setIsTextValid)
+      }, 1000);
+      setText(val)
+    }} required={true}/>
+    <span hidden={isTextValid}>Invalid {field}</span>
+  </div>
   )
 }

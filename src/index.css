@@ -26,13 +26,37 @@ body{
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #1C1C1C;
+  background-color: #49c4c8;
   color: #fff;
   padding: 10px 20px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.rs-table{
+  border-radius: 10px;
+}
+
 .rs-theme-dark{
   --rs-body: blue;
+}
+
+.rs-table-cell{
+  background-color: #1c1c1c;
+}
+
+.rs-uploader{
+  width: 300px;
+}
+
+.rs-uploader-trigger-btn{
+  border-radius: 10px;
+  width: auto !important;
+}
+
+button[class^="rs-btn"]{
+  /* scale: 2; */
+  &:hover{
+    filter: brightness(110%);
+  }
 }

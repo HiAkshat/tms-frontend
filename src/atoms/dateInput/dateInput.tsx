@@ -1,15 +1,16 @@
 import styles from "./DateInput.module.scss"
 
-interface Props {
-  placeholder: string,
-  name: string,
-  value: string,
-  onChange: React.ChangeEventHandler,
-  required: boolean
-}
+import { DatePicker } from "rsuite";
 
-export default function DateInput({name, value, onChange, placeholder, required}: Props) {
+export default function DateInput({date, setDate, placeholder="Enter date", width="100%"}: any) {
   return (
-    <input className={styles.date} name={name} value={value} onChange={onChange} placeholder={placeholder} type="date" required={required}/>
+    <div className={styles.inputField}>
+      <DatePicker
+        name="joining_date"
+        value={date}
+        onChange={setDate}
+        placeholder={placeholder}
+      />
+    </div>
   )
 }

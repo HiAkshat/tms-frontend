@@ -1,0 +1,6 @@
+.customButton{
+  &:hover{
+    filter : brightness(125%) !important;
+    background-color: blue;
+  }
+}

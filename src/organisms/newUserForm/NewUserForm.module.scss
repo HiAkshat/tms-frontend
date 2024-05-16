@@ -8,20 +8,18 @@
   }
 
   .theForm{
-    
     display: flex;
     background-color: #1C1C1C;
     gap: 16px;
     width: fit-content;
     padding: 16px;
     border-radius: 10px;
-    
+
     .inputs{
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      justify-content: space-between;
-      
+      gap: 4px;
+
       select{
         width: 300px;
         height: 46.5%;
@@ -43,7 +41,7 @@
       font-size: 16px;
       border-radius: 10px;
       height: fit-content;
-      align-self: flex-end;
+      // align-self: flex-end;
       padding: 8px 12px;
       background-color: #2A2A2A;
       border: none;

@@ -1,0 +1,20 @@
+.userTable{
+  th{
+    background-color: beige;
+  }
+}
+
+.actionButton{
+  cursor: pointer;
+}
+
+.deleteModal{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .buttons{
+    display: flex;
+    gap: 8px;
+  }
+}

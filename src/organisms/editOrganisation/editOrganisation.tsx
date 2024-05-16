@@ -2,102 +2,116 @@ import styles from "./EditOrganisation.module.scss"
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import showToast from "../../atoms/Toast/Toast";
+import organisationServices from "../../services/organisation";
 
-interface Organisation {
-  organisation_name: string;
-  display_name: string;
-}
+import { Button, Input } from "rsuite";
+import Navbar from "../Navbar/navbar";
 
 export default function EditOrganisation() {
+  const [isDisplayNameValid, setIsDisplayNameValid] = useState(true)
+  const [isOrgNameValid, setIsOrgnNameValid] = useState(true)
+
   const navigate = useNavigate()
 
   const { id } = useParams()
-  const [organisation, setOrganisation] = useState<Organisation>({
+  const [organisation, setOrganisation] = useState<OrganisationType>({
     organisation_name: '',
     display_name: '',
   })
 
   useEffect(()=>{
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/organisation/${id}`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const jsonData = await response.json();
-        setOrganisation(jsonData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData()
+    organisationServices.getOrganisation(id).then((data)=>{setOrganisation(data)})
   }, [])
 
-  console.log("HEY")
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
-    const res = await fetch(`http://127.0.0.1:8000/api/organisation/${id}`, {
-      method: "PUT",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(organisation)
-    })
+    validateName(organisation.organisation_name, setIsOrgnNameValid)
+    validateName(organisation.display_name, setIsDisplayNameValid)
 
-    if (!res.ok){
-      console.log("NOO")
-      showToast("Error editing organisation!")
+    if (!isOrgNameValid || !isDisplayNameValid) return
+
+    try {
+      await organisationServices.editOrganisation(organisation, id)
+      setOrganisation({
+        organisation_name: '',
+        display_name: '',
+      });
+
+      navigate("..")
+    } catch (error) {
       return
     }
-
-    navigate("..")
-
-    setOrganisation({
-      organisation_name: '',
-      display_name: '',
-    });
-
-    showToast("Organisation edited successfully!")
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const validateName = (name: string, setIsNameValid: any) => {
+    if (name=="") setIsNameValid(false)
+    else setIsNameValid(true)
+  };
+
+  const handleOrgNameChange = (e: string) => {
+    setTimeout(() => {
+      validateName(e, setIsOrgnNameValid)
+    }, 1000);
+
     setOrganisation((prevState) => ({
       ...prevState,
-      [name]: value,
+      organisation_name: e,
     }));
   };
 
+  const handleDisplayNameChange = (e: string) => {
+    setTimeout(() => {
+      validateName(e, setIsDisplayNameValid)
+    }, 1000);
+
+    setOrganisation((prevState) => ({
+      ...prevState,
+      display_name: e,
+    }));
+  }
+
   return (
-    <div className={styles.main}>
-      <span className={styles.title}>Edit Organisation</span>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.fieldInfo}>
-          <label className={styles.fieldTitle}>Organisation Name</label>
-          <input
-            type="text"
-            name="organisation_name"
-            value={organisation.organisation_name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className={styles.fieldInfo}>
-          <label className={styles.fieldTitle}>Display Name</label>
-          <input
-            type="text"
-            name="display_name"
-            value={organisation.display_name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button className={styles.addButton} type="submit">Edit</button>
-      </form>
+    <div className={styles.page}>
+      <Navbar />
+      <div className={styles.main}>
+        <span className={styles.title}>Edit Organisation</span>
+        <form onSubmit={handleSubmit} className={styles.theForm}>
+        <div className={styles.inputs}>
+            <div className={styles.inputField}>
+              <Input placeholder="Organisation Name" value={organisation.organisation_name} onChange={handleOrgNameChange} required={true}/>
+              <span hidden={isOrgNameValid}>Invalid organisation name</span>
+            </div>
+            <div className={styles.inputField}>
+              <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
+              <span hidden={isDisplayNameValid}>Invalid display name</span>
+            </div>
+          </div>
+          <Button onClick={handleSubmit} type="submit">Edit</Button>
+
+          {/* <div className={styles.fieldInfo}>
+            <label className={styles.fieldTitle}>Organisation Name</label>
+            <input
+              type="text"
+              name="organisation_name"
+              value={organisation.organisation_name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className={styles.fieldInfo}>
+            <label className={styles.fieldTitle}>Display Name</label>
+            <input
+              type="text"
+              name="display_name"
+              value={organisation.display_name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button className={styles.addButton} type="submit">Edit</button> */}
+        </form>
+      </div>
     </div>
   );
 };
