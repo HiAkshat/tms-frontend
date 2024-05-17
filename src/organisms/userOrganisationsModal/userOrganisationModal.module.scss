@@ -1,0 +1,34 @@
+.orgs{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  // flex-wrap: wrap;
+
+  .orgDetails{
+    // background-color: #1c1c1c;
+    border-radius: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    .orgName{
+      width: 150px;
+    }
+
+    .joiningDate{
+      background-color: #3b3d40;
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-family: "Ubuntu Sans Mono", monospace;
+      font-size: 12px;
+    }
+
+    .deleteButton{
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 10px;
+      background-color: #f54260;
+    }
+  }
+}

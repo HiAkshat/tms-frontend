@@ -75,7 +75,7 @@ export default function NewOrganisationForm({setIsLoading}: any) {
         <div className={styles.inputs}>
           <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
           <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
-          {organisations && <SelectInput arr={organisations} value={"_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
+          {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
         </div>
       </form>
     </div>

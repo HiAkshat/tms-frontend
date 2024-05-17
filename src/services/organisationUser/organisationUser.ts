@@ -1,5 +1,5 @@
 import axios from "axios"
-import { SendOrganisationUserType, VerifyOtpBodyType } from "./types"
+import { SendOrganisationUserType, VerifyOtpBodyOrganisationType, VerifyOtpBodyType } from "./types"
 import showToast from "../../atoms/Toast/Toast"
 import server from "../../globals"
 
@@ -67,7 +67,7 @@ export const sendOtpBetter = async (email: string|undefined) => {
   }
 }
 
-export const verifyOtp = async (body: VerifyOtpBodyType) => {
+export const verifyOtp = async (body: VerifyOtpBodyOrganisationType) => {
   const res = await axios
     .post(`${apiEndpoint}/verifyOtp`, body)
     .then((res)=>{
@@ -123,6 +123,34 @@ export const editOrganisationUser = async (organisationUser: SendOrganisationUse
     })
     .catch((error)=>{
       showToast("Error editing user!")
+      throw error
+    })
+}
+
+export const addOrganisationToUser = async (user_id: string, organisation_id: string, joining_date: Date) => {
+  await axios
+    .put(`${apiEndpoint}/addOrganisation/${user_id}`, {
+      organisation_id: organisation_id,
+      joining_date: joining_date
+    })
+    .then(()=>{
+      showToast("Organisation added successfully!")
+    })
+    .catch((error)=>{
+      showToast("Error removing organisation!")
+      throw error
+    })
+
+}
+
+export const removeOrganisationFromUser = async (user_id: string, organisation_id: string) => {
+  await axios
+    .put(`${apiEndpoint}/removeOrganisation/${user_id}`, {organisation_id: organisation_id})
+    .then(()=>{
+      showToast("Organisation removed successfully!")
+    })
+    .catch((error)=>{
+      showToast("Error removing organisation!")
       throw error
     })
 }

@@ -2,7 +2,7 @@ import styles from "./navbar.module.scss"
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux"
 import { useDispatch } from 'react-redux';
-import { login } from "../../redux/userSlice";
+import { login, updateOrganisation } from "../../redux/userSlice";
 import { logout } from "../../redux/userSlice";
 import Cookie from "js-cookie"
 
@@ -32,8 +32,9 @@ export default function Navbar() {
         console.log("INSIDE NAVBAR")
         console.log(res)
         const userData = res.decoded.user
-        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation._id : "", userType: userData.organisation ? "organisation" : "system", isAuthenticated: true };
+        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation._id : "", userType: Cookie.get("organisation") ? "organisation" : "system", isAuthenticated: true };
         dispatch(login(userDetails))
+        dispatch(updateOrganisation(Cookie.get("organisation")))
       })
     } catch (error) {
       console.log("Session expired!")
@@ -59,7 +60,7 @@ export default function Navbar() {
       <div className={styles.navbarPart}>
         <div className={styles.user}>
           <span className={styles.name}>{user.name}</span>
-          <span className={styles.type}>{titleCase(user.userType)} User</span>
+          <span className={styles.type}>{} {titleCase(user.userType)} User</span>
         </div>
         <img title="logout" onClick={handleLogout} className={styles.logout} src="/logout-128.png" alt="" />
       </div>

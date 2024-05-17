@@ -65,18 +65,13 @@ function NewTicketForm() {
         <div className={styles.inputs}>
           <SelectPicker placeholder="Type" data={ticketTypeOptions.map(ticketType => ({label: ticketType, value: ticketType}))} onChange={(val)=>{setTicketData({...ticketData, type: val ?? ""})}} value={ticketData.type}/>
           <DatePicker placeholder="Due Date" name="Due Date" value={ticketData.due_date} onChange={(val: Date|null)=>{setTicketData({...ticketData, due_date: val ?? new Date()})}} />
-          {users && <SelectPicker placeholder="Assignee" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, assignee: val ?? ""})}} value={ticketData.assignee}/>}
-          {users && <SelectPicker placeholder="Reporter" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, reporter: val ?? ""})}} value={ticketData.reporter}/>}
+          {/* {users && <SelectPicker placeholder="Assignee" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, assignee: val ?? ""})}} value={ticketData.assignee}/>} */}
+          {/* {users && <SelectPicker placeholder="Reporter" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, reporter: val ?? ""})}} value={ticketData.reporter}/>} */}
         </div>
         <div className={styles.inputs}>
           <Input placeholder="Summary" value={ticketData.summary} onChange={(val: string)=>setTicketData({...ticketData, summary: val})} required={true}/>
           <Input as="textarea" rows={3} placeholder="Description" value={ticketData.description} onChange={(val: string) => setTicketData({...ticketData, description: val})} />
         </div>
-        {/* <div className={styles.inputs}> */}
-
-          {/* <input type="file" onChange={(e: any)=>setFile(e.target.files[0])}/> */}
-          {/* <button onClick={upload}>Upload file test</button> */}
-        {/* </div> */}
       <Uploader action="http://localhost:3000/api/ticket/upload" draggable onChange={(e)=>{
         console.log(e)
         }}

@@ -22,4 +22,10 @@ type VerifyOtpBody = {
   otp: string
 }
 
-export type {OrganisationUser as OrganisationUserType, VerifyOtpBody as VerifyOtpBodyType, SendOrganisationUserType}
+type VerifyOtpBodyOrganisationType = {
+  email_id: string,
+  organisation_id: string
+  otp: string,
+}
+
+export type {OrganisationUser as OrganisationUserType, VerifyOtpBody as VerifyOtpBodyType, SendOrganisationUserType, VerifyOtpBodyOrganisationType}

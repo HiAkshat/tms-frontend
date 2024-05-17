@@ -13,13 +13,17 @@ import verifyTokenServices from '../../services/verifyToken';
 import helpers from '../../helpers';
 import EmailInput from '../../atoms/EmailInput/EmailInput';
 import showToast from '../../atoms/Toast/Toast';
+import SelectInput from '../../atoms/SelectInput/SelectInput';
+import organisationServices from '../../services/organisation';
+import { updateOrganisation } from '../../redux/userSlice';
 
 export default function Login() {
   const [userType, setUserType] = useState(0)
   const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
 
-  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [organisation, setOrganisation] = useState("")
+  const [organisations, setOrganisations] = useState<OrganisationType[]>()
 
   const dispatch = useDispatch()
   let navigate = useNavigate();
@@ -40,6 +44,10 @@ export default function Login() {
     }
 
     verification()
+
+    organisationServices.getOrganisations().then((res)=>{
+      setOrganisations(res.data)
+    })
   }, [])
 
   const handleSendOtp = async () => {
@@ -59,7 +67,8 @@ export default function Login() {
   const handleUserLogin = async () => {
     const body = {
       email_id: email,
-      otp
+      otp,
+      organisation_id: organisation
     }
 
     let otpData: OtpDataType | undefined
@@ -79,14 +88,19 @@ export default function Login() {
       }
 
       if (userData){
-        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userType==0 ? '' : userData.organisation, userType: userType==0 ? "system" : "organisation" };
+        const userDetails = { id: userData.unique_id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, userType: userType==0 ? "system" : "organisation" };
         dispatch(
           login(userDetails)
         )
 
 
+
         if (userType==0) navigate("/systemDashboard");
-        else navigate("/viewTickets")
+        else{
+          Cookie.set("organisation", organisation)
+          dispatch(updateOrganisation(organisation))
+          navigate("/viewTickets")
+        }
       }
     }
     } catch (error) {
@@ -113,6 +127,7 @@ export default function Login() {
                   const truncatedValue = numericValue.slice(0, 6);
                   setOtp(truncatedValue)
                 }} required={true}/>
+                {organisations && userType==1 && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
               </div>
               <Button onClick={handleSendOtp}>Send OTP</Button>
             </div>

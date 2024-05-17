@@ -8,7 +8,9 @@ export default function DateInput({date, setDate, placeholder="Enter date", widt
       <DatePicker
         name="joining_date"
         value={date}
-        onChange={setDate}
+        onChange={(e)=>{
+          setDate(e)
+        }}
         placeholder={placeholder}
       />
     </div>

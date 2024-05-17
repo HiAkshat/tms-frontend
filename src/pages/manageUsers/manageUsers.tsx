@@ -6,7 +6,6 @@ import showToast from "../../atoms/Toast/Toast";
 import { useNavigate } from "react-router-dom";
 import RsuiteTable from "../../organisms/RsuiteTableUser/RsuiteTableUser";
 import { useEffect, useState } from "react";
-import organisationUserServices from "../../services/organisationUser";
 import { StateType } from "../../typings/navUser";
 
 export default function ManageUsers() {

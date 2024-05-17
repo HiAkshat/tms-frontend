@@ -9,6 +9,7 @@ import { Placeholder, Modal } from 'rsuite';
 import styles from "./RsuiteTable.module.scss"
 import CustomButton from '../../atoms/CustomButton/CustomButton';
 import useDeviceSize from '../../utils/useDeviceSize';
+import UserOrganisationsModal from '../userOrganisationsModal/userOrganisationsModal';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -122,7 +123,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
           </Column>
           <Column  minWidth={windowWidth<1000 ? 250 : undefined} flexGrow={1}>
             <HeaderCell>Actions</HeaderCell>
-            <ActionCell dataKey="_id" rowData={undefined} />
+            <ActionCell dataKey="unique_id" rowData={undefined} />
           </Column>
         </Table>
         <div style={{ padding: 20 }}>

@@ -14,7 +14,7 @@ export default function EditOrganisation() {
   const navigate = useNavigate()
 
   const { id } = useParams()
-  const [organisation, setOrganisation] = useState<OrganisationType>({
+  const [organisation, setOrganisation] = useState<SendOrganisationType>({
     organisation_name: '',
     display_name: '',
   })
@@ -88,28 +88,6 @@ export default function EditOrganisation() {
             </div>
           </div>
           <Button onClick={handleSubmit} type="submit">Edit</Button>
-
-          {/* <div className={styles.fieldInfo}>
-            <label className={styles.fieldTitle}>Organisation Name</label>
-            <input
-              type="text"
-              name="organisation_name"
-              value={organisation.organisation_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className={styles.fieldInfo}>
-            <label className={styles.fieldTitle}>Display Name</label>
-            <input
-              type="text"
-              name="display_name"
-              value={organisation.display_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button className={styles.addButton} type="submit">Edit</button> */}
         </form>
       </div>
     </div>

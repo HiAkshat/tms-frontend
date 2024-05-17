@@ -14,12 +14,11 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      const { id, name, email, userType, organisation_id } = action.payload;
+      const { id, name, email, userType } = action.payload;
       state.id = id,
       state.name = name;
       state.email = email;
       state.userType = userType;
-      state.organisation_id = organisation_id
       state.isAuthenticated = true;
     },
     logout: (state) => {
@@ -30,8 +29,12 @@ const userSlice = createSlice({
       state.organisation_id = '',
       state.isAuthenticated = false;
     },
+    updateOrganisation: (state, action) => {
+      const {organisation_id} = action.payload
+      state.organisation_id=organisation_id
+    }
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateOrganisation } = userSlice.actions;
 export default userSlice.reducer;
