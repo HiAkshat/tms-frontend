@@ -118,7 +118,7 @@ export default function RsuiteTable() {
       </Column>
       <Column flexGrow={1} align="center">
         <HeaderCell>Reporter</HeaderCell>
-        <Cell dataKey="reporter_name" />
+      <Cell dataKey="reporter_name" />
       </Column>
       <Column flexGrow={1} align="center" sortable>
         <HeaderCell>Status</HeaderCell>

@@ -7,10 +7,12 @@ const apiEndpoint = `${server}/organisationUser`
 let otp_flag = true
 let otp_timeout_flag = true
 
-export const getOrganisationUsers = async (page: number=1, pageSize: number=10, sortBy: string="") => {
+export const getOrganisationUsers = async (page: number=1, pageSize: number=10, sortBy: string="", filters: any={}) => {
   const sortByString = `&sortBy=${sortBy}`
+  const filterQuery = new URLSearchParams(filters).toString() ?? ""
+  console.log(filterQuery)
   const res = await axios
-    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}${sortBy!="" && sortByString}`)
+    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}${sortBy ?? sortByString}&${filterQuery}`)
     .then(res => {return res.data})
     .catch(error => {
       throw error
