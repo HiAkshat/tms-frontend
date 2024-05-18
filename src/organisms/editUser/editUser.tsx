@@ -77,24 +77,22 @@ export default function EditUser() {
   };
 
   return (
-  <div className={styles.page}>
-    <Navbar />
-    <div className={styles.main}>
-      <span className={styles.title}>Add New User</span>
-      <form onSubmit={handleSubmit} className={styles.theForm}>
-        <div className={styles.inputs}>
-          <EmailInput email={email} setEmail={setEmail} placeholder={"Email"} />
-          <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
-          <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
-          <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
-        </div>
-        <div className={styles.inputs}>
-          <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
-          <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
-          {organisations && <SelectInput arr={organisations} value={"_id"} label={"organisation_name"} data={organisation} setOrganisation={setOrganisation}/>}
-        </div>
-      </form>
+    <div className={styles.page}>
+      <Navbar />
+      <div className={styles.main}>
+        <span className={styles.title}>Add New User</span>
+        <form onSubmit={handleSubmit} className={styles.theForm}>
+          <div className={styles.inputs}>
+            <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
+            <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
+            <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
+          </div>
+          <div className={styles.inputs}>
+            <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
+            <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
   );
 };

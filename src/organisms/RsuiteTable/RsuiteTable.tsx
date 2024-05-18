@@ -24,6 +24,8 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const [limit, setLimit] = useState(10);
   const [totalEntries, setTotalEntries] = useState(0)
 
+  const [users, setUsers] = useState<UserType[]>([])
+
   const [deleteOrg, setDeleteOrg] = useState('')
 
   const handleChangeLimit = (dataKey: any) => {

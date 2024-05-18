@@ -61,3 +61,25 @@ button[class^="rs-btn"]{
     filter: brightness(110%);
   }
 }
+
+textarea.rs-input{
+  resize: none !important;
+  height: 100%;
+
+}
+
+.rs-uploader-file-item-btn-remove{
+  display: none;
+}
+
+.rs-uploader{
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+}
+
+.rs-uploader-trigger-btn{
+  padding: 10px;
+  height: 100% !important;
+}

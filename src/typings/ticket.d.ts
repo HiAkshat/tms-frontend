@@ -4,8 +4,10 @@ type TicketType = {
   key: string | undefined,
   summary: string,
   description: string,
-  assignee: UserType,
-  reporter: UserType,
+  assignee_id: string,
+  assignee_name: string,
+  reporter_id: string,
+  reporter_name: string,
   organisation?: OrganisationType|string,
   status: string | "To be picked" | "In progress" | "In testing" | "Completed" | undefined,
   due_date: Date,
@@ -18,12 +20,13 @@ type TicketType = {
 type SendTicketType = {
   organisation: string,
   type: string,
-  key: string,
   summary: string,
   description: string,
-  assignee: string,
-  reporter: string,
+  assignee_id: string,
+  assignee_name: string,
+  reporter_id: string,
+  reporter_name: string,
   status?: string,
   due_date: Date,
-  files?: [string]
+  files?: string[]
 }

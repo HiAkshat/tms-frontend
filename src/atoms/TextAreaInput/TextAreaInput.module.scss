@@ -1,7 +1,9 @@
 .inputField{
   display: flex;
   flex-direction: column;
-  min-height: 60px;
+  height: max-content;
+  resize: none;
+  height: 100%;
 
   span{
     // position: absolute;

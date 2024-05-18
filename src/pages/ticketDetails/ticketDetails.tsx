@@ -89,8 +89,8 @@ export default function TicketDetails() {
                     <span>Type <span>Story</span></span>
                   </div>
                   <div className={styles.colDiv}>
-                    { <span>Assignee <span>{ticket.assignee ? `${ticket.assignee.first_name} ${ticket.assignee.last_name}` : "Deleted User"}</span></span>}
-                    { <span>Reporter <span>{ticket.reporter ? `${ticket.reporter.first_name} ${ticket.reporter.last_name}` : "Deleted User"}</span></span>}
+                    { <span>Assignee <span>{ticket.assignee_name ? `${ticket.assignee_name}` : "Deleted User"}</span></span>}
+                    { <span>Reporter <span>{ticket.reporter_name ? `${ticket.reporter_name}` : "Deleted User"}</span></span>}
                   </div>
                   <div className={styles.colDiv}>
                     <span>Current Status <span>{ticket.status}</span></span>

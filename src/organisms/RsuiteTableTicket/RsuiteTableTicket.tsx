@@ -5,6 +5,7 @@ import { SortType } from 'rsuite/esm/Table';
 import showToast from '../../atoms/Toast/Toast';
 
 import { useSelector } from "react-redux"
+import Cookie from "js-cookie"
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -12,8 +13,6 @@ import styles from "./RsuiteTable.module.scss"
 import ticketServices from '../../services/ticket';
 import { StateType } from '../../typings/navUser';
 import verifyTokenServices from '../../services/verifyToken';
-
-import Cookie from "js-cookie"
 
 export default function RsuiteTable() {
   const navigate = useNavigate()
@@ -28,7 +27,7 @@ export default function RsuiteTable() {
     console.log("INSIDE TICKET TABLE")
 
     verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(()=>{
-      ticketServices.getOrgTickets(user.organisation_id).then((data)=>{
+      ticketServices.getOrgTickets(Cookie.get("organisation")).then((data)=>{
         setData(data)
       })
     })
@@ -115,11 +114,11 @@ export default function RsuiteTable() {
       </Column>
       <Column flexGrow={1} align="center">
         <HeaderCell>Assignee</HeaderCell>
-        <Cell dataKey="assignee.first_name" />
+        <Cell dataKey="assignee_name" />
       </Column>
       <Column flexGrow={1} align="center">
         <HeaderCell>Reporter</HeaderCell>
-        <Cell dataKey="reporter.first_name" />
+        <Cell dataKey="reporter_name" />
       </Column>
       <Column flexGrow={1} align="center" sortable>
         <HeaderCell>Status</HeaderCell>
@@ -131,7 +130,7 @@ export default function RsuiteTable() {
       </Column>
       <Column flexGrow={1}>
         <HeaderCell>Actions</HeaderCell>
-        <ActionCell dataKey="_id" rowData={undefined} />
+        <ActionCell dataKey="unique_id" rowData={undefined} />
       </Column>
     </Table>
   )

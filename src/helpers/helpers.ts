@@ -76,3 +76,15 @@ export const isDateBeforeDate = (date1: Date, date2: Date) => {
 export const isDateBeforeNow = (date: Date) => {
   return date < new Date()
 }
+
+export const isDateTodayOrFuture = (date: Date) => {
+  const givenDate = new Date(date);
+  givenDate.setHours(0, 0, 0, 0);
+
+  // Get today's date and set the time to midnight
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Compare the given date with today's date
+  return givenDate >= today;
+}

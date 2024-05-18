@@ -6,7 +6,7 @@ import { login, updateOrganisation } from "../../redux/userSlice";
 import { logout } from "../../redux/userSlice";
 import Cookie from "js-cookie"
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavUserType, StateType } from "../../typings/navUser";
 import verifyTokenServices from "../../services/verifyToken";
 
@@ -17,6 +17,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     Cookie.remove("accessToken")
+    Cookie.remove("organisation")
     dispatch(logout())
     navigate("/login")
   }
@@ -29,13 +30,13 @@ export default function Navbar() {
   const verifyToken = async () => {
     try {
       await verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
-        console.log("INSIDE NAVBAR")
-        console.log(res)
         const userData = res.decoded.user
         const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation._id : "", userType: Cookie.get("organisation") ? "organisation" : "system", isAuthenticated: true };
         dispatch(login(userDetails))
         dispatch(updateOrganisation(Cookie.get("organisation")))
       })
+
+
     } catch (error) {
       console.log("Session expired!")
       return error

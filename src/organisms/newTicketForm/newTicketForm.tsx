@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from "./NewTicketForm.module.scss"
 
-import { useNavigate } from 'react-router-dom';
-
-import { DatePicker, Button, Input, SelectPicker, Uploader } from 'rsuite';
 import ticketServices from '../../services/ticket/index';
 
 import organisationUserServices from '../../services/organisationUser';
@@ -11,33 +8,54 @@ import verifyTokenServices from '../../services/verifyToken';
 
 import Cookie from "js-cookie"
 
-function NewTicketForm() {
-  const navigate = useNavigate()
+import SelectInput from '../../atoms/SelectInput/SelectInput';
+import DateInput from '../../atoms/DateInput/DateInput';
+import TextInput from '../../atoms/TextInput/TextInput';
+import TextAreaInput from '../../atoms/TextAreaInput/TextAreaInput';
+import CustomButton from '../../atoms/CustomButton/CustomButton';
+import helpers from '../../helpers';
+import showToast from '../../atoms/Toast/Toast';
+import UploaderInput from '../../atoms/UploaderInput/UploaderInput';
 
+function NewTicketForm() {
   const [users, setUsers] = useState<[UserType]>()
-  const [orgId, setOrgId] = useState('')
   const ticketTypeOptions = ["Story", "Task", "Bug"]
 
-  const [file, setFile] = useState<any>()
+  const [ticketType, setTicketType] = useState("")
+  const [dueDate, setDueDate] = useState<Date>()
+  const [assigneeId, setAssigneeId] = useState("")
+  const [reporterId, setReporterId] = useState("")
+  const [summary, setSummary] = useState("")
+  const [description, setDescription] = useState("")
+  const [files, setFiles] = useState<string[]>()
 
-  const [ticketData, setTicketData] = useState<SendTicketType>({
-    organisation: orgId ?? "",
-    type: '',
-    key: '',
-    summary: '',
-    description: '',
-    assignee: '',
-    reporter: '',
-    due_date: new Date(),
-    files: [""]
-  });
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
 
-  const handleSubmit = async () => {
-    console.log(ticketData)
+    console.log(!helpers.isTextEmpty(assigneeId) , !helpers.isTextEmpty(reporterId) , !helpers.isTextEmpty(summary) , dueDate &&  helpers.isDateTodayOrFuture(dueDate))
+    if (!(users && !helpers.isTextEmpty(assigneeId) && !helpers.isTextEmpty(reporterId) && !helpers.isTextEmpty(summary) && dueDate && helpers.isDateTodayOrFuture(dueDate))){
+      showToast("Invalid data!")
+      return
+    }
+
+    const assignee_user = users.find(user => user.unique_id == assigneeId)
+    const reporter_user = users.find(user => user.unique_id == reporterId)
 
     try {
-      await ticketServices.addTicket({...ticketData, organisation: orgId})
-      // navigate(0)
+      const data: SendTicketType = {
+        organisation: Cookie.get("organisation") ?? "",
+        type: ticketType,
+        summary,
+        description,
+        assignee_id: assigneeId,
+        assignee_name: `${assignee_user?.first_name} ${assignee_user?.last_name}` ?? "",
+        reporter_id: reporterId,
+        reporter_name: `${reporter_user?.first_name} ${reporter_user?.last_name}` ?? "",
+        due_date: dueDate,
+        files
+      }
+
+      await ticketServices.addTicket(data)
     } catch (error) {
       return
     }
@@ -45,10 +63,8 @@ function NewTicketForm() {
 
   useEffect(()=>{
     try {
-      verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
-        const org_id = res.decoded.user.organisation._id
-        setOrgId(org_id)
-        organisationUserServices.getOrganisationUsersByOrgId(org_id).then(res => {
+      verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(()=>{
+        organisationUserServices.getOrganisationUsersByOrgId(Cookie.get("organisation")??"").then(res => {
           setUsers(res)
         })
       })
@@ -63,33 +79,18 @@ function NewTicketForm() {
       <span className={styles.title}>Add New Ticket</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <SelectPicker placeholder="Type" data={ticketTypeOptions.map(ticketType => ({label: ticketType, value: ticketType}))} onChange={(val)=>{setTicketData({...ticketData, type: val ?? ""})}} value={ticketData.type}/>
-          <DatePicker placeholder="Due Date" name="Due Date" value={ticketData.due_date} onChange={(val: Date|null)=>{setTicketData({...ticketData, due_date: val ?? new Date()})}} />
-          {/* {users && <SelectPicker placeholder="Assignee" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, assignee: val ?? ""})}} value={ticketData.assignee}/>} */}
-          {/* {users && <SelectPicker placeholder="Reporter" data={users.map((user: UserType) => ({label: `${user.first_name}`, value: user._id}))} onChange={(val)=>{setTicketData({...ticketData, reporter: val ?? ""})}} value={ticketData.reporter}/>} */}
+          <SelectInput options={ticketTypeOptions} data={ticketType} setData={setTicketType} placeholder={"Type"}/>
+          <DateInput date={dueDate} setDate={setDueDate} placeholder="Due Date" />
+          {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={assigneeId} setData={setAssigneeId} placeholder={"Assignee"}/>}
+          {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={reporterId} setData={setReporterId} placeholder={"Reporter"}/>}
+          <CustomButton onClick={handleSubmit} text="Add Ticket" width="100%"/>
         </div>
         <div className={styles.inputs}>
-          <Input placeholder="Summary" value={ticketData.summary} onChange={(val: string)=>setTicketData({...ticketData, summary: val})} required={true}/>
-          <Input as="textarea" rows={3} placeholder="Description" value={ticketData.description} onChange={(val: string) => setTicketData({...ticketData, description: val})} />
+          <TextInput text={summary} setText={setSummary} field="Summary" placeholder="Summary"/>
+          <TextAreaInput text={description} setText={setDescription} field="Description" placeholder="Description"/>
         </div>
-      <Uploader action="http://localhost:3000/api/ticket/upload" draggable onChange={(e)=>{
-        console.log(e)
-        }}
-
-        onSuccess={(res)=>{
-          console.log(res)
-          const newFiles = ticketData.files ?? [""]
-          newFiles.push(res.filename)
-          setTicketData({...ticketData, files: newFiles})
-          console.log(ticketData)
-        }}
-      >
-        <div style={{ width: 400, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span>Click or Drag files to this area to upload</span>
-        </div>
-      </Uploader>
         <div className={styles.inputs}>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <UploaderInput upload_link="http://localhost:3000/api/ticket/upload" files={files} setFiles={setFiles} />
         </div>
       </form>
     </div>

@@ -18,7 +18,7 @@ export default function ViewTickets() {
 
   useEffect(()=>{
     socket.on('newticket', (data) => {
-      showToast(`New Ticket YIPEEE: ${data.message}`)
+      // showToast(`New Ticket YIPEEE: ${data.message}`)
       // Display toast or notification for the new ticket
     });
 
