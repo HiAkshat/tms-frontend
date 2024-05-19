@@ -1,5 +1,5 @@
 import axios from "axios"
-import { SendOrganisationUserType, VerifyOtpBodyOrganisationType, VerifyOtpBodyType } from "./types"
+import { EditOrganisationUserType, SendOrganisationUserType, VerifyOtpBodyOrganisationType } from "./types"
 import showToast from "../../atoms/Toast/Toast"
 import server from "../../globals"
 
@@ -8,6 +8,8 @@ let otp_flag = true
 let otp_timeout_flag = true
 
 export const getOrganisationUsers = async (page: number=1, pageSize: number=10, sortBy: string="", filters: any={}) => {
+  Object.keys(filters).forEach(key => filters[key] === undefined || filters[key] === null ? delete filters[key] : {});
+
   const sortByString = `&sortBy=${sortBy}`
   const filterQuery = new URLSearchParams(filters).toString() ?? ""
   console.log(filterQuery)
@@ -117,7 +119,7 @@ export const addOrganisationUser = async (organisationUser: SendOrganisationUser
     })
 }
 
-export const editOrganisationUser = async (organisationUser: SendOrganisationUserType, id: string|undefined) => {
+export const editOrganisationUser = async (organisationUser: EditOrganisationUserType, id: string|undefined) => {
   await axios
     .put(`${apiEndpoint}/${id}`, organisationUser)
     .then(()=>{
@@ -159,7 +161,7 @@ export const removeOrganisationFromUser = async (user_id: string, organisation_i
 
 export const deleteOrganisationUser = async (id: string|undefined) => {
   await axios
-    .put(`${apiEndpoint}/${id}`)
+    .delete(`${apiEndpoint}/${id}`)
     .then(()=>{
       showToast("User deleted successfully!")
     })

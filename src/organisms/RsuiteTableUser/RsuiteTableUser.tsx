@@ -156,19 +156,22 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
         <Placeholder.Grid rows={10} columns={7} active />
         :
         <div>
-          <form className='filters'>
-            <EmailInput email={filterEmail} setEmail={setFilterEmail} placeholder={"Email"} />
-            <NameInput field="First Name" name={filterFirstName} setName={setFilterFirstName} placeholder="First Name" />
-            <NameInput field="Last Name" name={filterLastName} setName={setFilterLastName} placeholder="Last Name" />
-            {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation}/>}
-            <DateRangePicker format="dd.MM.yyyy" onChange={(e: any)=>{
-              setFilterStartDate(e[0])
-              setFilterEndDate(e[1])
-            }}/>
-            <CustomButton onClick={handleFilterSubmit} type="submit" text="Add" width="100%"/>
-
-
-          </form>
+          <div className={styles.filtersBox}>
+            <span>Filters</span>
+            <form className={styles.filtersInputs}>
+              <EmailInput email={filterEmail} setEmail={setFilterEmail} placeholder={"Email"} />
+              <NameInput field="First Name" name={filterFirstName} setName={setFilterFirstName} placeholder="First Name" />
+              <NameInput field="Last Name" name={filterLastName} setName={setFilterLastName} placeholder="Last Name" />
+              {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisation"/>}
+              <div className={styles.inputField}>
+                <DateRangePicker format="dd.MM.yyyy" placeholder="DOB Range" onChange={(e: any)=>{
+                  setFilterStartDate(e[0])
+                  setFilterEndDate(e[1])
+                }}/>
+              </div>
+              <CustomButton onClick={handleFilterSubmit} type="submit" text="Apply filters" width="50%"/>
+            </form>
+          </div>
           <Table
             className={styles.userTable}
             sortColumn={sortColumn}

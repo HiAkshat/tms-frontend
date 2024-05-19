@@ -83,3 +83,18 @@ textarea.rs-input{
   padding: 10px;
   height: 100% !important;
 }
+
+.rs-picker-toggle-wrapper{
+  /* height: 60px; */
+  width: 100%;
+}
+
+.rs-modal-content{
+  border: 2px rgb(44, 44, 44) solid;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+}
+
+.rs-picker-daterange .rs-input-group{
+  height: 35.6px
+}

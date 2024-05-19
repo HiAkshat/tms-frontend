@@ -1,34 +1,33 @@
-.orgs{
-  margin-top: 20px;
+.section{
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  // flex-wrap: wrap;
+  gap: 10px;
 
-  .orgDetails{
-    // background-color: #1c1c1c;
-    border-radius: 10px;
+  h3{
+    margin-bottom: 12px;
+  }
+
+  .sectionHeading{
+    font-family: "Ubuntu Sans Mono", monospace;
+
+  }
+
+  .newOrgForm{
     display: flex;
-    gap: 12px;
-    align-items: center;
+    gap: 16px;
 
-    .orgName{
-      width: 150px;
-    }
-
-    .joiningDate{
-      background-color: #3b3d40;
-      padding: 4px 12px;
-      border-radius: 10px;
-      font-family: "Ubuntu Sans Mono", monospace;
-      font-size: 12px;
-    }
-
-    .deleteButton{
-      font-size: 12px;
-      padding: 4px 12px;
-      border-radius: 10px;
-      background-color: #f54260;
+    button{
+      margin-bottom: 24px;
+      // background-color: #1a1d24;
     }
   }
+}
+
+
+
+.deleteButton{
+  font-size: 12px;
+  border-radius: 10px;
+  background-color: #f54260;
 }

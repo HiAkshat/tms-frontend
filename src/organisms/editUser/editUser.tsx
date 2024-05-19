@@ -4,11 +4,8 @@ import { useParams } from 'react-router-dom'
 import DateInput from "../../atoms/DateInput/DateInput";
 import { useNavigate } from "react-router-dom";
 import organisationUserServices from "../../services/organisationUser";
-import organisationServices from "../../services/organisation";
-import EmailInput from "../../atoms/EmailInput/EmailInput";
 import NameInput from "../../atoms/NameInput/NameInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
-import SelectInput from "../../atoms/SelectInput/SelectInput";
 import helpers from "../../helpers";
 import showToast from "../../atoms/Toast/Toast";
 import { OrganisationUserType } from "../../services/organisationUser/types";
@@ -22,27 +19,15 @@ export default function EditUser() {
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")
   const [dob, setDob] = useState<Date>()
-  const [joiningDate, setJoiningDate] = useState<Date>()
-  const [organisation, setOrganisation] = useState("")
-  const [organisations, setOrganisations] = useState<[OrganisationType]>()
-
-
 
   useEffect(() => {
     try {
-      organisationServices.getOrganisations().then(res => setOrganisations(res.data))
-
       organisationUserServices.getOrganisationUser(id).then((data: OrganisationUserType) => {
-        console.log(typeof data.dob)
-        if (data){
-        }
 
         setEmail(data.email_id)
         setFirstName(data.first_name)
         setLastName(data.last_name)
         setDob(new Date(data.dob))
-        setJoiningDate(new Date(data.joining_date))
-        setOrganisation(data.organisation._id)
       })
     } catch (error) {
       return
@@ -53,7 +38,7 @@ export default function EditUser() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob && joiningDate && helpers.isDateBeforeDate(dob, joiningDate) && helpers.isDateBeforeNow(joiningDate))){
+    if (!(helpers.validateEmail(email) && helpers.validateName(firstName) && helpers.validateName(lastName) && dob)){
       showToast("Invalid data")
       return
     }
@@ -63,8 +48,6 @@ export default function EditUser() {
       dob: new Date(dob),
       first_name: firstName,
       last_name: lastName,
-      joining_date: new Date(joiningDate),
-      organisation: organisation
     }
 
     try {
@@ -85,11 +68,10 @@ export default function EditUser() {
           <div className={styles.inputs}>
             <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
             <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
-            <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
           </div>
           <div className={styles.inputs}>
             <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
-            <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
+            <CustomButton onClick={handleSubmit} type="submit" text="Update details" width="100%"/>
           </div>
         </form>
       </div>

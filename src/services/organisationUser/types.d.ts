@@ -7,6 +7,12 @@ type SendOrganisationUserType = {
   joining_date: Date,
 }
 
+type EditOrganisationUserType = {
+  first_name: string,
+  last_name: string,
+  dob: Date,
+}
+
 type OrganisationUser = {
   email_id: string,
   first_name: string,
@@ -28,4 +34,4 @@ type VerifyOtpBodyOrganisationType = {
   otp: string,
 }
 
-export type {OrganisationUser as OrganisationUserType, VerifyOtpBody as VerifyOtpBodyType, SendOrganisationUserType, VerifyOtpBodyOrganisationType}
+export type {OrganisationUser as OrganisationUserType, VerifyOtpBody as VerifyOtpBodyType, SendOrganisationUserType, VerifyOtpBodyOrganisationType, EditOrganisationUserType}
