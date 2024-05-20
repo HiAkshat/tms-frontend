@@ -73,9 +73,9 @@ export default function NewOrganisationForm({setIsLoading}: any) {
           <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
         </div>
         <div className={styles.inputs}>
-          <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
-          <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} />
-          {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation} placeholder="Organisation"/>}
+          <DateInput date={dob} setDate={setDob} placeholder={"DOB"} field="DOB" />
+          <DateInput date={joiningDate} setDate={setJoiningDate} placeholder={"Joining Date"} field="Joining Date" />
+          {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation} placeholder="Organisation" field="Organisation" />}
         </div>
       </form>
     </div>

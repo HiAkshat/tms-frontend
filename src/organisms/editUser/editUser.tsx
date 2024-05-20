@@ -67,11 +67,13 @@ export default function EditUser() {
         <form onSubmit={handleSubmit} className={styles.theForm}>
           <div className={styles.inputs}>
             <NameInput field="First Name" name={firstName} setName={setFirstName} placeholder="First Name" />
+            <CustomButton onClick={handleSubmit} type="submit" text="Update details" width="100%"/>
+          </div>
+          <div className={styles.inputs}>
             <NameInput field="Last Name" name={lastName} setName={setLastName} placeholder="Last Name" />
           </div>
           <div className={styles.inputs}>
             <DateInput date={dob} setDate={setDob} placeholder={"DOB"} />
-            <CustomButton onClick={handleSubmit} type="submit" text="Update details" width="100%"/>
           </div>
         </form>
       </div>

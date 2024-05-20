@@ -4,92 +4,62 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import organisationServices from "../../services/organisation";
 
-import { Button, Input } from "rsuite";
 import Navbar from "../Navbar/navbar";
+import TextInput from "../../atoms/TextInput/TextInput";
+import CustomButton from "../../atoms/CustomButton/CustomButton";
+import helpers from "../../helpers";
+import showToast from "../../atoms/Toast/Toast";
 
 export default function EditOrganisation() {
-  const [isDisplayNameValid, setIsDisplayNameValid] = useState(true)
-  const [isOrgNameValid, setIsOrgnNameValid] = useState(true)
-
   const navigate = useNavigate()
 
+  const [organisationName, setOrganisationName] = useState("")
+  const [displayName, setDisplayName] = useState("")
+
   const { id } = useParams()
-  const [organisation, setOrganisation] = useState<SendOrganisationType>({
-    organisation_name: '',
-    display_name: '',
-  })
 
   useEffect(()=>{
-    organisationServices.getOrganisation(id).then((data)=>{setOrganisation(data)})
+    organisationServices.getOrganisation(id).then((data)=>{
+      setOrganisationName(data.organisation_name)
+      setDisplayName(data.display_name)
+    })
   }, [])
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
-    validateName(organisation.organisation_name, setIsOrgnNameValid)
-    validateName(organisation.display_name, setIsDisplayNameValid)
+    if (helpers.isTextEmpty(organisationName) || helpers.isTextEmpty(displayName)){
+      showToast("Invalid data!")
+      return
+    }
 
-    if (!isOrgNameValid || !isDisplayNameValid) return
+    const data = {
+      organisation_name: organisationName,
+      display_name: displayName
+    }
 
     try {
-      await organisationServices.editOrganisation(organisation, id)
-      setOrganisation({
-        organisation_name: '',
-        display_name: '',
-      });
-
+      await organisationServices.editOrganisation(data, id)
       navigate("..")
     } catch (error) {
       return
     }
   };
 
-  const validateName = (name: string, setIsNameValid: any) => {
-    if (name=="") setIsNameValid(false)
-    else setIsNameValid(true)
-  };
-
-  const handleOrgNameChange = (e: string) => {
-    setTimeout(() => {
-      validateName(e, setIsOrgnNameValid)
-    }, 1000);
-
-    setOrganisation((prevState) => ({
-      ...prevState,
-      organisation_name: e,
-    }));
-  };
-
-  const handleDisplayNameChange = (e: string) => {
-    setTimeout(() => {
-      validateName(e, setIsDisplayNameValid)
-    }, 1000);
-
-    setOrganisation((prevState) => ({
-      ...prevState,
-      display_name: e,
-    }));
-  }
 
   return (
     <div className={styles.page}>
       <Navbar />
       <div className={styles.main}>
-        <span className={styles.title}>Edit Organisation</span>
-        <form onSubmit={handleSubmit} className={styles.theForm}>
+      <span className={styles.title}>Add New Organisation</span>
+      <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-            <div className={styles.inputField}>
-              <Input placeholder="Organisation Name" value={organisation.organisation_name} onChange={handleOrgNameChange} required={true}/>
-              <span hidden={isOrgNameValid}>Invalid organisation name</span>
-            </div>
-            <div className={styles.inputField}>
-              <Input placeholder="Dislpay Name" value={organisation.display_name} onChange={handleDisplayNameChange} required={true}/>
-              <span hidden={isDisplayNameValid}>Invalid display name</span>
-            </div>
-          </div>
-          <Button onClick={handleSubmit} type="submit">Edit</Button>
-        </form>
-      </div>
+          <TextInput text={organisationName} field="Organisation Name" setText={setOrganisationName} placeholder="Organisation Name"  />
+          <TextInput text={displayName} field="Display Name" setText={setDisplayName} placeholder="Display Name"  />
+          <CustomButton onClick={handleSubmit} type="submit" text="Add" width="100%"/>
+        </div>
+      </form>
+    </div>
     </div>
   );
 };

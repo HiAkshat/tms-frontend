@@ -9,13 +9,14 @@ import Cookie from "js-cookie"
 
 const { Column, HeaderCell, Cell } = Table;
 
-import styles from "./RsuiteTable.module.scss"
+import styles from "./RsuiteTableTicket.module.scss"
 import ticketServices from '../../services/ticket';
 import { StateType } from '../../typings/navUser';
 import verifyTokenServices from '../../services/verifyToken';
 import CustomButton from '../../atoms/CustomButton/CustomButton';
 import SelectInput from '../../atoms/SelectInput/SelectInput';
 import organisationUserServices from '../../services/organisationUser';
+import DateRangeInput from '../../atoms/DateRangeInput/DateRangeInput';
 
 export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boolean, setIsLoading: Dispatch<boolean>}) {
   const navigate = useNavigate()
@@ -145,13 +146,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
               <SelectInput options={filterStatusOptions} data={filterStatus} setData={setFilterStatus} placeholder={"Status"}/>
               {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={filterAssigneeId} setData={setFilterAssigneeId} placeholder={"Assignee"}/>}
               {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={filterReporterId} setData={setFilterReporterId} placeholder={"Reporter"}/>}
-
-              <div className={styles.inputField}>
-                <DateRangePicker format="dd.MM.yyyy" placeholder="Due Date Range" onChange={(e: any)=>{
-                  setFilterStartDate(e[0])
-                  setFilterEndDate(e[1])
-                }}/>
-              </div>
+              <DateRangeInput setFilterStartDate={setFilterStartDate} setFilterEndDate={setFilterEndDate} field="Due date range" />
               <CustomButton onClick={handleFilterSubmit} type="submit" text="Apply filters" width="50%"/>
             </form>
           </div>
@@ -174,11 +169,11 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
               <HeaderCell>Key</HeaderCell>
               <Cell dataKey="key" />
             </Column>
-            <Column flexGrow={1} align="center">
+            <Column flexGrow={1} align="center" sortable>
               <HeaderCell>Assignee</HeaderCell>
               <Cell dataKey="assignee_name" />
             </Column>
-            <Column flexGrow={1} align="center">
+            <Column flexGrow={1} align="center" sortable>
               <HeaderCell>Reporter</HeaderCell>
             <Cell dataKey="reporter_name" />
             </Column>

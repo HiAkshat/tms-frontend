@@ -17,6 +17,7 @@ import EmailInput from '../../atoms/EmailInput/EmailInput';
 import NameInput from '../../atoms/NameInput/NameInput';
 import SelectInput from '../../atoms/SelectInput/SelectInput';
 import MultipleSelectInput from '../../atoms/MultipleSelectInput/MultipleSelectInput';
+import DateRangeInput from '../../atoms/DateRangeInput/DateRangeInput';
 
 export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const navigate = useNavigate()
@@ -157,15 +158,8 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
               <EmailInput email={filterEmail} setEmail={setFilterEmail} placeholder={"Email"} />
               <NameInput field="First Name" name={filterFirstName} setName={setFilterFirstName} placeholder="First Name" />
               <NameInput field="Last Name" name={filterLastName} setName={setFilterLastName} placeholder="Last Name" />
-              {/* {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisation"/>} */}
-              {organisations && <MultipleSelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisation"/>}
-
-              <div className={styles.inputField}>
-                <DateRangePicker format="dd.MM.yyyy" placeholder="DOB Range" onChange={(e: any)=>{
-                  setFilterStartDate(e[0])
-                  setFilterEndDate(e[1])
-                }}/>
-              </div>
+              {organisations && <MultipleSelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisations" field="Organisations"/>}
+              <DateRangeInput setFilterStartDate={setFilterStartDate} setFilterEndDate={setFilterEndDate} field="DOB Range" />
               <CustomButton onClick={handleFilterSubmit} type="submit" text="Apply filters" width="50%"/>
             </form>
           </div>

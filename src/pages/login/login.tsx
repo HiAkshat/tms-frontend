@@ -121,18 +121,18 @@ export default function Login() {
             <div className={styles.inputWithB}>
               <div className={styles.inputs}>
                 <EmailInput email={email} setEmail={setEmail}/>
-                <div className={styles.otpInput}>
-                  <Input placeholder="Enter your 6-digit OTP" value={otp} onChange={(val: string)=>{
-                    const inputValue = val
-                    const numericValue = inputValue.replace(/\D/g, '');
-                    const truncatedValue = numericValue.slice(0, 6);
-                    setOtp(truncatedValue)
-                  }} required={true}/>
-
-                </div>
-                {organisations && userType==1 && <SelectInput className={styles.orgSelect} arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
+                <Button className={styles.otpButton} onClick={handleSendOtp}>Send OTP</Button>
               </div>
-              <Button className={styles.otpButton} onClick={handleSendOtp}>Send OTP</Button>
+              <div className={styles.otpInput}>
+                <span className={styles.inputHeading}>OTP</span>
+                <Input placeholder="Enter your 6-digit OTP" value={otp} onChange={(val: string)=>{
+                  const inputValue = val
+                  const numericValue = inputValue.replace(/\D/g, '');
+                  const truncatedValue = numericValue.slice(0, 6);
+                  setOtp(truncatedValue)
+                }} required={true}/>
+              </div>
+              {organisations && userType==1 && <SelectInput className={styles.orgSelect} arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
             </div>
           <Button type="submit" onClick={handleUserLogin} className={styles.submitButton}>Submit</Button>
         </div>

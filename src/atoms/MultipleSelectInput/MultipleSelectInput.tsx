@@ -10,10 +10,12 @@ export default function MultipleSelectInput({
   setData,
   options = undefined,
   placeholder="",
-  className=""
+  className="",
+  field="Select"
 }: any) {
   return (
     <div className={`${styles.inputField} ${className}`}>
+      <span className={`${styles.inputHeading}`}>{field}</span>
       <Stack spacing={10} direction="column" alignItems="flex-start">
         <CheckPicker
           data={

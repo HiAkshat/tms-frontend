@@ -9,13 +9,13 @@ export default function TextAreaInput({text, field, setText, placeholder="Enter 
 
   return (
   <div style={{width: width}} className={styles.inputField}>
+    <span className={`${styles.inputHeading} ${isTextValid ? "" : styles.inputInvalid}`}>{field} {!isTextValid && "(Invalid)"}</span>
     <Input as="textarea" placeholder={placeholder} value={text} onChange={(val: string)=>{
       setTimeout(() => {
         helpers.isTextEmptyAndSet(val, setIsTextValid)
       }, 1000);
       setText(val)
     }} required={true}/>
-    <span hidden={isTextValid}>Invalid {field}</span>
   </div>
   )
 }

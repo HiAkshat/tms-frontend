@@ -9,13 +9,13 @@ export default function NameInput({name, field, setName, placeholder="Enter your
 
   return (
   <div style={{width: width}} className={styles.inputField}>
+    <span className={`${styles.inputHeading} ${isNameValid ? "" : styles.inputInvalid}`}>{field} {!isNameValid && "(Invalid)"}</span>
     <Input placeholder={placeholder} value={name} onChange={(val: string)=>{
       setTimeout(() => {
         helpers.validateNameAndSet(val, setIsNameValid)
       }, 1000);
       setName(val)
     }} required={true}/>
-    <span hidden={isNameValid}>Invalid {field}</span>
   </div>
   )
 }
