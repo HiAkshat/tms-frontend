@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import styles from "./NewTicketForm.module.scss"
 
 import ticketServices from '../../services/ticket/index';
@@ -17,7 +17,7 @@ import helpers from '../../helpers';
 import showToast from '../../atoms/Toast/Toast';
 import UploaderInput from '../../atoms/UploaderInput/UploaderInput';
 
-function NewTicketForm() {
+function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
   const [users, setUsers] = useState<[UserType]>()
   const ticketTypeOptions = ["Story", "Task", "Bug"]
 
@@ -54,7 +54,8 @@ function NewTicketForm() {
         due_date: dueDate,
         files
       }
-
+      
+      setIsLoading(true)
       await ticketServices.addTicket(data)
     } catch (error) {
       return

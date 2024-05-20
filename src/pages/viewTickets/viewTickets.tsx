@@ -16,6 +16,8 @@ export default function ViewTickets() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [isLoading, setIsLoading] = useState(true)
+
   useEffect(()=>{
     socket.on('newticket', (data) => {
       // showToast(`New Ticket YIPEEE: ${data.message}`)
@@ -38,10 +40,10 @@ export default function ViewTickets() {
     <div className={styles.page}>
       <Navbar />
       <div className={styles.main}>
-        <NewTicketForm />
+        <NewTicketForm setIsLoading={setIsLoading}/>
         <div className={styles.tableDiv}>
           <span>Tickets Table</span>
-          <RsuiteTable />
+          <RsuiteTable isLoading={isLoading} setIsLoading={setIsLoading}/>
         </div>
       </div>
     </div>
