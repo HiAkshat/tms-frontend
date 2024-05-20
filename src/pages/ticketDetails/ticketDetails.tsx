@@ -106,7 +106,7 @@ export default function TicketDetails() {
                   </div>
                   <div className={styles.colDiv}>
                     <span>Files</span>
-                    {ticket.files && ticket.files.map((file) => {
+                    {ticket.files && ticket.files.length>0 ? ticket.files.map((file) => {
                       if (file!=""){
                         return (
                         <div className={styles.fileDownload} onClick={async ()=>{
@@ -118,7 +118,10 @@ export default function TicketDetails() {
                         </div>
                       )
                       }
-                    })}
+                    })
+                    :
+                    <p>No files attached</p>
+                  }
                   </div>
                 </div>
 

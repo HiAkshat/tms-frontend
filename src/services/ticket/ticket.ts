@@ -1,18 +1,21 @@
 import axios from "axios"
-import { TicketType } from "./types"
 import showToast from "../../atoms/Toast/Toast"
 import server from "../../globals"
 
 const apiEndpoint = `${server}/ticket/`
 
-export const getOrgTickets = async (id: string|undefined,page: number=1, pageSize: number=10, sortBy: string="") => {
+export const getOrgTickets = async (id: string|undefined,page: number=1, pageSize: number=10, sortBy: string="", filters: any={}) => {
+  Object.keys(filters).forEach(key => filters[key] === undefined || filters[key] === null || filters[key] === "" ? delete filters[key] : {});
+  console.log(filters)
   let sortByString=""
   if (sortBy!=""){
     sortByString = `&sortBy=${sortBy}`
   }
 
+  const filterQuery = new URLSearchParams(filters).toString() ?? ""
+
   const res = await axios
-    .get(apiEndpoint+`organisation/${id}?page=${page}&pageSize=${pageSize}${sortBy!="" && sortByString}`)
+    .get(apiEndpoint+`organisation/${id}?page=${page}&pageSize=${pageSize}${sortByString}&${filterQuery}`)
     // .get(apiEndpoint+`organisation/${id}`)
     .then(res => {
       return res.data

@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Pagination, Modal, DateRangePicker } from 'rsuite';
+import { Table, Pagination, Modal, DateRangePicker, Stack, CheckPicker } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import { Placeholder } from 'rsuite';
 
@@ -16,6 +16,7 @@ import UserOrganisationsModal from '../userOrganisationsModal/userOrganisationsM
 import EmailInput from '../../atoms/EmailInput/EmailInput';
 import NameInput from '../../atoms/NameInput/NameInput';
 import SelectInput from '../../atoms/SelectInput/SelectInput';
+import MultipleSelectInput from '../../atoms/MultipleSelectInput/MultipleSelectInput';
 
 export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const navigate = useNavigate()
@@ -118,7 +119,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const [filterEmail, setFilterEmail] = useState("")
   const [filterFirstName, setFilterFirstName] = useState("")
   const [filterLastName, setFilterLastName] = useState("")
-  const [filterOrganisation, setFilterOrganisation] = useState("")
+  const [filterOrganisation, setFilterOrganisation] = useState([])
   const [filterStartDate, setFilterStartDate] = useState()
   const [filterEndDate, setFilterEndDate] = useState()
 
@@ -129,14 +130,14 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
       email_id: filterEmail,
       first_name: filterFirstName,
       last_name: filterLastName,
-      organisation: filterOrganisation,
+      // organisation: filterOrganisation,
       start_dob: filterStartDate,
       end_dob: filterEndDate
     }
 
     setFilters(filters)
 
-    await organisationUserServices.getOrganisationUsers(page, limit, "", filters).then((users)=>{
+    await organisationUserServices.getOrganisationUsers(page, limit, "", filters, filterOrganisation).then((users)=>{
       setData(users.data)
       setTotalEntries(users.totalEntries)
       setIsLoading(false)
@@ -156,7 +157,9 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
               <EmailInput email={filterEmail} setEmail={setFilterEmail} placeholder={"Email"} />
               <NameInput field="First Name" name={filterFirstName} setName={setFilterFirstName} placeholder="First Name" />
               <NameInput field="Last Name" name={filterLastName} setName={setFilterLastName} placeholder="Last Name" />
-              {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisation"/>}
+              {/* {organisations && <SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisation"/>} */}
+              {organisations && <MultipleSelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisation"/>}
+
               <div className={styles.inputField}>
                 <DateRangePicker format="dd.MM.yyyy" placeholder="DOB Range" onChange={(e: any)=>{
                   setFilterStartDate(e[0])

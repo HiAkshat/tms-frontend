@@ -7,8 +7,12 @@ const apiEndpoint = `${server}/organisationUser`
 let otp_flag = true
 let otp_timeout_flag = true
 
-export const getOrganisationUsers = async (page: number=1, pageSize: number=10, sortBy: string="", filters: any={}) => {
+export const getOrganisationUsers = async (page: number=1, pageSize: number=10, sortBy: string="", filters: any={}, organisations: string[]=[]) => {
   Object.keys(filters).forEach(key => filters[key] === undefined || filters[key] === null ? delete filters[key] : {});
+
+  const organisationParams = new URLSearchParams();
+  organisations.forEach(value => organisationParams.append('organisations', value));
+  // console.log(params.toString())
 
   let sortByString=""
   if (sortBy!=""){
@@ -17,7 +21,7 @@ export const getOrganisationUsers = async (page: number=1, pageSize: number=10, 
   const filterQuery = new URLSearchParams(filters).toString() ?? ""
   console.log(sortByString)
   const res = await axios
-    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}${sortByString}&${filterQuery}`)
+    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}${sortByString}&${filterQuery}&${organisationParams.toString()}`)
     .then(res => {return res.data})
     .catch(error => {
       throw error

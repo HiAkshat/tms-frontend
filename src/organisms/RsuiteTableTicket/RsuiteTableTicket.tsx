@@ -14,6 +14,8 @@ import ticketServices from '../../services/ticket';
 import { StateType } from '../../typings/navUser';
 import verifyTokenServices from '../../services/verifyToken';
 import CustomButton from '../../atoms/CustomButton/CustomButton';
+import SelectInput from '../../atoms/SelectInput/SelectInput';
+import organisationUserServices from '../../services/organisationUser';
 
 export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boolean, setIsLoading: Dispatch<boolean>}) {
   const navigate = useNavigate()
@@ -27,10 +29,30 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
   const [limit, setLimit] = useState(10);
   const [totalEntries, setTotalEntries] = useState(0)
 
+  const [filters, setFilters] = useState({})
+
+  const [users, setUsers] = useState<[UserType]>()
+  const filterTypeOptions = ["Story", "Task", "Bug"]
+  const filterStatusOptions = ['To be picked', 'In progress', 'In testing', 'Completed']
+
+  const [filterTicketType, setFilterTicketType] = useState("")
+  const [filterStatus, setFilterStatus] = useState("")
+  const [filterAssigneeId, setFilterAssigneeId] = useState()
+  const [filterReporterId, setFilterReporterId] = useState()
+  const [filterStartDate, setFilterStartDate] = useState()
+  const [filterEndDate, setFilterEndDate] = useState()
+
+
   const handleChangeLimit = (dataKey: any) => {
     setPage(1);
     setLimit(dataKey);
   };
+
+  useEffect(()=>{
+    organisationUserServices.getOrganisationUsersByOrgId(Cookie.get("organisation")??"").then(res => {
+      setUsers(res)
+    })
+  }, [])
 
   useEffect(()=>{
     // verifyTokenServices.verifyToken
@@ -42,7 +64,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
         sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
       }
 
-      ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, sortByString).then((tickets)=>{
+      ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, sortByString, filters).then((tickets)=>{
         setData(tickets.data)
         setTotalEntries(tickets.totalEntries)
         setIsLoading(false)
@@ -50,30 +72,22 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
     })
   }, [user, page, limit, sortColumn, sortType, isLoading])
 
-  const getData = () => {
-    return data;
-  };
 
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
-    // setLoading(true);
     setTimeout(() => {
-      // setLoading(false);
       setSortColumn(sortColumn);
-      console.log(sortColumn)
       setSortType(sortType);
     }, 100);
   };
 
   const ActionCell = ({ rowData, dataKey, ...props }: any) => {
-    // {console.log(rowData)}
-    // console.log(rowData[dataKey]);
     return (
       <Cell {...props} className="link-group">
-        <span onClick={()=>navigate(`../ticket/${rowData[dataKey]}`)}>View</span>
+        <span className={styles.actionButton} onClick={()=>navigate(`../ticket/${rowData[dataKey]}`)}>View</span>
         <span> - </span>
-        <span onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
+        <span className={styles.actionButton} onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
         <span> - </span>
-        <span onClick={()=>handleDelete(rowData[dataKey])}>Delete</span>
+        <span className={styles.actionButton} onClick={()=>handleDelete(rowData[dataKey])}>Delete</span>
       </Cell>
     );
   };
@@ -91,6 +105,32 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
     }
   };
 
+  const handleFilterSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+
+    const filters = {
+      type: filterTicketType,
+      status: filterStatus,
+      start_due_date: filterStartDate,
+      end_due_date: filterEndDate,
+      assignee_id: filterAssigneeId,
+      reporter_id: filterReporterId
+    }
+
+    setFilters(filters)
+
+    let sortByString = ""
+    if (sortColumn){
+      sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
+    }
+
+    await ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, sortByString, filters).then((tickets)=>{
+      setData(tickets.data)
+      setTotalEntries(tickets.totalEntries)
+      setIsLoading(false)
+    })
+  }
+
   return (
     <div>
       {
@@ -98,20 +138,23 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
         <Placeholder.Grid rows={10} columns={7} active />
         :
         <div>
-          {/* <div className={styles.filtersBox}>
+          <div className={styles.filtersBox}>
             <span>Filters</span>
             <form className={styles.filtersInputs}>
-              <NameInput field="Last Name" name={filterLastName} setName={setFilterLastName} placeholder="Last Name" />
-              {<SelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisation"/>}
+              <SelectInput options={filterTypeOptions} data={filterTicketType} setData={setFilterTicketType} placeholder={"Type"}/>
+              <SelectInput options={filterStatusOptions} data={filterStatus} setData={setFilterStatus} placeholder={"Status"}/>
+              {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={filterAssigneeId} setData={setFilterAssigneeId} placeholder={"Assignee"}/>}
+              {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={filterReporterId} setData={setFilterReporterId} placeholder={"Reporter"}/>}
+
               <div className={styles.inputField}>
-                <DateRangePicker format="dd.MM.yyyy" placeholder="DOB Range" onChange={(e: any)=>{
+                <DateRangePicker format="dd.MM.yyyy" placeholder="Due Date Range" onChange={(e: any)=>{
                   setFilterStartDate(e[0])
                   setFilterEndDate(e[1])
                 }}/>
               </div>
               <CustomButton onClick={handleFilterSubmit} type="submit" text="Apply filters" width="50%"/>
             </form>
-          </div> */}
+          </div>
           <Table
             className={styles.userTable}
             sortColumn={sortColumn}

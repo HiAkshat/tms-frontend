@@ -5,7 +5,6 @@ import TicketDetails from './pages/ticketDetails/ticketDetails.tsx';
 import Login from './pages/login/login.tsx';
 import ManageOrganisations from './pages/manageOrganisations/manageOrganisations.tsx';
 import ManageUsers from './pages/manageUsers/manageUsers.tsx';
-import NewTicketForm from './organisms/newTicketForm/newTicketForm.tsx';
 import EditOrganisation from './organisms/editOrganisation/editOrganisation.tsx';
 import EditUser from './organisms/editUser/editUser.tsx';
 import ViewTickets from './pages/viewTickets/viewTickets.tsx';
@@ -28,7 +27,6 @@ export default function AppRoutes() {
             <Route path="edit/:id" element={<EditUser />} />
           </Route>
           <Route path="viewTickets" element={<ViewTickets />} />
-          <Route path="newTicket" element={<NewTicketForm />} />
           <Route path="ticket/:id" element={<TicketDetails />} />
           <Route path="ticket/edit/:id" element={<EditTicket />} />
           {/* <Route path="*" element={<NoPage />} /> */}
