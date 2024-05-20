@@ -46,7 +46,7 @@ export const addTicket = async (ticket: SendTicketType) => {
     })
 }
 
-export const editTicket = async (ticket: TicketType, id: string|undefined) => {
+export const editTicket = async (ticket: SendTicketType, id: string|undefined) => {
   await axios
     .put(apiEndpoint+`${id}`, ticket)
     .then(()=>{
