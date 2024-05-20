@@ -144,7 +144,8 @@ export const addOrganisationToUser = async (user_id: string, organisation_id: st
       showToast("Organisation added successfully!")
     })
     .catch((error)=>{
-      showToast("Error removing organisation!")
+      console.log(error)
+      showToast("Error adding organisation to user!")
       throw error
     })
 

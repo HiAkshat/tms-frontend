@@ -20,9 +20,10 @@ import SelectInput from '../../atoms/SelectInput/SelectInput';
 export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const navigate = useNavigate()
 
+  const [data, setData] = useState<[UserType]>()
+
   const [sortColumn, setSortColumn] = useState<string>("");
   const [sortType, setSortType] = useState<SortType>();
-  const [data, setData] = useState<[UserType]>()
 
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10);
@@ -42,8 +43,13 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
     organisationServices.getOrganisations().then((res)=>{
       setOrganisations(res.data)
     })
+  }, [])
 
-    organisationUserServices.getOrganisationUsers(page, limit, "", filters).then((users)=>{
+  useEffect(()=>{
+    let sortByString = ""
+    if (sortColumn) sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
+
+    organisationUserServices.getOrganisationUsers(page, limit, sortByString, filters).then((users)=>{
       setData(users.data)
       setTotalEntries(users.totalEntries)
       setIsLoading(false)
@@ -53,29 +59,16 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
       setUpdatingUserOrgs(true)
     }
 
-  }, [page, limit, isLoading])
-
-  const handleSortUpdate = async () => {
-    await organisationUserServices.getOrganisationUsers(page, limit, `${sortType=="asc"?"":"-"}${sortColumn}`, filters).then((users)=>{
-      setData(users.data)
-      setTotalEntries(users.totalEntries)
-      setIsLoading(false)
-      console.log(data)
-    })
-  }
+  }, [page, limit, isLoading, sortColumn, sortType])
 
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
-    // setLoading(true);
     setTimeout(() => {
-      setIsLoading(false);
       setSortColumn(sortColumn);
       setSortType(sortType);
-      handleSortUpdate()
     }, 500);
   };
 
   const ActionCell = ({ rowData, dataKey, ...props }:any) => {
-    // console.log(rowData[dataKey]);
     return (
       <Cell {...props} className="link-group">
         <span className={styles.actionButton} onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
@@ -89,7 +82,6 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
   };
 
   const UserOrgsCell = ({ rowData, dataKey, ...props }:any) => {
-    // console.log(rowData[dataKey]);
     return (
       <Cell {...props} className="link-group">
         <span className={styles.actionButton} onClick={()=>{
@@ -248,7 +240,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
           </div>
         </div>
       </Modal>
-      <UserOrganisationsModal updatingUserOrgs={updatingUserOrgs} setUpdatingUserOrgs={setUpdatingUserOrgs} openOrgsModal={openOrgsModal} setOpenOrgsModal={setOpenOrgsModal} userOrgs={userOrgs} clickedUser={clickedUser} organisations={organisations}/>
+      {!updatingUserOrgs && <UserOrganisationsModal updatingUserOrgs={updatingUserOrgs} setUpdatingUserOrgs={setUpdatingUserOrgs} openOrgsModal={openOrgsModal} setOpenOrgsModal={setOpenOrgsModal} userOrgs={userOrgs} clickedUser={clickedUser} organisations={organisations}/>}
     </div>
   )
 

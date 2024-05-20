@@ -37,34 +37,21 @@ export default function RsuiteTable() {
     console.log("INSIDE TICKET TABLE")
 
     verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(()=>{
-      ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, `${sortType=="asc"?"":"-"}${sortColumn}`).then((tickets)=>{
+      let sortByString = ""
+      if (sortColumn){
+        sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
+      }
+
+      ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, sortByString).then((tickets)=>{
         console.log("HEY")
         setData(tickets.data)
         setTotalEntries(tickets.totalEntries)
         // console.log(res)
       })
     })
-  }, [user, page, limit])
+  }, [user, page, limit, sortColumn, sortType])
 
   const getData = () => {
-    if (sortColumn && sortType && data) {
-      return data.sort((a: { [x: string]: any }, b: { [x: string]: any }) => {
-        let x = a[sortColumn];
-        let y = b[sortColumn];
-
-        if (typeof x === 'string') {
-          x = x.toLowerCase().charCodeAt(0);
-        }
-        if (typeof y === 'string') {
-          y = y.toLowerCase().charCodeAt(0);
-        }
-        if (sortType === 'asc') {
-          return x - y;
-        } else {
-          return y - x;
-        }
-      });
-    }
     return data;
   };
 

@@ -27,6 +27,7 @@ export default function UserOrganisationsModal({setUpdatingUserOrgs, openOrgsMod
             setUpdatingUserOrgs(true)
             console.log(rowData)
             await organisationUserServices.removeOrganisationFromUser(clickedUser.unique_id, rowData[dataKey])
+            setUpdatingUserOrgs(false)
           }
         }}>Delete</button>
       </Cell>

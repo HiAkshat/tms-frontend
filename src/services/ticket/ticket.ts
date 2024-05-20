@@ -6,7 +6,11 @@ import server from "../../globals"
 const apiEndpoint = `${server}/ticket/`
 
 export const getOrgTickets = async (id: string|undefined,page: number=1, pageSize: number=10, sortBy: string="") => {
-  const sortByString = `&sortBy=${sortBy}`
+  let sortByString=""
+  if (sortBy!=""){
+    sortByString = `&sortBy=${sortBy}`
+  }
+
   const res = await axios
     .get(apiEndpoint+`organisation/${id}?page=${page}&pageSize=${pageSize}${sortBy!="" && sortByString}`)
     // .get(apiEndpoint+`organisation/${id}`)
@@ -67,15 +71,5 @@ export const deleteTicket = async (id: string|undefined) => {
 }
 
 export const downloadFile = async (filename: string) => {
-  // const res = await axios
-  //   .get(apiEndpoint+`download/${filename}`, {
-  //     responseType: 'blob'
-  //   })
-  //   .then(res => {return res.data})
-  //   .catch(error => {
-  //     throw error
-  //   })
-
-  // return res
   window.open(apiEndpoint+`download/${filename}`, '_blank')
 }
