@@ -37,7 +37,7 @@
     .inputsBox{
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 1p0px;
       width: 100%;
 
       .inputWithB{
@@ -54,16 +54,8 @@
           flex-direction: column;
           gap: 10px;
 
-          .inputField{
-            display: flex;
-            flex-direction: column;
-            span{
-              // position: absolute;
-              font-size: 12px;
-              color: rgb(210, 116, 116);
-              font-family: "Ubuntu Sans Mono", monospace;
-              padding: 4px 0 4px 14px;
-            }
+          .otpInput{
+            height: 60px;
           }
 
           input{
@@ -79,7 +71,7 @@
           }
         }
 
-        button{
+        .otpButton{
           height: 43px;
           width: 100px;
           background: none;

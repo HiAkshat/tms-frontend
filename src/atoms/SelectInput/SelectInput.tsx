@@ -9,10 +9,11 @@ export default function SelectInput({
   data,
   setData,
   options = undefined,
-  placeholder=""
+  placeholder="",
+  className=""
 }: any) {
   return (
-    <div className={styles.inputField}>
+    <div className={`${styles.inputField} ${className}`}>
       <SelectPicker
         data={
           options

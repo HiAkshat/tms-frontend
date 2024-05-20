@@ -5,7 +5,7 @@ import server from "../../globals"
 
 const apiEndpoint = `${server}/ticket/`
 
-export const getOrgTickets = async (id: string|undefined,page: string="", pageSize: string="", sortBy: string="") => {
+export const getOrgTickets = async (id: string|undefined,page: number=1, pageSize: number=10, sortBy: string="") => {
   const sortByString = `&sortBy=${sortBy}`
   const res = await axios
     .get(apiEndpoint+`organisation/${id}?page=${page}&pageSize=${pageSize}${sortBy!="" && sortByString}`)

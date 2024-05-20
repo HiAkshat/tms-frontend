@@ -10,11 +10,14 @@ let otp_timeout_flag = true
 export const getOrganisationUsers = async (page: number=1, pageSize: number=10, sortBy: string="", filters: any={}) => {
   Object.keys(filters).forEach(key => filters[key] === undefined || filters[key] === null ? delete filters[key] : {});
 
-  const sortByString = `&sortBy=${sortBy}`
+  let sortByString=""
+  if (sortBy!=""){
+    sortByString = `&sortBy=${sortBy}`
+  }
   const filterQuery = new URLSearchParams(filters).toString() ?? ""
-  console.log(filterQuery)
+  console.log(sortByString)
   const res = await axios
-    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}${sortBy ?? sortByString}&${filterQuery}`)
+    .get(`${apiEndpoint}?page=${page}&pageSize=${pageSize}${sortByString}&${filterQuery}`)
     .then(res => {return res.data})
     .catch(error => {
       throw error

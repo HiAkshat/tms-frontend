@@ -142,6 +142,8 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
       end_dob: filterEndDate
     }
 
+    setFilters(filters)
+
     await organisationUserServices.getOrganisationUsers(page, limit, "", filters).then((users)=>{
       setData(users.data)
       setTotalEntries(users.totalEntries)
