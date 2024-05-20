@@ -31,7 +31,7 @@ export default function Navbar() {
     try {
       await verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
         const userData = res.decoded.user
-        const userDetails = { id: userData._id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation._id : "", userType: Cookie.get("organisation") ? "organisation" : "system", isAuthenticated: true };
+        const userDetails = { id: userData.unique_id, name: `${userData.first_name} ${userData.last_name}`, email: userData.email_id, organisation_id: userData.organisation ? userData.organisation._id : "", userType: Cookie.get("organisation") ? "organisation" : "system", isAuthenticated: true };
         dispatch(login(userDetails))
         dispatch(updateOrganisation(Cookie.get("organisation")))
       })

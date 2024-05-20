@@ -24,12 +24,20 @@ export default function TicketDetails() {
     }
   }, [])
 
+
   const [comments, setComments] = useState<[Comment]>()
   const [commentInput, setCommentInput] = useState("")
+  const [commentsLoading, setCommentsLoading] = useState(false)
 
   const [showActions, setShowActions] = useState<string>()
 
   const user = useSelector((state: StateType) => state.user)
+
+  useEffect(()=>{
+    commentServices.getComments(id).then(data => setComments(data))
+    setCommentsLoading(false)
+  }, [commentsLoading])
+
 
   function formattedDate(dateString: string) {
     const date = new Date(dateString);
@@ -50,14 +58,16 @@ export default function TicketDetails() {
 
     const body = {
       ticket: id,
-      user: user.id,
+      user_id: user.id,
+      user_name: user.name,
       content: commentInput
     }
+    console.log(body)
 
     try {
+      setCommentsLoading(true)
       await commentServices.addComment(body)
       setCommentInput("")
-      navigate(0)
     } catch (error) {
       return
     }
@@ -65,8 +75,8 @@ export default function TicketDetails() {
 
   const handleCommentDelete = async () => {
     try {
+      setCommentsLoading(true)
       await commentServices.deleteComment(showActions)
-      navigate(0)
     } catch (error) {
       return
     }
@@ -138,11 +148,11 @@ export default function TicketDetails() {
                           return (
                             <div  onMouseEnter={()=>setShowActions(comment._id)} onMouseLeave={()=>setShowActions("")} className={styles.comment} key={comment._id}>
                               <div className={styles.commentContent}>
-                                <span className={styles.user}>{comment.user.first_name}</span>
+                                <span className={styles.user}>{comment.user_name}</span>
                                 <span className={styles.content}>{comment.content}</span>
                               </div>
                               <div>
-                                {comment.user._id === user.id && comment._id==showActions && <button onClick={handleCommentDelete}>Delete</button>}
+                                {comment.user_id === user.id && comment._id==showActions && <button onClick={handleCommentDelete}>Delete</button>}
                               </div>
                             </div>
                           )

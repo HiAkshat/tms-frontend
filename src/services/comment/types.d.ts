@@ -6,7 +6,8 @@ type Comment = {
 
 type AddCommentType = {
   ticket: string|undefined,
-  user: string,
+  user_id: string,
+  user_name: string,
   content: string
 }
 
