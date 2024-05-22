@@ -22,6 +22,7 @@ export default function TicketDetails() {
     } catch (error) {
       return
     }
+
   }, [])
 
 
@@ -132,6 +133,18 @@ export default function TicketDetails() {
                     :
                     <p>No files attached</p>
                   }
+                  </div>
+                  <div className={styles.colDiv}>
+                    <span>Edit history</span>
+                    <div className={styles.editDetails}>
+                      {ticket.edit_history && ticket.edit_history.length>0 ? ticket.edit_history.reverse().map((edit_details, index) => {
+                        return (
+                          <p key={index} className={styles.editDetail}><span>{edit_details.user_name}</span> changed field <span>{edit_details.field}</span> from <span>{edit_details.old_value}</span> to <span>{edit_details.new_value}</span> on <span>{new Date(edit_details.time).toLocaleString("en-GB")}</span></p>
+                        )
+                      }):
+                      <p>No edits made yet</p>
+                      }
+                    </div>
                   </div>
                 </div>
 

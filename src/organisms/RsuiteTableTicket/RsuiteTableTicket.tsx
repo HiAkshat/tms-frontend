@@ -53,23 +53,34 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
     organisationUserServices.getOrganisationUsersByOrgId(Cookie.get("organisation")??"").then(res => {
       setUsers(res)
     })
-  }, [])
 
-  useEffect(()=>{
-    // verifyTokenServices.verifyToken
-    console.log("INSIDE TICKET TABLE")
+    verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
 
-    verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(()=>{
-      let sortByString = ""
-      if (sortColumn){
-        sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
+      const filters = {
+        reporter_id: res.decoded.user.unique_id
       }
 
-      ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, sortByString, filters).then((tickets)=>{
+      setFilterReporterId(res.decoded.user.unique_id)
+      setFilters(filters)
+
+      ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, "", filters).then((tickets)=>{
         setData(tickets.data)
         setTotalEntries(tickets.totalEntries)
         setIsLoading(false)
       })
+    })
+  }, [])
+
+  useEffect(()=>{
+    let sortByString = ""
+    if (sortColumn){
+      sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
+    }
+
+    ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, sortByString, filters).then((tickets)=>{
+      setData(tickets.data)
+      setTotalEntries(tickets.totalEntries)
+      setIsLoading(false)
     })
   }, [user, page, limit, sortColumn, sortType, isLoading])
 

@@ -24,8 +24,6 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const [limit, setLimit] = useState(10);
   const [totalEntries, setTotalEntries] = useState(0)
 
-  const [users, setUsers] = useState<UserType[]>([])
-
   const [deleteOrg, setDeleteOrg] = useState('')
 
   const handleChangeLimit = (dataKey: any) => {
@@ -50,7 +48,10 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
 
 
   const handleSortUpdate = async () => {
-    await organisationServices.getOrganisations(page.toString(), limit.toString(), `${sortType=="asc"?"":"-"}${sortColumn}`).then(orgs => {
+    let sortByString = ""
+    if (sortColumn) sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
+
+    await organisationServices.getOrganisations(page.toString(), limit.toString(), sortByString).then(orgs => {
       setData(orgs.data)
       setTotalEntries(orgs.totalEntries)
       setIsLoading(false)

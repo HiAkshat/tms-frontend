@@ -91,6 +91,10 @@ textarea.rs-input{
 
 .rs-modal-content{
   border: 2px rgb(44, 44, 44) solid;
-  background-color: #292929;
+  background-color: #111;
   border-radius: 10px;
+}
+
+p+p{
+  margin: 0;
 }

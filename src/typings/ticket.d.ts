@@ -14,7 +14,14 @@ type TicketType = {
   files?: []|undefined,
   comments: [],
   createdAt: string,
-  updatedAt: string
+  updatedAt: string,
+  edit_history?: {
+    user_name: string,
+    field: string,
+    old_value: string,
+    new_value: string,
+    time: Date
+  }[]
 }
 
 type SendTicketType = {
@@ -28,5 +35,12 @@ type SendTicketType = {
   reporter_name: string,
   status?: string,
   due_date: Date,
-  files?: string[]
+  files?: string[],
+  edit_history?: {
+    user_name: string,
+    field: string,
+    old_value: string,
+    new_value: string,
+    time: Date
+  }[]
 }

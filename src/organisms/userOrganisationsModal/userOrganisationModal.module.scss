@@ -1,29 +1,36 @@
-.section{
-  margin-top: 16px;
+.sections{
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 
-  h3{
-    margin-bottom: 12px;
-  }
-
-  .sectionHeading{
-    font-family: "Ubuntu Sans Mono", monospace;
-
-  }
-
-  .newOrgForm{
+  .section{
+    margin-top: 16px;
     display: flex;
-    gap: 16px;
+    flex-direction: column;
+    gap: 10px;
 
-    button{
-      margin-bottom: 24px;
-      // background-color: #1a1d24;
+    h3{
+      margin-bottom: 12px;
+    }
+
+    .sectionHeading{
+      font-family: "Ubuntu Sans Mono", monospace;
+
+    }
+
+    .newOrgForm{
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+
+      button{
+        // margin-bottom: 24px;
+        // background-color: #1a1d24;
+        height: min-content;
+      }
     }
   }
 }
-
 
 
 .deleteButton{

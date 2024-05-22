@@ -50,6 +50,7 @@ export const addTicket = async (ticket: SendTicketType) => {
 }
 
 export const editTicket = async (ticket: SendTicketType, id: string|undefined) => {
+  console.log(ticket)
   await axios
     .put(apiEndpoint+`${id}`, ticket)
     .then(()=>{

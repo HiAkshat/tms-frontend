@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Pagination, Modal, DateRangePicker, Stack, CheckPicker } from 'rsuite';
+import { Table, Pagination, Modal } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
 import { Placeholder } from 'rsuite';
 
@@ -15,7 +15,6 @@ import organisationServices from '../../services/organisation';
 import UserOrganisationsModal from '../userOrganisationsModal/userOrganisationsModal';
 import EmailInput from '../../atoms/EmailInput/EmailInput';
 import NameInput from '../../atoms/NameInput/NameInput';
-import SelectInput from '../../atoms/SelectInput/SelectInput';
 import MultipleSelectInput from '../../atoms/MultipleSelectInput/MultipleSelectInput';
 import DateRangeInput from '../../atoms/DateRangeInput/DateRangeInput';
 
@@ -34,20 +33,14 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const [clickedUser, setClickedUser] = useState<UserType>()
   const [organisations, setOrganisations] = useState<OrganisationType[]>()
 
-  const [updatingUserOrgs, setUpdatingUserOrgs] = useState(false)
-
   const handleChangeLimit = (dataKey: any) => {
     setPage(1);
     setLimit(dataKey);
   };
 
   useEffect(()=>{
-    organisationServices.getOrganisations().then((res)=>{
-      setOrganisations(res.data)
-    })
-  }, [])
+    console.log(isLoading)
 
-  useEffect(()=>{
     let sortByString = ""
     if (sortColumn) sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
 
@@ -56,11 +49,6 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
       setTotalEntries(users.totalEntries)
       setIsLoading(false)
     })
-
-    if (clickedUser && data){
-      setUpdatingUserOrgs(true)
-    }
-
   }, [page, limit, isLoading, sortColumn, sortType])
 
   const handleSortColumn = (sortColumn: SetStateAction<string>, sortType: SortType | undefined) => {
@@ -237,7 +225,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
           </div>
         </div>
       </Modal>
-      {!updatingUserOrgs && <UserOrganisationsModal updatingUserOrgs={updatingUserOrgs} setUpdatingUserOrgs={setUpdatingUserOrgs} openOrgsModal={openOrgsModal} setOpenOrgsModal={setOpenOrgsModal} userOrgs={userOrgs} clickedUser={clickedUser} organisations={organisations}/>}
+      <UserOrganisationsModal isLoading={isLoading} setIsLoading={setIsLoading} openOrgsModal={openOrgsModal} setOpenOrgsModal={setOpenOrgsModal} userOrgs={userOrgs} setUserOrgs={setUserOrgs} clickedUser={clickedUser} organisations={organisations}/>
     </div>
   )
 

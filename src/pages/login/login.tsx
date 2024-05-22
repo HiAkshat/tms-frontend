@@ -132,7 +132,7 @@ export default function Login() {
                   setOtp(truncatedValue)
                 }} required={true}/>
               </div>
-              {organisations && userType==1 && <SelectInput className={styles.orgSelect} arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
+              {userType==1 && <SelectInput className={styles.orgSelect} arr={organisations} value={"unique_id"} label={"organisation_name"} data={organisation} setData={setOrganisation}/>}
             </div>
           <Button type="submit" onClick={handleUserLogin} className={styles.submitButton}>Submit</Button>
         </div>

@@ -61,6 +61,24 @@
               }
             }
 
+            .editDetails{
+              display: flex;
+              flex-direction: column-reverse;
+              gap: 4px;
+
+              .editDetail{
+                font-family: "Ubuntu Sans Mono", monospace;
+                color: rgb(208, 208, 208);
+
+                span{
+                  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+                  color: white;
+                  font-weight: 600;
+                }
+              }
+            }
+
+
             .fileDownload{
               display: flex;
               gap: 10px;

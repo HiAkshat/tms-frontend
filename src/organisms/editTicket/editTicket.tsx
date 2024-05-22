@@ -16,9 +16,13 @@ import showToast from "../../atoms/Toast/Toast"
 import ticketServices from "../../services/ticket"
 import organisationUserServices from "../../services/organisationUser"
 import helpers from "../../helpers"
+import { useSelector } from "react-redux"
+import { StateType } from "../../typings/navUser"
 
 
 export default function EditTicket() {
+  const user =  useSelector((state: StateType) => state.user)
+
   const [users, setUsers] = useState<[UserType]>()
 
   const ticketTypeOptions = ["Story", "Task", "Bug"]
@@ -33,6 +37,16 @@ export default function EditTicket() {
   const [status, setStatus] = useState("")
   const [files, setFiles] = useState<string[]>()
 
+  // Old values
+  const [initalTicket, setInitialTicket] = useState<TicketType>()
+  const [changes, setChanges] = useState<{
+    user_name: string,
+    field: string,
+    old_value: string,
+    new_value: string,
+    time: Date
+  }[]>()
+
   const navigate = useNavigate()
   const {id} = useParams()
 
@@ -40,7 +54,10 @@ export default function EditTicket() {
   useEffect(()=>{
     try {
       organisationUserServices.getOrganisationUsersByOrgId(Cookies.get("organisation")??"").then(res => setUsers(res))
-      ticketServices.getTicket(id).then(ticket => {
+      ticketServices.getTicket(id).then((ticket) => {
+        setInitialTicket(ticket)
+
+
         setTicketType(ticket.type)
         setDueDate(new Date(ticket.due_date))
         setSummary(ticket.summary)
@@ -49,12 +66,14 @@ export default function EditTicket() {
         setReporterId(ticket.reporter_id)
         setStatus(ticket.status)
         setFiles(ticket.files)
+        setChanges(ticket.edit_history)
+
+        console.log(changes)
       })
     } catch (error){
       return
     }
   }, [])
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -68,7 +87,7 @@ export default function EditTicket() {
     const reporter_user = users.find(user => user.unique_id == reporterId)
 
     try {
-      const data: SendTicketType = {
+      let updated_ticket_data: SendTicketType = {
         organisation: Cookies.get("organisation") ?? "",
         type: ticketType,
         summary,
@@ -79,17 +98,63 @@ export default function EditTicket() {
         reporter_id: reporterId,
         reporter_name: `${reporter_user?.first_name} ${reporter_user?.last_name}` ?? "",
         due_date: dueDate,
-        files
+        files,
       }
 
-      await ticketServices.editTicket(data, id)
+      let edit_changes: {
+        user_name: string,
+        field: string,
+        old_value: string,
+        new_value: string,
+        time: Date
+      }[] = []
+
+      if (initalTicket){
+        for (const [key, value] of Object.entries(updated_ticket_data)){
+          const old_value = initalTicket[key as keyof TicketType]
+
+          const dont_check = ["edit_history", "assignee_id", "reporter_id"]
+          if (dont_check.includes(key)) continue
+
+          else if (value instanceof Date && typeof old_value == "string" && key=="due_date"){
+            if (new Date(old_value).toDateString() == new Date(value).toDateString()) continue;
+
+            edit_changes.push({
+              user_name: user.name,
+              field: key,
+              old_value: old_value.toString(),
+              new_value: value.toString(),
+              time: new Date()
+            })
+          }
+
+          else if (old_value && old_value!=value){
+            edit_changes.push({
+              user_name: user.name,
+              field: key,
+              old_value: old_value.toString(),
+              new_value: value.toString(),
+              time: new Date()
+            })
+          }
+        }
+      }
+
+      if (changes && edit_changes.length>0){
+        updated_ticket_data={
+          ...updated_ticket_data,
+          edit_history: [...changes, ...edit_changes]
+        }
+      }
+
+      await ticketServices.editTicket(updated_ticket_data, id)
       navigate("../viewTickets")
     } catch (error) {
       return
     }
   };
 
-  
+
   return (
     <div className={styles.page}>
       <Navbar />
