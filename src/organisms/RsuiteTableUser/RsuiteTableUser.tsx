@@ -11,7 +11,6 @@ import organisationUserServices from '../../services/organisationUser';
 import useDeviceSize from '../../utils/useDeviceSize';
 import helpers from '../../helpers';
 import CustomButton from '../../atoms/CustomButton/CustomButton';
-import organisationServices from '../../services/organisation';
 import UserOrganisationsModal from '../userOrganisationsModal/userOrganisationsModal';
 import EmailInput from '../../atoms/EmailInput/EmailInput';
 import NameInput from '../../atoms/NameInput/NameInput';

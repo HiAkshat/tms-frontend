@@ -122,8 +122,8 @@ export default function EditTicket() {
             edit_changes.push({
               user_name: user.name,
               field: key,
-              old_value: old_value.toString(),
-              new_value: value.toString(),
+              old_value: new Date(old_value).toLocaleString('en-GB').split(",")[0],
+              new_value: value.toLocaleString('en-GB').split(",")[0],
               time: new Date()
             })
           }
@@ -162,11 +162,11 @@ export default function EditTicket() {
         <span className={styles.title}>Edit Ticket</span>
         <form onSubmit={handleSubmit} className={styles.theForm}>
           <div className={styles.inputs}>
-            <SelectInput options={ticketTypeOptions} data={ticketType} setData={setTicketType} placeholder={"Type"}/>
-            <SelectInput options={ticketStatusOptions} data={status} setData={setStatus} placeholder={"Type"}/>
+            <SelectInput options={ticketTypeOptions} data={ticketType} setData={setTicketType} placeholder={"Type"} field="Type"/>
+            <SelectInput options={ticketStatusOptions} data={status} setData={setStatus} placeholder={"Status"} field="Status"/>
             <DateInput date={dueDate} setDate={setDueDate} placeholder="Due Date" />
-            {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={assigneeId} setData={setAssigneeId} placeholder={"Assignee"}/>}
-            {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={reporterId} setData={setReporterId} placeholder={"Reporter"}/>}
+            {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={assigneeId} setData={setAssigneeId} placeholder={"Assignee"} field="Assignee"/>}
+            {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={reporterId} setData={setReporterId} placeholder={"Reporter"} field="Reporter"/>}
             <CustomButton onClick={handleSubmit} text="Update ticket details" width="100%"/>
           </div>
           <div className={styles.inputs}>
@@ -174,7 +174,7 @@ export default function EditTicket() {
             <TextAreaInput text={description} setText={setDescription} field="Description" placeholder="Description"/>
           </div>
           <div className={styles.inputs}>
-            <UploaderInput upload_link="http://localhost:3000/api/ticket/upload" files={files} setFiles={setFiles} />
+            <UploaderInput upload_link="http://localhost:3000/api/ticket/upload" files={files} setFiles={setFiles} field="Add files"/>
           </div>
         </form>
       </div>

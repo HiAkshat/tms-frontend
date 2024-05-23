@@ -6,11 +6,8 @@ import { useSelector } from "react-redux"
 import ticketServices from "../../services/ticket/index"
 import { StateType } from "../../typings/navUser"
 import commentServices from "../../services/comment"
-import { useNavigate } from "react-router-dom"
 
 export default function TicketDetails() {
-  const navigate = useNavigate()
-
   const {id} = useParams()
   const [ticket, setTicket] = useState<TicketType>()
 

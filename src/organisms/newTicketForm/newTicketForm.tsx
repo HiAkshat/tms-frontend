@@ -54,7 +54,7 @@ function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
         due_date: dueDate,
         files
       }
-      
+
       setIsLoading(true)
       await ticketServices.addTicket(data)
     } catch (error) {
@@ -80,10 +80,10 @@ function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
       <span className={styles.title}>Add New Ticket</span>
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
-          <SelectInput options={ticketTypeOptions} data={ticketType} setData={setTicketType} placeholder={"Type"}/>
+          <SelectInput options={ticketTypeOptions} data={ticketType} setData={setTicketType} placeholder={"Type"} field="Type"/>
           <DateInput date={dueDate} setDate={setDueDate} placeholder="Due Date" />
-          {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={assigneeId} setData={setAssigneeId} placeholder={"Assignee"}/>}
-          {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={reporterId} setData={setReporterId} placeholder={"Reporter"}/>}
+          {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={assigneeId} setData={setAssigneeId} placeholder={"Assignee"} field="Assignee"/>}
+          {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={reporterId} setData={setReporterId} placeholder={"Reporter"} field="Reporter"/>}
           <CustomButton onClick={handleSubmit} text="Add Ticket" width="100%"/>
         </div>
         <div className={styles.inputs}>
@@ -91,7 +91,7 @@ function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
           <TextAreaInput text={description} setText={setDescription} field="Description" placeholder="Description"/>
         </div>
         <div className={styles.inputs}>
-          <UploaderInput upload_link="http://localhost:3000/api/ticket/upload" files={files} setFiles={setFiles} />
+          <UploaderInput upload_link="http://localhost:3000/api/ticket/upload" files={files} setFiles={setFiles} field="Add files"/>
         </div>
       </form>
     </div>
