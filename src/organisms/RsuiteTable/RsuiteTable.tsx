@@ -9,7 +9,6 @@ import { Placeholder, Modal } from 'rsuite';
 import styles from "./RsuiteTable.module.scss"
 import CustomButton from '../../atoms/CustomButton/CustomButton';
 import useDeviceSize from '../../utils/useDeviceSize';
-import UserOrganisationsModal from '../userOrganisationsModal/userOrganisationsModal';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -74,8 +73,8 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
         <span className={styles.actionButton} onClick={()=>handleEdit(rowData[dataKey])}>Edit</span>
         <span> - </span>
         <span className={styles.actionButton} onClick={()=>{
-          setDeleteOrg(rowData[dataKey])
           setOpenModal(true)
+          setDeleteOrg(rowData[dataKey])
           // handleDelete(rowData[dataKey])}
         }}>Delete</span>
       </Cell>

@@ -21,6 +21,7 @@ export default function UserOrganisationsModal({isLoading, setIsLoading, openOrg
   const [windowWidth] = useDeviceSize()
 
   useEffect(()=>{
+    console.log("YOO")
     if (clickedUser){
       organisationUserServices.getOrganisationUser(clickedUser.unique_id).then(res => {
         setUserOrgs(res.organisations)

@@ -16,6 +16,7 @@ import EmailInput from '../../atoms/EmailInput/EmailInput';
 import NameInput from '../../atoms/NameInput/NameInput';
 import MultipleSelectInput from '../../atoms/MultipleSelectInput/MultipleSelectInput';
 import DateRangeInput from '../../atoms/DateRangeInput/DateRangeInput';
+import organisationServices from '../../services/organisation';
 
 export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const navigate = useNavigate()
@@ -38,8 +39,12 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
   };
 
   useEffect(()=>{
-    console.log(isLoading)
+    organisationServices.getOrganisations().then(res => {
+      setOrganisations(res.data)
+    })
+  }, [])
 
+  useEffect(()=>{
     let sortByString = ""
     if (sortColumn) sortByString = `${sortType=="asc" ? "" : "-"}${sortColumn}`
 
@@ -56,6 +61,22 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
       setSortType(sortType);
     }, 500);
   };
+
+  const [windowWidth] = useDeviceSize()
+
+  const [openModal, setOpenModal] = useState(false)
+  const [deleteUser, setDeleteUser] = useState("")
+
+  const [openOrgsModal, setOpenOrgsModal] = useState(false)
+  const [userOrgs, setUserOrgs] = useState<any>([])
+
+  const [filters, setFilters] = useState({})
+  const [filterEmail, setFilterEmail] = useState("")
+  const [filterFirstName, setFilterFirstName] = useState("")
+  const [filterLastName, setFilterLastName] = useState("")
+  const [filterOrganisation, setFilterOrganisation] = useState([])
+  const [filterStartDate, setFilterStartDate] = useState()
+  const [filterEndDate, setFilterEndDate] = useState()
 
   const ActionCell = ({ rowData, dataKey, ...props }:any) => {
     return (
@@ -94,22 +115,6 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
       return
     }
   };
-
-  const [windowWidth] = useDeviceSize()
-
-  const [openModal, setOpenModal] = useState(false)
-  const [deleteUser, setDeleteUser] = useState("")
-
-  const [openOrgsModal, setOpenOrgsModal] = useState(false)
-  const [userOrgs, setUserOrgs] = useState<any>([])
-
-  const [filters, setFilters] = useState({})
-  const [filterEmail, setFilterEmail] = useState("")
-  const [filterFirstName, setFilterFirstName] = useState("")
-  const [filterLastName, setFilterLastName] = useState("")
-  const [filterOrganisation, setFilterOrganisation] = useState([])
-  const [filterStartDate, setFilterStartDate] = useState()
-  const [filterEndDate, setFilterEndDate] = useState()
 
   const handleFilterSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault()
