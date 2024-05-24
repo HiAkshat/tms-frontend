@@ -12,7 +12,6 @@ export const getOrganisationUsers = async (page: number=1, pageSize: number=10, 
 
   const organisationParams = new URLSearchParams();
   organisations.forEach(value => organisationParams.append('organisations', value));
-  // console.log(params.toString())
 
   let sortByString=""
   if (sortBy!=""){

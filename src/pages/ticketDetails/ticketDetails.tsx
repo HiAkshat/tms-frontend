@@ -6,16 +6,30 @@ import { useSelector } from "react-redux"
 import ticketServices from "../../services/ticket/index"
 import { StateType } from "../../typings/navUser"
 import commentServices from "../../services/comment"
+import organisationUserServices from "../../services/organisationUser"
+import { TicketType } from "../../typings/ticket"
 
 export default function TicketDetails() {
   const {id} = useParams()
   const [ticket, setTicket] = useState<TicketType>()
 
+  const [assigneeName, setAssigneeName] = useState("")
+  const [reporterName, setReporterName] = useState("")
+
   useEffect(()=>{
     try {
-      ticketServices.getTicket(id).then(data => setTicket(data))
+      organisationUserServices.getOrganisationUsers().then(res => {
+        ticketServices.getTicket(id).then(data => {
+          const assignee_user = res.data?.find((user: UserType) => user.unique_id == ticket?.assignee_id)
+          const reporter_user = res.data?.find((user: UserType) => user.unique_id == ticket?.reporter_name)
+
+          setAssigneeName(assignee_user ? `${assignee_user?.first_name} ${assignee_user?.last_name}` : "Deleted User")
+          setReporterName(reporter_user ? `${reporter_user?.first_name} ${reporter_user?.last_name}` : "Deleted User")
+          setTicket(data)
+        })
+      })
+
       commentServices.getComments(id).then(data => setComments(data))
-      console.log(ticket)
     } catch (error) {
       return
     }
@@ -97,8 +111,8 @@ export default function TicketDetails() {
                     <span>Type <span>Story</span></span>
                   </div>
                   <div className={styles.colDiv}>
-                    { <span>Assignee <span>{ticket.assignee_name ? `${ticket.assignee_name}` : "Deleted User"}</span></span>}
-                    { <span>Reporter <span>{ticket.reporter_name ? `${ticket.reporter_name}` : "Deleted User"}</span></span>}
+                    { <span>Assignee <span>{assigneeName}</span></span>}
+                    { <span>Reporter <span>{reporterName}</span></span>}
                   </div>
                   <div className={styles.colDiv}>
                     <span>Current Status <span>{ticket.status}</span></span>
@@ -114,7 +128,7 @@ export default function TicketDetails() {
                   </div>
                   <div className={styles.colDiv}>
                     <span>Files</span>
-                    {ticket.files && ticket.files.length>0 ? ticket.files.map((file) => {
+                    {ticket.files && ticket.files.length>0 ? ticket.files.map((file: string) => {
                       if (file!=""){
                         return (
                         <div className={styles.fileDownload} onClick={async ()=>{
@@ -134,7 +148,11 @@ export default function TicketDetails() {
                   <div className={styles.colDiv}>
                     <span>Edit history</span>
                     <div className={styles.editDetails}>
-                      {ticket.edit_history && ticket.edit_history.length>0 ? ticket.edit_history.reverse().map((edit_details, index) => {
+                      {ticket.edit_history && ticket.edit_history.length>0 ? ticket.edit_history.reverse().map((edit_details: {    user_name: string,
+                        field: string,
+                        old_value: string,
+                        new_value: string,
+                        time: Date}, index: number) => {
                         return (
                           <p key={index} className={styles.editDetail}><span>{edit_details.user_name}</span> changed field <span>{edit_details.field}</span> from <span>{edit_details.old_value}</span> to <span>{edit_details.new_value}</span> on <span>{new Date(edit_details.time).toLocaleString("en-GB")}</span></p>
                         )

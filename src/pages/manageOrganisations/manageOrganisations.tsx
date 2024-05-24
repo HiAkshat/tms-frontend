@@ -13,12 +13,20 @@ export default function ManageOrganisations(){
 
   const navigate = useNavigate()
   useEffect(()=>{
-    verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(res=>{
-      if (!(res.valid && res.userType=='system')){
-        showToast("Login as system user to access!")
-        navigate("../login")
-      }
-    })
+    const access_token = Cookie.get("accessToken")
+
+    if (access_token){
+      verifyTokenServices.verifyToken(access_token).then(res=>{
+        if (!(res.valid && res.userType=='system')){
+          showToast("Login as system user to access!")
+          navigate("../login")
+        }
+      })
+    }
+    else{
+      showToast("Login as system user to access!")
+      navigate("../login")
+    }
   }, [])
 
   return (

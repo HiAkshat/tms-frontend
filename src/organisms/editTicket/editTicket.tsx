@@ -18,6 +18,7 @@ import organisationUserServices from "../../services/organisationUser"
 import helpers from "../../helpers"
 import { useSelector } from "react-redux"
 import { StateType } from "../../typings/navUser"
+import { SendTicketType, TicketType } from "../../typings/ticket"
 
 
 export default function EditTicket() {
@@ -83,9 +84,6 @@ export default function EditTicket() {
       return
     }
 
-    const assignee_user = users.find(user => user.unique_id == assigneeId)
-    const reporter_user = users.find(user => user.unique_id == reporterId)
-
     try {
       let updated_ticket_data: SendTicketType = {
         organisation: Cookies.get("organisation") ?? "",
@@ -94,9 +92,7 @@ export default function EditTicket() {
         description,
         status,
         assignee_id: assigneeId,
-        assignee_name: `${assignee_user?.first_name} ${assignee_user?.last_name}` ?? "",
         reporter_id: reporterId,
-        reporter_name: `${reporter_user?.first_name} ${reporter_user?.last_name}` ?? "",
         due_date: dueDate,
         files,
       }

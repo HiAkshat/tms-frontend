@@ -16,6 +16,7 @@ import CustomButton from '../../atoms/CustomButton/CustomButton';
 import helpers from '../../helpers';
 import showToast from '../../atoms/Toast/Toast';
 import UploaderInput from '../../atoms/UploaderInput/UploaderInput';
+import { SendTicketType } from '../../typings/ticket';
 
 function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
   const [users, setUsers] = useState<[UserType]>()
@@ -38,9 +39,6 @@ function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
       return
     }
 
-    const assignee_user = users.find(user => user.unique_id == assigneeId)
-    const reporter_user = users.find(user => user.unique_id == reporterId)
-
     try {
       const data: SendTicketType = {
         organisation: Cookie.get("organisation") ?? "",
@@ -48,9 +46,7 @@ function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
         summary,
         description,
         assignee_id: assigneeId,
-        assignee_name: `${assignee_user?.first_name} ${assignee_user?.last_name}` ?? "",
         reporter_id: reporterId,
-        reporter_name: `${reporter_user?.first_name} ${reporter_user?.last_name}` ?? "",
         due_date: dueDate,
         files
       }
@@ -81,7 +77,7 @@ function NewTicketForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
       <form onSubmit={handleSubmit} className={styles.theForm}>
         <div className={styles.inputs}>
           <SelectInput options={ticketTypeOptions} data={ticketType} setData={setTicketType} placeholder={"Type"} field="Type"/>
-          <DateInput date={dueDate} setDate={setDueDate} placeholder="Due Date" />
+          <DateInput date={dueDate} setDate={setDueDate} placeholder="Due Date" field="Due Date" shouldDisableDate={(date: Date)=> !helpers.isDateTodayOrFuture(date)}/>
           {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={assigneeId} setData={setAssigneeId} placeholder={"Assignee"} field="Assignee"/>}
           {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={reporterId} setData={setReporterId} placeholder={"Reporter"} field="Reporter"/>}
           <CustomButton onClick={handleSubmit} text="Add Ticket" width="100%"/>

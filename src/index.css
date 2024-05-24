@@ -98,3 +98,7 @@ textarea.rs-input{
 p+p{
   margin: 0;
 }
+
+.rs-stack .rs-stack-item{
+  /* width: 100%; */
+}

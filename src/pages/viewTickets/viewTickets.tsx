@@ -24,16 +24,24 @@ export default function ViewTickets() {
       // Display toast or notification for the new ticket
     });
 
-    verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then(res=>{
-      if (!(res.valid && res.userType=='organisation')){
-        showToast("Login as organisation user to access!")
-        navigate("../login")
-      }
+    const access_token = Cookie.get("accessToken")
 
-      else {
-        dispatch(updateOrganisation(Cookie.get("organisation")))
-      }
-    })
+    if (access_token){
+      verifyTokenServices.verifyToken(access_token).then(res=>{
+        if (!(res.valid && res.userType=='organisation')){
+          showToast("Login as organisation user to access!")
+          navigate("../login")
+        }
+
+        else {
+          dispatch(updateOrganisation(Cookie.get("organisation")))
+        }
+      })
+    }
+    else{
+      showToast("Login as organisation user to access!")
+      navigate("../login")
+    }
   }, [])
 
   return (

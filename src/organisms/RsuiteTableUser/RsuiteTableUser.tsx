@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, Pagination, Modal } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
@@ -18,7 +18,7 @@ import MultipleSelectInput from '../../atoms/MultipleSelectInput/MultipleSelectI
 import DateRangeInput from '../../atoms/DateRangeInput/DateRangeInput';
 import organisationServices from '../../services/organisation';
 
-export default function RsuiteTable({isLoading, setIsLoading}: any) {
+export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boolean, setIsLoading: Dispatch<boolean>}) {
   const navigate = useNavigate()
 
   const [data, setData] = useState<[UserType]>()
@@ -33,7 +33,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
   const [clickedUser, setClickedUser] = useState<UserType>()
   const [organisations, setOrganisations] = useState<OrganisationType[]>()
 
-  const handleChangeLimit = (dataKey: any) => {
+  const handleChangeLimit = (dataKey: number) => {
     setPage(1);
     setLimit(dataKey);
   };
@@ -150,8 +150,8 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
               <EmailInput email={filterEmail} setEmail={setFilterEmail} placeholder={"Email"} />
               <NameInput field="First Name" name={filterFirstName} setName={setFilterFirstName} placeholder="First Name" />
               <NameInput field="Last Name" name={filterLastName} setName={setFilterLastName} placeholder="Last Name" />
+              <DateRangeInput setFilterStartDate={setFilterStartDate} setFilterEndDate={setFilterEndDate} field="DOB Range" placeholder="DOB Range"/>
               {organisations && <MultipleSelectInput arr={organisations} value={"unique_id"} label={"organisation_name"} data={filterOrganisation} setData={setFilterOrganisation} placeholder="Organisations" field="Organisations"/>}
-              <DateRangeInput setFilterStartDate={setFilterStartDate} setFilterEndDate={setFilterEndDate} field="DOB Range" />
               <CustomButton onClick={handleFilterSubmit} type="submit" text="Apply filters" width="50%"/>
             </form>
           </div>

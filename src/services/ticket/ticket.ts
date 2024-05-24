@@ -1,11 +1,12 @@
 import axios from "axios"
 import showToast from "../../atoms/Toast/Toast"
 import server from "../../globals"
+import { SendTicketType, TicketFilterType } from "../../typings/ticket"
 
 const apiEndpoint = `${server}/ticket/`
 
-export const getOrgTickets = async (id: string|undefined,page: number=1, pageSize: number=10, sortBy: string="", filters: any={}) => {
-  Object.keys(filters).forEach(key => filters[key] === undefined || filters[key] === null || filters[key] === "" ? delete filters[key] : {});
+export const getOrgTickets = async (id: string|undefined,page: number=1, pageSize: number=10, sortBy: string="", filters: TicketFilterType={}) => {
+  Object.keys(filters).forEach((key) => filters[key as keyof TicketFilterType] === undefined || filters[key as keyof TicketFilterType] === null || filters[key as keyof TicketFilterType] === "" ? delete filters[key as keyof TicketFilterType] : {});
   console.log(filters)
   let sortByString=""
   if (sortBy!=""){

@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DateRangePicker, Pagination, Placeholder, Table } from 'rsuite';
+import {  Pagination, Placeholder, Table } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
-import showToast from '../../atoms/Toast/Toast';
 
 import { useSelector } from "react-redux"
 import Cookie from "js-cookie"
@@ -17,6 +16,8 @@ import CustomButton from '../../atoms/CustomButton/CustomButton';
 import SelectInput from '../../atoms/SelectInput/SelectInput';
 import organisationUserServices from '../../services/organisationUser';
 import DateRangeInput from '../../atoms/DateRangeInput/DateRangeInput';
+import { TicketType } from '../../typings/ticket';
+import useDeviceSize from '../../utils/useDeviceSize';
 
 export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boolean, setIsLoading: Dispatch<boolean>}) {
   const navigate = useNavigate()
@@ -44,7 +45,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
   const [filterEndDate, setFilterEndDate] = useState()
 
 
-  const handleChangeLimit = (dataKey: any) => {
+  const handleChangeLimit = (dataKey: number) => {
     setPage(1);
     setLimit(dataKey);
   };
@@ -56,12 +57,12 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
 
     verifyTokenServices.verifyToken(Cookie.get("accessToken") ?? "").then((res)=>{
 
-      const filters = {
-        reporter_id: res.decoded.user.unique_id
-      }
+      // const filters = {
+      //   reporter_id: res.decoded.user.unique_id
+      // }
 
-      setFilterReporterId(res.decoded.user.unique_id)
-      setFilters(filters)
+      // setFilterReporterId(res.decoded.user.unique_id)
+      // setFilters(filters)
 
       ticketServices.getOrgTickets(Cookie.get("organisation"), page, limit, "", filters).then((tickets)=>{
         setData(tickets.data)
@@ -143,6 +144,8 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
     })
   }
 
+  const [windowWidth] = useDeviceSize()
+
   return (
     <div>
       {
@@ -155,9 +158,9 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
             <form className={styles.filtersInputs}>
               <SelectInput options={filterTypeOptions} data={filterTicketType} setData={setFilterTicketType} placeholder={"Type"}/>
               <SelectInput options={filterStatusOptions} data={filterStatus} setData={setFilterStatus} placeholder={"Status"}/>
+              <DateRangeInput setFilterStartDate={setFilterStartDate} setFilterEndDate={setFilterEndDate} field="Due date range" placeholder="Due date range"/>
               {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={filterAssigneeId} setData={setFilterAssigneeId} placeholder={"Assignee"}/>}
               {users && <SelectInput arr={users} value={"unique_id"} label={"first_name"} data={filterReporterId} setData={setFilterReporterId} placeholder={"Reporter"}/>}
-              <DateRangeInput setFilterStartDate={setFilterStartDate} setFilterEndDate={setFilterEndDate} field="Due date range" />
               <CustomButton onClick={handleFilterSubmit} type="submit" text="Apply filters" width="50%"/>
             </form>
           </div>
@@ -172,31 +175,37 @@ export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boole
               console.log(rowData);
             }}
           >
-            <Column flexGrow={1} align="center" sortable>
+            <Column  minWidth={windowWidth<1350 ? 250 : undefined} flexGrow={1} align="center" sortable>
               <HeaderCell>Type</HeaderCell>
               <Cell dataKey="type" />
             </Column>
-            <Column flexGrow={1} align="center" sortable>
+            <Column  minWidth={windowWidth<1350 ? 250 : undefined} flexGrow={1} align="center" sortable>
               <HeaderCell>Key</HeaderCell>
               <Cell dataKey="key" />
             </Column>
-            <Column flexGrow={1} align="center" sortable>
+            <Column  minWidth={windowWidth<1350 ? 250 : undefined} flexGrow={1} align="center" sortable>
               <HeaderCell>Assignee</HeaderCell>
-              <Cell dataKey="assignee_name" />
+              <Cell dataKey="assignee_id">{(rowData) => {
+                const assignee_user = users?.find(user => user.unique_id == rowData["assignee_id"])
+                return assignee_user ? `${assignee_user?.first_name} ${assignee_user?.last_name}` : "Deleted User"
+              }}</Cell>
             </Column>
-            <Column flexGrow={1} align="center" sortable>
+            <Column  minWidth={windowWidth<1350 ? 250 : undefined} flexGrow={1} align="center" sortable>
               <HeaderCell>Reporter</HeaderCell>
-            <Cell dataKey="reporter_name" />
+              <Cell dataKey="reporter_id">{(rowData) => {
+                const reporter_user = users?.find(user => user.unique_id == rowData["reporter_id"])
+                return reporter_user ? `${reporter_user?.first_name} ${reporter_user?.last_name}` : "Deleted User"
+              }}</Cell>
             </Column>
-            <Column flexGrow={1} align="center" sortable>
+            <Column  minWidth={windowWidth<1350 ? 250 : undefined} flexGrow={1} align="center" sortable>
               <HeaderCell>Status</HeaderCell>
               <Cell dataKey="status" />
             </Column>
-            <Column flexGrow={1} align="center" sortable>
+            <Column  minWidth={windowWidth<1350 ? 250 : undefined} flexGrow={1} align="center" sortable>
               <HeaderCell>Due Date</HeaderCell>
               <Cell dataKey="due_date">{rowData => new Date(rowData.due_date).toLocaleString().split(",")[0]}</Cell>
             </Column>
-            <Column flexGrow={1}>
+            <Column  minWidth={windowWidth<1350 ? 250 : undefined} flexGrow={1}>
               <HeaderCell>Actions</HeaderCell>
               <ActionCell dataKey="unique_id" rowData={undefined} />
             </Column>

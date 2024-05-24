@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import styles from "./NewUserForm.module.scss";
 
 import organisationUserServices from "../../services/organisationUser";
@@ -15,7 +15,7 @@ import SelectInput from "../../atoms/SelectInput/SelectInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
 import showToast from "../../atoms/Toast/Toast";
 
-export default function NewOrganisationForm({setIsLoading}: any) {
+export default function NewOrganisationForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
   const [email, setEmail] = useState<string>("")
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")

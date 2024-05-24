@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, Pagination } from 'rsuite';
 import { SortType } from 'rsuite/esm/Table';
@@ -12,7 +12,7 @@ import useDeviceSize from '../../utils/useDeviceSize';
 
 const { Column, HeaderCell, Cell } = Table;
 
-export default function RsuiteTable({isLoading, setIsLoading}: any) {
+export default function RsuiteTable({isLoading, setIsLoading}: {isLoading: boolean, setIsLoading: Dispatch<boolean>}) {
   const navigate = useNavigate()
 
   const [sortColumn, setSortColumn] = useState<string>('');
@@ -25,7 +25,7 @@ export default function RsuiteTable({isLoading, setIsLoading}: any) {
 
   const [deleteOrg, setDeleteOrg] = useState('')
 
-  const handleChangeLimit = (dataKey: any) => {
+  const handleChangeLimit = (dataKey: number) => {
     setPage(1);
     setLimit(dataKey);
   };

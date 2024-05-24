@@ -11,10 +11,11 @@ export default function SelectInput({
   options = undefined,
   placeholder="",
   className="",
-  field="Select"
+  field="Select",
+  width="100%"
 }: any) {
   return (
-    <div className={`${styles.inputField} ${className}`}>
+    <div style={{width: width}} className={`${styles.inputField} ${className}`}>
       <span className={`${styles.inputHeading}`}>{field}</span>
       <SelectPicker
         data={

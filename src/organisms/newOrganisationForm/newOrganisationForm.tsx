@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { Dispatch, useState } from "react"
 import styles from "./NewOrganisationForm.module.scss"
 
 import organisationServices from "../../services/organisation";
@@ -9,7 +9,7 @@ import TextInput from "../../atoms/TextInput/TextInput";
 import CustomButton from "../../atoms/CustomButton/CustomButton";
 import showToast from "../../atoms/Toast/Toast";
 
-export default function NewOrganisationForm({setIsLoading}: any) {
+export default function NewOrganisationForm({setIsLoading}: {setIsLoading: Dispatch<boolean>}) {
   const [organisationName, setOrganisationName] = useState("")
   const [displayName, setDisplayName] = useState("")
 

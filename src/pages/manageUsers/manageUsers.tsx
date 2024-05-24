@@ -1,38 +1,47 @@
 import Navbar from "../../organisms/Navbar/navbar"
 import NewUserForm from "../../organisms/NewUserForm/NewUserForm"
 import styles from "./ManageUsers.module.scss"
-import { useSelector } from "react-redux"
 import showToast from "../../atoms/Toast/Toast";
 import { useNavigate } from "react-router-dom";
 import RsuiteTable from "../../organisms/RsuiteTableUser/RsuiteTableUser";
 import { useEffect, useState } from "react";
-import { StateType } from "../../typings/navUser";
+import verifyTokenServices from "../../services/verifyToken";
+import Cookie from "js-cookie"
+
 
 export default function ManageUsers() {
   const navigate = useNavigate()
 
-  const user = useSelector((state: StateType) => state.user)
-
   const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(()=>{
+    const access_token = Cookie.get("accessToken")
 
-  if (false && !user.isAuthenticated || user.userType=='organisation'){
-    showToast("Login as system user to access!")
-    navigate("../login")
-  }
+    if (access_token){
+      verifyTokenServices.verifyToken(access_token).then(res=>{
+        if (!(res.valid && res.userType=='system')){
+          showToast("Login as system user to access!")
+          navigate("../login")
+        }
+      })
+    }
+    else{
+      showToast("Login as system user to access!")
+      navigate("../login")
+    }
 
-  else{
-    return (
-      <div className={styles.page}>
-        <Navbar />
-        <div className={styles.main}>
-          <NewUserForm setIsLoading={setIsLoading}/>
-          <div className={styles.tableDiv}>
-            <span>Users Table</span>
-            <RsuiteTable isLoading={isLoading} setIsLoading={setIsLoading}/>
-          </div>
+  }, [])
+
+  return (
+    <div className={styles.page}>
+      <Navbar />
+      <div className={styles.main}>
+        <NewUserForm setIsLoading={setIsLoading}/>
+        <div className={styles.tableDiv}>
+          <span>Users Table</span>
+          <RsuiteTable isLoading={isLoading} setIsLoading={setIsLoading}/>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }

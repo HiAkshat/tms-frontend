@@ -11,12 +11,13 @@ export default function MultipleSelectInput({
   options = undefined,
   placeholder="",
   className="",
-  field="Select"
+  field="Select",
+  width="100%"
 }: any) {
   return (
-    <div className={`${styles.inputField} ${className}`}>
+    <div style={{width: width}} className={`${styles.inputField} ${className}`}>
       <span className={`${styles.inputHeading}`}>{field}</span>
-      <Stack spacing={10} direction="column" alignItems="flex-start">
+      <Stack className={styles.inputField2} spacing={10} direction="column" alignItems="flex-start">
         <CheckPicker
           data={
             options
@@ -31,7 +32,6 @@ export default function MultipleSelectInput({
             setData(e)
           }}
           searchable={true}
-          style={{ width: 224 }}
           placeholder={placeholder}
         />
       </Stack>
